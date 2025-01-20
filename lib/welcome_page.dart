@@ -44,7 +44,7 @@ class WelcomePage extends StatelessWidget {
               SizedBox(height: 20.0),
               OutlinedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/register');
+                  Navigator.pushNamed(context, '/signUp');
                 },
                 style: OutlinedButton.styleFrom(
                   padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),

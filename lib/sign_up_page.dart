@@ -60,7 +60,7 @@ class SignUpPage extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                 ),
                 child: Text(
-                  'REGISTER',
+                  'SIGN UP',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
