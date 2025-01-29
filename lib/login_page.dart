@@ -47,6 +47,7 @@ class LoginPage extends StatelessWidget {
               SizedBox(height: 40.0),
               ElevatedButton(
                 onPressed: () {
+                  // TODO: add verification function
                   Navigator.pushNamed(context, '/home');
                 },
                 style: ElevatedButton.styleFrom(

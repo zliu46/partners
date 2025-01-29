@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'model/task_category.dart';
 import 'model/task_details.dart';
 
 // Home Page
@@ -18,107 +19,24 @@ class HomePage extends StatelessWidget {
               // Header Section
               _Header(),
               SizedBox(height: 20.0),
-
               // Task Categories Section
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'TASK CATEGORIES',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context,'/taskCategories');
-                    },
-                    child: Text('SEE ALL'),
-                  ),
-                ],
-              ),
+              _TaskCategoriesHeader(),
               SizedBox(height: 10.0),
               Column(
                 children: [
                   Row(
                     children: [
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, '/babyTask');
-                            },
-                          child: Container(
-                            height: 120.0,
-                            decoration: BoxDecoration(
-                              color: Colors.amber[200],
-                              borderRadius: BorderRadius.circular(16.0),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'BABY\n05 TASKS',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 16.0),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      _TaskCategory(TaskCategory("Baby", Colors.amber[200]!), 5),
                       SizedBox(width: 10.0),
-                      Expanded(
-                        child: Container(
-                          height: 120.0,
-                          decoration: BoxDecoration(
-                            color: Colors.green[200],
-                            borderRadius: BorderRadius.circular(16.0),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'ROOM\n02 TASKS',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16.0),
-                            ),
-                          ),
-                        ),
-                      ),
+                      _TaskCategory(TaskCategory("Room", Colors.green[200]!), 2),
                     ],
                   ),
                   SizedBox(height: 10.0),
                   Row(
                     children: [
-                      Expanded(
-                        child: Container(
-                          height: 120.0,
-                          decoration: BoxDecoration(
-                            color: Colors.purple[200],
-                            borderRadius: BorderRadius.circular(16.0),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'GROCERIES\n02 TASKS',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16.0),
-                            ),
-                          ),
-                        ),
-                      ),
+                      _TaskCategory(TaskCategory('GROCERIES', Colors.purple[200]!), 2),
                       SizedBox(width: 10.0),
-                      Expanded(
-                        child: Container(
-                          height: 120.0,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(16.0),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'APPOINTMENT\n02 TASKS',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16.0),
-                            ),
-                          ),
-                        ),
-                      ),
+                      _TaskCategory(TaskCategory('APPOINTMENT', Colors.grey[300]!), 2),
                     ],
                   ),
                 ],
@@ -297,6 +215,63 @@ class HomePage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _TaskCategory extends StatelessWidget {
+  final TaskCategory taskCategory;
+  final int numTasks;
+  const _TaskCategory(this.taskCategory, this.numTasks, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          Navigator.pushNamed(context, '/babyTask');
+        },
+        child: Container(
+          height: 120.0,
+          decoration: BoxDecoration(
+            color: taskCategory.color,
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          child: Center(
+            child: Text(
+              '$taskCategory\n$numTasks TASKS',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16.0),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TaskCategoriesHeader extends StatelessWidget{
+
+  const _TaskCategoriesHeader({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          'TASK CATEGORIES',
+          style: TextStyle(
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/taskCategories');
+          },
+          child: Text('SEE ALL'),
+        ),
+      ],
     );
   }
 }
