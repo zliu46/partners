@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:partners/auth_gate.dart';
+import 'package:partners/login_page.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -33,7 +34,7 @@ class WelcomePage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context, MaterialPageRoute (
-                    builder: (BuildContext context) => AuthGate(),
+                    builder: (BuildContext context) => LoginPage(),
                   ),);
                 },
                 style: ElevatedButton.styleFrom(
