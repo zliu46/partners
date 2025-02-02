@@ -40,17 +40,31 @@ class _SignUpPageState extends State<SignUpPage> {
             TextField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(labelText: "Email"),
+              decoration: const InputDecoration(labelText: "Email",
+                border: OutlineInputBorder(),
+              ),
             ),
+            const SizedBox(height: 20),
             TextField(
               controller: _passwordController,
               obscureText: true,
-              decoration: const InputDecoration(labelText: "Password"),
+              decoration: const InputDecoration(labelText: "Password",
+                border: OutlineInputBorder(),
+              ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _signUp,
-              child: const Text("Sign Up"),
+              child: const Text("Sign Up",
+                style: TextStyle(color: Colors.white),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 80,
+                  vertical: 15,
+                ),
+              )
             ),
           ],
         ),

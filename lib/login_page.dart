@@ -13,19 +13,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<void> _signIn() async {
-    try {
-      await _auth.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-      Navigator.pushReplacementNamed(context, '/home'); // Navigate to home page
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Login failed: ${e.toString()}")),
-      );
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -112,5 +100,19 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _signIn() async {
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      Navigator.pushReplacementNamed(context, '/home'); // Navigate to home page
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Login failed: ${e.toString()}")),
+      );
+    }
   }
 }
