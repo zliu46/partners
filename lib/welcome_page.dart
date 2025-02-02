@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:partners/auth_gate.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -30,7 +31,10 @@ class WelcomePage extends StatelessWidget {
               SizedBox(height: 40.0),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/login');
+                  Navigator.push(
+                    context, MaterialPageRoute (
+                    builder: (BuildContext context) => AuthGate(),
+                  ),);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
