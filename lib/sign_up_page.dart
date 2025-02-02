@@ -1,71 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
+
+  @override
+  _SignUpPageState createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<void> _signUp() async {
+    try {
+      await _auth.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      Navigator.pushReplacementNamed(context, '/home'); // Navigate to home page after signup
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Signup failed: ${e.toString()}")),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        title: const Text("Sign Up"),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'CREATE ACCOUNT',
-                style: TextStyle(
-                  fontSize: 32.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 40.0),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'USERNAME',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 20.0),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'EMAIL',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 20.0),
-              TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'PASSWORD',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 40.0),
-              ElevatedButton(
-                onPressed: () {
-                  // Implement registration functionality here
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-                ),
-                child: Text(
-                  'SIGN UP',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ],
-          ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(labelText: "Email"),
+            ),
+            TextField(
+              controller: _passwordController,
+              obscureText: true,
+              decoration: const InputDecoration(labelText: "Password"),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _signUp,
+              child: const Text("Sign Up"),
+            ),
+          ],
         ),
       ),
     );
