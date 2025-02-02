@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'model/task_category.dart';
-import 'model/task_details.dart';
+import '../model/task_category.dart';
+import '../model/task_details.dart';
 
 // Home Page
 class HomePage extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'model/task_details.dart';
+import '../model/task_details.dart';
 
 class TaskDetailsPage extends StatelessWidget {
   const TaskDetailsPage({super.key});
