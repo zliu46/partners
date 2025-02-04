@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../provider/task_provider.dart';
+import '../widgets/add_category_dialog.dart';
 import '../widgets/task_category_card.dart';
 
 class TaskCategoriesPage extends StatelessWidget {
@@ -65,7 +66,7 @@ class TaskCategoriesPage extends StatelessWidget {
       // Floating Action Button to Add Category
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _showAddCategoryDialog(context, taskProvider);
+          showAddCategoryDialog(context);
         },
         backgroundColor: Colors.purple[100],
         child: const Icon(Icons.add, color: Colors.black),

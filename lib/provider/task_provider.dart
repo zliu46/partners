@@ -42,7 +42,7 @@ class TaskProvider extends ChangeNotifier {
 
   final List<TaskCategory> _categories = [
     TaskCategory(title: "Baby", color: Colors.amber[200]!),
-    TaskCategory(title: "Room", color: Colors.green[200]!),
+    TaskCategory(title: "Chores", color: Colors.green[200]!),
     TaskCategory(title: "Groceries", color: Colors.purple[200]!),
     TaskCategory(title: "Appointment", color: Colors.grey[300]!),
   ];
