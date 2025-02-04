@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:partners/pages/profile_page.dart';
 import 'package:partners/widgets/header.dart';
 import 'package:partners/widgets/ongoing_task_section.dart';
 import 'package:partners/widgets/upcoming_task_section.dart';
@@ -7,8 +10,16 @@ import 'package:partners/provider/task_provider.dart';
 import 'package:partners/widgets/task_categories_section.dart';
 import 'package:partners/widgets/task_list_section.dart';
 
-class HomePage extends StatelessWidget {
+
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -18,29 +29,61 @@ class HomePage extends StatelessWidget {
     final upcomingTasks = taskProvider.upcomingTasks;
 
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header
-              Header(userName: 'Noah', userInitial: 'N'),
-              // Task Categories Section
-              TaskCategoriesSection(categories: categories),
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentPageIndex = index;
+          });
+        },
+        selectedIndex: currentPageIndex,
+        destinations: <Widget>[
+          NavigationDestination(
+            selectedIcon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
+            label: 'Home'
+          ),
+          NavigationDestination(
+            icon: CircleAvatar(
+              radius: 20.0,
+              backgroundColor: Colors.purple[100],
+              child: Text(
+                'N',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+            ),
+            label: 'Profile'
+          )
+        ]
+      ),
+      body: <Widget>[
+        SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header
+                Header(userName: 'Noah', ),
+                // Task Categories Section
+                TaskCategoriesSection(categories: categories),
+                const SizedBox(height: 20.0),
 
-              const SizedBox(height: 20.0),
+                // Ongoing Tasks Section
+                OngoingTaskSection(),
+                const SizedBox(height: 20.0),
 
-              // Ongoing Tasks Section
-              OngoingTaskSection(),
-
-              const SizedBox(height: 20.0),
-
-              UpcomingTaskSection(),
-            ],
+                UpcomingTaskSection(),
+              ],
+            ),
           ),
         ),
-      ),
+        ProfilePage(),
+      ][currentPageIndex]
+
     );
   }
 }
