@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../provider/task_provider.dart';
-import '../model/task_details.dart';
+import 'package:partners/widgets/task_tile.dart';
 
 class BabyTaskPage extends StatelessWidget {
   const BabyTaskPage({super.key});
@@ -38,7 +38,7 @@ class BabyTaskPage extends StatelessWidget {
                   itemCount: babyTasks.length,
                   itemBuilder: (context, index) {
                     final task = babyTasks[index];
-                    return _TaskTile(task: task);
+                    return TaskTile(task: task);
                   },
                 ),
               ),
