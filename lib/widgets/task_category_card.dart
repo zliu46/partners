@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../model/task_category.dart';
-import '../screens/task_list_page.dart';
+import '../pages/task_list_page.dart';
 class TaskCategoryCard extends StatelessWidget {
   final TaskCategory taskCategory;
   final int taskCount;

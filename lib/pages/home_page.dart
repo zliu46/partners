@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:partners/widgets/header.dart';
 import 'package:provider/provider.dart';
-import '../provider/task_provider.dart';
-import '../widgets/task_categories_section.dart';
-import '../widgets/task_list_section.dart';
+import 'package:partners/provider/task_provider.dart';
+import 'package:partners/widgets/task_categories_section.dart';
+import 'package:partners/widgets/task_list_section.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

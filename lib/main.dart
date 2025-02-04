@@ -1,19 +1,19 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:partners/provider/task_provider.dart';
-import 'package:partners/screens/baby_task_page.dart';
-import 'package:partners/screens/calendar_page.dart';
-import 'package:partners/screens/create_task_page.dart';
+import 'package:partners/pages/baby_task_page.dart';
+import 'package:partners/pages/calendar_page.dart';
+import 'package:partners/pages/create_task_page.dart';
 import 'package:partners/firebase_options.dart';
-import 'package:partners/screens/profile_page.dart';
-import 'package:partners/screens/sign_up_page.dart';
-import 'package:partners/screens/task_categories_page.dart';
-import 'package:partners/screens/task_details_page.dart';
-import 'package:partners/screens/upcoming_task_page.dart';
-import 'package:partners/screens/welcome_page.dart';
+import 'package:partners/pages/profile_page.dart';
+import 'package:partners/pages/sign_up_page.dart';
+import 'package:partners/pages/task_categories_page.dart';
+import 'package:partners/pages/task_details_page.dart';
+import 'package:partners/pages/upcoming_task_page.dart';
+import 'package:partners/pages/welcome_page.dart';
 import 'package:provider/provider.dart';
-import 'screens/home_page.dart';
-import 'screens/login_page.dart';
+import 'package:partners/pages//home_page.dart';
+import 'package:partners/pages//login_page.dart';
 
 
 void main() async {
