@@ -73,37 +73,4 @@ class TaskCategoriesPage extends StatelessWidget {
       ),
     );
   }
-
-  // Show Add Category Dialog
-  void _showAddCategoryDialog(BuildContext context, TaskProvider taskProvider) {
-    final TextEditingController categoryController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("Add New Category"),
-          content: TextField(
-            controller: categoryController,
-            decoration: const InputDecoration(labelText: "Category Name"),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text("Cancel"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (categoryController.text.isNotEmpty) {
-                  taskProvider.addCategory(categoryController.text, Colors.blue[100]!);
-                  Navigator.pop(context);
-                }
-              },
-              child: const Text("Add"),
-            ),
-          ],
-        );
-      },
-    );
-  }
 }
