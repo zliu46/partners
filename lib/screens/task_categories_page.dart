@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
-// Task Categories Page
+import 'package:provider/provider.dart';
+import '../provider/task_provider.dart';
+import '../model/task_category.dart';
+
 class TaskCategoriesPage extends StatelessWidget {
   const TaskCategoriesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final taskProvider = Provider.of<TaskProvider>(context);
+    final categories = taskProvider.categories;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Text(
+        title: const Text(
           'Task Categories',
           style: TextStyle(color: Colors.black),
         ),
@@ -27,55 +33,102 @@ class TaskCategoriesPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'TASK CATEGORIES',
                 style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
+
+              // ✅ Dynamic GridView for categories
               Expanded(
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16.0,
-                  mainAxisSpacing: 16.0,
-                  children: [
-                    _buildCategoryCard('BABY', Colors.amber[200]!),
-                    _buildCategoryCard('ROOM', Colors.green[200]!),
-                    _buildCategoryCard('GROCERIES', Colors.purple[200]!),
-                    _buildCategoryCard('APPOINTMENT', Colors.grey[300]!),
-                  ],
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16.0,
+                    mainAxisSpacing: 16.0,
+                  ),
+                  itemCount: categories.length,
+                  itemBuilder: (context, index) {
+                    final category = categories[index];
+                    return _CategoryCard(taskCategory: category);
+                  },
                 ),
-              ),
-              FloatingActionButton(
-                onPressed: () {
-                  // Add new task category functionality
-                },
-                backgroundColor: Colors.purple[100],
-                child: Icon(Icons.add, color: Colors.black),
               ),
             ],
           ),
         ),
       ),
+
+      // ✅ Floating Action Button to Add Category
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _showAddCategoryDialog(context, taskProvider);
+        },
+        backgroundColor: Colors.purple[100],
+        child: const Icon(Icons.add, color: Colors.black),
+      ),
     );
   }
 
-  Widget _buildCategoryCard(String title, Color color) {
-    return Container(
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(16.0),
-      ),
-      child: Center(
-        child: Text(
-          title,
-          style: TextStyle(
-            fontSize: 16.0,
-            fontWeight: FontWeight.bold,
+  // 🔹 Show Add Category Dialog
+  void _showAddCategoryDialog(BuildContext context, TaskProvider taskProvider) {
+    final TextEditingController categoryController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Add New Category"),
+          content: TextField(
+            controller: categoryController,
+            decoration: const InputDecoration(labelText: "Category Name"),
           ),
-          textAlign: TextAlign.center,
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (categoryController.text.isNotEmpty) {
+                  taskProvider.addCategory(categoryController.text, Colors.blue[100]!);
+                  Navigator.pop(context);
+                }
+              },
+              child: const Text("Add"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+// 🔹 Task Category Card Widget
+class _CategoryCard extends StatelessWidget {
+  final TaskCategory taskCategory;
+  const _CategoryCard({required this.taskCategory, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/taskList', arguments: taskCategory);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: taskCategory.color,
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        child: Center(
+          child: Text(
+            taskCategory.title,
+            style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     );
