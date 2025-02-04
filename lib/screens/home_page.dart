@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:partners/widgets/header.dart';
 import 'package:provider/provider.dart';
 import '../provider/task_provider.dart';
-import '../model/task_category.dart';
-import '../model/task_details.dart';
+import '../widgets/task_categories_section.dart';
+import '../widgets/task_list_section.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -22,23 +23,20 @@ class HomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Header
-              const _Header(),
-
-              const SizedBox(height: 20.0),
-
+              Header(userName: 'Noah', userInitial: 'N'),
               // Task Categories Section
-              _TaskCategoriesSection(categories: categories),
+              TaskCategoriesSection(categories: categories),
 
-              const SizedBox(height: 20.0),
+              //const SizedBox(height: 20.0),
 
               // Ongoing Tasks Section
-              _TaskListSection(title: "ONGOING TASKS", tasks: ongoingTasks),
+              TaskListSection(title: "ONGOING TASKS", tasks: ongoingTasks),
 
               const SizedBox(height: 20.0),
 
               // Upcoming Tasks Section
               Expanded(
-                child: _TaskListSection(
+                child: TaskListSection(
                   title: "UPCOMING TASKS",
                   tasks: upcomingTasks,
                   showSeeAll: true,

@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import '../model/task_category.dart';
 import '../model/task_details.dart';
@@ -41,27 +40,34 @@ class TaskProvider extends ChangeNotifier {
     ),
   ];
 
+  final List<TaskCategory> _categories = [
+    TaskCategory(title: "Baby", color: Colors.amber[200]!),
+    TaskCategory(title: "Room", color: Colors.green[200]!),
+    TaskCategory(title: "Groceries", color: Colors.purple[200]!),
+    TaskCategory(title: "Appointment", color: Colors.grey[300]!),
+  ];
+
   List<TaskDetails> get babyTasks => _tasks.where((task) => task.category == "Baby").toList();
 
-  // 🔹 Get Categories
-  List<TaskCategory> get categories => categories;
+  // Get Categories
+  List<TaskCategory> get categories => _categories;
 
-  // 🔹 Get Ongoing Tasks (Tasks that have started but are not completed)
+  // Get Ongoing Tasks (Tasks that have started but are not completed)
   List<TaskDetails> get ongoingTasks => _tasks
       .where((task) => task.startTime.isBefore(DateTime.now()) && !task.isCompleted)
       .toList();
 
-  // 🔹 Get Upcoming Tasks (Tasks that are scheduled for later)
+  // Get Upcoming Tasks (Tasks that are scheduled for later)
   List<TaskDetails> get upcomingTasks => _tasks
       .where((task) => task.startTime.isAfter(DateTime.now()) && !task.isCompleted)
       .toList();
 
-  // 🔹 Get Task Count by Category
+  // Get Task Count by Category
   int getTaskCount(String categoryTitle) {
     return _tasks.where((task) => task.category == categoryTitle).length;
   }
 
-  // 🔹 Add a New Task
+  // Add a New Task
   void addTask(String title, String category, String description, String createdBy, DateTime startTime) {
     final newTask = TaskDetails(
       id: Random().nextInt(10000).toString(), // Generate random ID
@@ -75,7 +81,7 @@ class TaskProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // 🔹 Update Task Completion Status
+  // Update Task Completion Status
   void updateTaskCompletion(String taskId, bool isCompleted) {
     final index = _tasks.indexWhere((task) => task.id == taskId);
     if (index != -1) {

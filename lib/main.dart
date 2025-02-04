@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:partners/provider/task_provider.dart';
 import 'package:partners/screens/baby_task_page.dart';
 import 'package:partners/screens/calendar_page.dart';
 import 'package:partners/screens/create_task_page.dart';
@@ -10,6 +11,7 @@ import 'package:partners/screens/task_categories_page.dart';
 import 'package:partners/screens/task_details_page.dart';
 import 'package:partners/screens/upcoming_task_page.dart';
 import 'package:partners/screens/welcome_page.dart';
+import 'package:provider/provider.dart';
 import 'screens/home_page.dart';
 import 'screens/login_page.dart';
 
@@ -19,7 +21,12 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  runApp(
+      ChangeNotifierProvider(
+        create: (_) => TaskProvider(),
+          child: const MyApp()
+      ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -29,7 +36,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Navigation Demo',
+      title: 'Navigation',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
