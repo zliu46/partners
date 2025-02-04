@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:partners/widgets/header.dart';
 import 'package:partners/widgets/ongoing_task_section.dart';
+import 'package:partners/widgets/upcoming_task_section.dart';
 import 'package:provider/provider.dart';
 import 'package:partners/provider/task_provider.dart';
 import 'package:partners/widgets/task_categories_section.dart';
@@ -35,15 +36,7 @@ class HomePage extends StatelessWidget {
 
               const SizedBox(height: 20.0),
 
-              // Upcoming Tasks Section
-              // Expanded(
-              //   child: TaskListSection(
-              //     title: "UPCOMING TASKS",
-              //     tasks: upcomingTasks,
-              //     showSeeAll: true,
-              //
-              //   ),
-              // ),
+              UpcomingTaskSection(),
             ],
           ),
         ),

@@ -111,4 +111,9 @@ class TaskProvider extends ChangeNotifier {
       return task.startTime.isBefore(now) && endTime.isAfter(now);
     }).toList();
   }
+  
+  List<TaskDetails> getUpcomingTasks() {
+    final now = DateTime.now();
+    return _tasks.where((task) => task.startTime.isAfter(now)).toList();
+  }
 }
