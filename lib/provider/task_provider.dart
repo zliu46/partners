@@ -92,16 +92,23 @@ class TaskProvider extends ChangeNotifier {
     }
   }
 
-  // 🔹 Delete a Task
+  //  Delete a Task
   void deleteTask(String taskId) {
     _tasks.removeWhere((task) => task.id == taskId);
     notifyListeners();
   }
 
-  // 🔹 Add a New Category (if needed)
+  //  Add a New Category (if needed)
   void addCategory(String title, Color color) {
     categories.add(TaskCategory(title: title, color: color));
     notifyListeners();
   }
 
+  List<TaskDetails> getOngoingTasks() {
+    final now = DateTime.now();
+    return _tasks.where((task) {
+      final endTime = task.endTime ?? now.add(const Duration(minutes: 30)); //  Default 30 min duration
+      return task.startTime.isBefore(now) && endTime.isAfter(now);
+    }).toList();
+  }
 }
