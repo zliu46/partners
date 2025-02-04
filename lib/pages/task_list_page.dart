@@ -11,7 +11,7 @@ class TaskListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final taskProvider = Provider.of<TaskProvider>(context);
-    final categoryTasks = taskProvider.getTasksByCategory('Baby');
+    final categoryTasks = taskProvider.getTasksByCategory(category);
 
     return Scaffold(
         appBar: AppBar(

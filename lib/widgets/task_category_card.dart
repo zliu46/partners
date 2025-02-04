@@ -5,6 +5,7 @@ import '../pages/task_list_page.dart';
 class TaskCategoryCard extends StatelessWidget {
   final TaskCategory taskCategory;
   final int taskCount;
+
   const TaskCategoryCard({required this.taskCategory, required this.taskCount, super.key});
 
   @override
@@ -19,18 +20,27 @@ class TaskCategoryCard extends StatelessWidget {
         );
       },
       child: Container(
-        height: 100.0,
-        width: 150.0,
+        padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
           color: taskCategory.color,
           borderRadius: BorderRadius.circular(16.0),
         ),
-        child: Center(
-          child: Text(
-            "${taskCategory.title}\n$taskCount TASKS",
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              taskCategory.title,
+              style: const TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              "$taskCount TASKS",
+              style: const TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
+            ),
+          ],
         ),
       ),
     );
