@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:partners/pages/profile_page.dart';
+import 'package:partners/widgets/expandable_fab.dart';
 import 'package:partners/widgets/header.dart';
 import 'package:partners/widgets/ongoing_task_section.dart';
 import 'package:partners/widgets/upcoming_task_section.dart';
@@ -9,6 +10,8 @@ import 'package:provider/provider.dart';
 import 'package:partners/provider/task_provider.dart';
 import 'package:partners/widgets/task_categories_section.dart';
 import 'package:partners/widgets/task_list_section.dart';
+
+import 'package:partners/widgets/add_category_dialog.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -82,8 +85,63 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         ProfilePage(),
-      ][currentPageIndex]
+      ][currentPageIndex],
+      floatingActionButton: ExpandableFab(
+          distance: 112,
+          children: _expandableFabChildren(context),
+      ),
+    );
+  }
+}
 
+List<Widget> _expandableFabChildren(BuildContext context){
+  return [
+    Row(
+      children: [
+        Text("Add task"),
+        ActionButton(
+          onPressed: () => (), //add task
+          icon: const Icon(Icons.add),
+        )
+      ]
+    ),
+    Row(
+      children: [
+        Text("Add category"),
+        ActionButton(
+          onPressed: (() {showAddCategoryDialog(context);}),
+          icon: const Icon(Icons.add),
+        )
+      ]
+    )
+  ];
+}
+
+
+@immutable
+class ActionButton extends StatelessWidget {
+  const ActionButton({
+    super.key,
+    this.onPressed,
+    required this.icon,
+  });
+
+  final VoidCallback? onPressed;
+  final Widget icon;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Material(
+      shape: const CircleBorder(),
+      clipBehavior: Clip.antiAlias,
+      color: theme.colorScheme.secondary,
+      elevation: 4,
+      child: IconButton(
+        onPressed: onPressed,
+        icon: icon,
+        color: theme.colorScheme.onSecondary,
+      ),
     );
   }
 }
