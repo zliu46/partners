@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../provider/task_provider.dart';
-import '../model/task_category.dart';
+import '../widgets/task_category_card.dart';
 
 class TaskCategoriesPage extends StatelessWidget {
   const TaskCategoriesPage({super.key});
@@ -52,7 +52,8 @@ class TaskCategoriesPage extends StatelessWidget {
                   itemCount: categories.length,
                   itemBuilder: (context, index) {
                     final category = categories[index];
-                    return _CategoryCard(taskCategory: category);
+                    final taskCount = taskProvider.getTaskCount(category.title);
+                    return TaskCategoryCard(taskCategory: category, taskCount: taskCount);
                   },
                 ),
               ),
@@ -72,7 +73,7 @@ class TaskCategoriesPage extends StatelessWidget {
     );
   }
 
-  //  Show Add Category Dialog
+  // Show Add Category Dialog
   void _showAddCategoryDialog(BuildContext context, TaskProvider taskProvider) {
     final TextEditingController categoryController = TextEditingController();
 
@@ -102,34 +103,6 @@ class TaskCategoriesPage extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-}
-
-//  Task Category Card Widget
-class _CategoryCard extends StatelessWidget {
-  final TaskCategory taskCategory;
-  const _CategoryCard({required this.taskCategory, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, '/taskList', arguments: taskCategory);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: taskCategory.color,
-          borderRadius: BorderRadius.circular(16.0),
-        ),
-        child: Center(
-          child: Text(
-            taskCategory.title,
-            style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
     );
   }
 }
