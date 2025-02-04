@@ -1,4 +1,5 @@
 class TaskDetails {
+  final String id;
   final String title;
   final String category;
   final String description;
@@ -8,6 +9,7 @@ class TaskDetails {
   final bool isCompleted;
 
   const TaskDetails( {
+    required this.id,
     required this.title,
     required this.category,
     required this.description,
@@ -19,6 +21,7 @@ class TaskDetails {
 
   TaskDetails copyWith({required bool isCompleted}) {
     return TaskDetails(
+      id : id,
       title: title,
       category: category,
       description: description,

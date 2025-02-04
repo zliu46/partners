@@ -1,12 +1,12 @@
 import 'dart:ui';
 
 class TaskCategory{
-  final String name;
+  final String title;
   final Color color;
-  const TaskCategory(this.name, this.color);
+  const TaskCategory({required this.title, required this.color});
 
   @override
   String toString(){
-    return name;
+    return title;
   }
 }
