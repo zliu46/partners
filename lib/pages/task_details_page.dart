@@ -2,98 +2,81 @@ import 'package:flutter/material.dart';
 import '../model/task_details.dart';
 
 class TaskDetailsPage extends StatelessWidget {
-  const TaskDetailsPage({super.key});
+  final TaskDetails task;
+  const TaskDetailsPage({required this.task, super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Retrieve TaskDetails object from route arguments
-    final TaskDetails task = ModalRoute.of(context)!.settings.arguments as TaskDetails;
+    // ✅ Provide default time if startTime or endTime is null
+    final startTime = task.startTime ?? DateTime.now();
+    final endTime = task.endTime ?? DateTime.now().add(const Duration(hours: 1));
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Text(
-          'TASK DETAILS',
+        title: const Text(
+          'Task Details',
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildDetailRow('Title:', task.title),
-            SizedBox(height: 10.0),
-            _buildDetailRow('Category:', task.category),
-            SizedBox(height: 10.0),
-            Text(
-              'Description:',
-              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 5.0),
-            Text(
-              task.description,
-              style: TextStyle(fontSize: 16.0, color: Colors.grey[700]),
-            ),
-            SizedBox(height: 10.0),
-            _buildDetailRow('Created By:', task.createdBy),
-            Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    'Cancel',
-                    style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                task.title,
+                style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10.0),
+              Text(
+                "Category: ${task.category}",
+                style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(height: 10.0),
+              Row(
+                children: [
+                  const Icon(Icons.access_time, color: Colors.red),
+                  const SizedBox(width: 5.0),
+                  Text(
+                    "${startTime.hour}:${startTime.minute.toString().padLeft(2, '0')} - ${endTime.hour}:${endTime.minute.toString().padLeft(2, '0')}",
+                    style: const TextStyle(fontSize: 16.0),
                   ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Add logic to mark the task as complete
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                  ),
-                  child: Text(
-                    'Complete',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDetailRow(String label, String value) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
-        ),
-        SizedBox(width: 10.0),
-        Expanded(
-          child: Text(
-            value,
-            style: TextStyle(fontSize: 16.0, color: Colors.grey[700]),
+                ],
+              ),
+              const SizedBox(height: 20.0),
+              const Text(
+                "Task Description:",
+                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10.0),
+              Text(
+                task.description,
+                style: const TextStyle(fontSize: 16.0),
+              ),
+              const SizedBox(height: 20.0),
+              const Text(
+                "Created By:",
+                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10.0),
+              Text(
+                task.createdBy,
+                style: const TextStyle(fontSize: 16.0),
+              ),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 }

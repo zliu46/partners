@@ -8,7 +8,6 @@ import 'package:partners/firebase_options.dart';
 import 'package:partners/pages/profile_page.dart';
 import 'package:partners/pages/sign_up_page.dart';
 import 'package:partners/pages/task_categories_page.dart';
-import 'package:partners/pages/task_details_page.dart';
 import 'package:partners/pages/upcoming_task_page.dart';
 import 'package:partners/pages/welcome_page.dart';
 import 'package:provider/provider.dart';
@@ -53,7 +52,7 @@ class MyApp extends StatelessWidget {
         '/calendar' : (context) => CalendarPage(),
         '/createTask' : (context) => CreateTaskPage(),
         '/babyTask' : (context) => BabyTaskPage(),
-        '/taskDetail': (context) => TaskDetailsPage(),
+        //'/taskDetail': (context) => TaskDetailsPage(task: null,),
       },
     );
   }

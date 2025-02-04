@@ -24,7 +24,7 @@ class UpcomingTaskSection extends StatelessWidget {
               'UPCOMING TASKS',
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
-            if (upcomingTasks.length > 2) // Show "SEE ALL" if more than 2 tasks exist
+            if (upcomingTasks.length > 0) // Show "SEE ALL" if more than 2 tasks exist
               TextButton(
                 onPressed: () {
                   Navigator.push(
