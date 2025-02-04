@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../model/task_category.dart';
+import '../screens/task_list_page.dart';
 class TaskCategoryCard extends StatelessWidget {
   final TaskCategory taskCategory;
   final int taskCount;
@@ -10,7 +11,12 @@ class TaskCategoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/taskList', arguments: taskCategory);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TaskListPage(category: taskCategory.title),
+          ),
+        );
       },
       child: Container(
         height: 100.0,

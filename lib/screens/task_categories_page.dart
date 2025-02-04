@@ -42,7 +42,6 @@ class TaskCategoriesPage extends StatelessWidget {
               ),
               const SizedBox(height: 20.0),
 
-              // ✅ Dynamic GridView for categories
               Expanded(
                 child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -62,7 +61,7 @@ class TaskCategoriesPage extends StatelessWidget {
         ),
       ),
 
-      // ✅ Floating Action Button to Add Category
+      // Floating Action Button to Add Category
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _showAddCategoryDialog(context, taskProvider);
@@ -73,7 +72,7 @@ class TaskCategoriesPage extends StatelessWidget {
     );
   }
 
-  // 🔹 Show Add Category Dialog
+  //  Show Add Category Dialog
   void _showAddCategoryDialog(BuildContext context, TaskProvider taskProvider) {
     final TextEditingController categoryController = TextEditingController();
 
@@ -107,7 +106,7 @@ class TaskCategoriesPage extends StatelessWidget {
   }
 }
 
-// 🔹 Task Category Card Widget
+//  Task Category Card Widget
 class _CategoryCard extends StatelessWidget {
   final TaskCategory taskCategory;
   const _CategoryCard({required this.taskCategory, super.key});

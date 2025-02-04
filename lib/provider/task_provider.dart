@@ -33,7 +33,7 @@ class TaskProvider extends ChangeNotifier {
     TaskDetails(
       id : '4',
       title: "Baby Bath",
-      category: "Baby",
+      category: 'Baby',
       description: "Give the baby a warm bath before bedtime.",
       createdBy: "Sarah",
       startTime: DateTime.now().add(const Duration(hours: 6)),
@@ -47,7 +47,9 @@ class TaskProvider extends ChangeNotifier {
     TaskCategory(title: "Appointment", color: Colors.grey[300]!),
   ];
 
-  List<TaskDetails> get babyTasks => _tasks.where((task) => task.category == "Baby").toList();
+  List<TaskDetails> getTasksByCategory(String category) {
+    return _tasks.where((task) => task.category == category).toList();
+  }
 
   // Get Categories
   List<TaskCategory> get categories => _categories;
