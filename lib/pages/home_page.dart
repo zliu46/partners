@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:partners/pages/profile_page.dart';
+import 'package:partners/pages/task_form.dart';
 import 'package:partners/widgets/expandable_fab.dart';
 import 'package:partners/widgets/header.dart';
 import 'package:partners/widgets/ongoing_task_section.dart';
@@ -100,7 +101,13 @@ List<Widget> _expandableFabChildren(BuildContext context){
       children: [
         Text("Add task"),
         ActionButton(
-          onPressed: () => (), //add task
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => TaskForm()
+              )
+            );
+          }, //add task
           icon: const Icon(Icons.add),
         )
       ]
