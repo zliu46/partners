@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:partners/model/task_category.dart';
+import 'package:provider/provider.dart';
+
+import 'package:partners/provider/task_provider.dart';
 
 class CreateTaskPage extends StatefulWidget {
   const CreateTaskPage({super.key});
@@ -11,6 +15,11 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
   DateTime? _selectedDate;
   TimeOfDay? _startTime;
   TimeOfDay? _endTime;
+
+  final _titleController = TextEditingController();
+  final _descriptionController = TextEditingController();
+
+  String? _category;
 
   Future<void> _selectDate() async {
     final DateTime? picked = await showDatePicker(
@@ -44,6 +53,8 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
 
   @override
   Widget build(BuildContext context) {
+    final taskProvider = Provider.of<TaskProvider>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey[200],
@@ -82,13 +93,17 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   label: 'Title',
                   hintText: 'Enter task title',
                   icon: Icons.title,
+                  controller: _titleController,
                 ),
+                SizedBox(height: 10.0),
+                _categoryPicker(taskProvider),
                 SizedBox(height: 20.0),
                 _buildInputField(
                   label: 'Description',
                   hintText: 'Enter task description',
                   icon: Icons.description,
                   maxLines: 4,
+                  controller: _descriptionController,
                 ),
                 SizedBox(height: 20.0),
                 Text(
@@ -159,11 +174,32 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
+                      taskProvider.addTask(
+                        _titleController.text,
+                        _category!,
+                        _descriptionController.text,
+                        "Noah",
+                        DateTime(
+                            _selectedDate!.year,
+                            _selectedDate!.month,
+                            _selectedDate!.day,
+                            _startTime!.hour,
+                            _startTime!.minute),
+                        _endTime != null ? DateTime(
+                            _selectedDate!.year,
+                            _selectedDate!.month,
+                            _selectedDate!.day,
+                            _endTime!.hour,
+                            _endTime!.minute)
+                            : null
+                      );
+                      Navigator.pop(context);
                       // Handle task creation logic
                       // You can use _selectedDate, _startTime, and _endTime here
                     },
                     style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 15.0),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 50.0, vertical: 15.0),
                       backgroundColor: Colors.black,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.0),
@@ -187,10 +223,29 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     );
   }
 
+  Widget _categoryPicker(TaskProvider provider) {
+    List<String> categories =
+        provider.categories.map((category) => category.title).toList();
+    return DropdownButtonFormField(
+      value: _category,
+      hint: Text('Choose one'),
+      isExpanded: true,
+      onChanged: (value) {
+        setState(() {
+          _category = value;
+        });
+      },
+      items: categories.map((category) {
+        return DropdownMenuItem(value: category, child: Text(category));
+      }).toList(),
+    );
+  }
+
   Widget _buildInputField({
     required String label,
     required String hintText,
     required IconData icon,
+    required TextEditingController controller,
     int maxLines = 1,
   }) {
     return Column(
@@ -206,6 +261,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         ),
         SizedBox(height: 5.0),
         TextField(
+          controller: controller,
           maxLines: maxLines,
           decoration: InputDecoration(
             hintText: hintText,

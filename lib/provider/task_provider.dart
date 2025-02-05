@@ -70,7 +70,7 @@ class TaskProvider extends ChangeNotifier {
   }
 
   // Add a New Task
-  void addTask(String title, String category, String description, String createdBy, DateTime startTime) {
+  void addTask(String title, String category, String description, String createdBy, DateTime startTime, [DateTime? endTime]) {
     final newTask = TaskDetails(
       id: Random().nextInt(10000).toString(), // Generate random ID
       title: title,
@@ -78,6 +78,7 @@ class TaskProvider extends ChangeNotifier {
       description: description,
       createdBy: createdBy,
       startTime: startTime,
+      endTime: endTime
     );
     _tasks.add(newTask);
     notifyListeners();

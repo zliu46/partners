@@ -2,7 +2,6 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:partners/pages/profile_page.dart';
-import 'package:partners/pages/task_form.dart';
 import 'package:partners/widgets/expandable_fab.dart';
 import 'package:partners/widgets/header.dart';
 import 'package:partners/widgets/ongoing_task_section.dart';
@@ -13,6 +12,8 @@ import 'package:partners/widgets/task_categories_section.dart';
 import 'package:partners/widgets/task_list_section.dart';
 
 import 'package:partners/widgets/add_category_dialog.dart';
+
+import 'create_task_page.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -104,7 +105,7 @@ List<Widget> _expandableFabChildren(BuildContext context){
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => TaskForm()
+                builder: (context) => CreateTaskPage()
               )
             );
           }, //add task
