@@ -107,7 +107,7 @@ class TaskProvider extends ChangeNotifier {
   List<TaskDetails> getOngoingTasks() {
     final now = DateTime.now();
     return _tasks.where((task) {
-      final endTime = task.endTime ?? now.add(const Duration(minutes: 30)); //  Default 30 min duration
+      final endTime = task.endTime ?? task.startTime.add(const Duration(minutes: 30)); //  Default 30 min duration
       return task.startTime.isBefore(now) && endTime.isAfter(now);
     }).toList();
   }
