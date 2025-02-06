@@ -22,7 +22,7 @@ void main() async {
   );
   runApp(
       ChangeNotifierProvider(
-          create: (_) => TaskProvider(),
+        create: (_) => TaskProvider(),
           child: const MyApp()
       ),
   );
