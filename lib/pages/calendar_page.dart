@@ -1,132 +1,104 @@
 import 'package:flutter/material.dart';
+import 'package:partners/model/task_details.dart';
+import 'package:partners/pages/home_page.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:provider/provider.dart';
+import 'package:partners/provider/task_provider.dart';
+import 'package:intl/intl.dart';
 
-class CalendarPage extends StatelessWidget {
+class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});
 
   @override
+  _CalendarPageState createState() => _CalendarPageState();
+}
+
+class _CalendarPageState extends State<CalendarPage> {
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
+
+  @override
   Widget build(BuildContext context) {
+    final taskProvider = Provider.of<TaskProvider>(context);
+    List<TaskDetails> tasksForSelectedDay = taskProvider.getTasksForDate(_selectedDay ?? _focusedDay);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()
+          )),
         ),
         title: Text(
           'CALENDAR',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'JANUARY 08',
-                style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 5.0),
-              Text(
-                '4 task today',
-                style: TextStyle(
-                  fontSize: 16.0,
-                  color: Colors.grey[600],
-                ),
-              ),
-              SizedBox(height: 20.0),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(7, (index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][index],
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              color: index == 3 ? Colors.black : Colors.grey,
-                            ),
-                          ),
-                          SizedBox(height: 5.0),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: index == 3 ? Colors.black : Colors.grey[300],
-                              shape: BoxShape.circle,
-                            ),
-                            padding: EdgeInsets.all(10.0),
-                            child: Text(
-                              (index + 5).toString(),
-                              style: TextStyle(
-                                color: index == 3 ? Colors.white : Colors.black,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
-                ),
-              ),
-              SizedBox(height: 20.0),
-              Expanded(
-                child: ListView(
-                  children: [
-                    _buildTaskTile('CLEAN THE KITCHEN', '09:30 AM', Colors.grey[200]!),
-                    _buildTaskTile('FEED THE BABY', '10:00 AM', Colors.green[100]!),
-                    _buildTaskTile('DOCTOR’S APPOINTMENT', '12:00 PM', Colors.purple[100]!),
-                    _buildTaskTile('FEED THE BABY', '01:30 PM', Colors.green[100]!),
-                  ],
-                ),
-              ),
-            ],
+      body: Column(
+        children: [
+          // Calendar Widget
+          TableCalendar(
+            firstDay: DateTime(2000),
+            lastDay: DateTime(2100),
+            focusedDay: _focusedDay,
+            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+            onDaySelected: (selectedDay, focusedDay) {
+              setState(() {
+                _selectedDay = selectedDay;
+                _focusedDay = focusedDay;
+              });
+            },
+            calendarFormat: CalendarFormat.week,
+            calendarStyle: CalendarStyle(
+              selectedDecoration: BoxDecoration(color: Colors.black, shape: BoxShape.circle),
+              todayDecoration: BoxDecoration(color: Colors.grey[300], shape: BoxShape.circle),
+            ),
+            headerStyle: HeaderStyle(formatButtonVisible: false, titleCentered: true),
           ),
-        ),
+          const SizedBox(height: 10),
+          // Task List
+          Expanded(
+            child: tasksForSelectedDay.isEmpty
+                ? Center(child: Text("No tasks for this day"))
+                : ListView.builder(
+              itemCount: tasksForSelectedDay.length,
+              itemBuilder: (context, index) {
+                final task = tasksForSelectedDay[index];
+                return _buildTaskTile(task);
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildTaskTile(String title, String time, Color color) {
+  Widget _buildTaskTile(TaskDetails task) {
     return Container(
-      margin: EdgeInsets.only(bottom: 10.0),
+      margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       padding: EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: color,
+        color: Colors.blueGrey[100],
         borderRadius: BorderRadius.circular(16.0),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Text(
+            task.title,
+            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 5.0),
+          Row(
             children: [
+              Icon(Icons.access_time, size: 16.0, color: Colors.red),
+              const SizedBox(width: 5.0),
               Text(
-                title,
-                style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 5.0),
-              Row(
-                children: [
-                  Icon(Icons.access_time, size: 16.0, color: Colors.red),
-                  SizedBox(width: 5.0),
-                  Text(
-                    time,
-                    style: TextStyle(color: Colors.grey[600]),
-                  ),
-                ],
+                '${DateFormat.jm().format(task.startTime)} - ${task.endTime != null ? DateFormat.jm().format(task.endTime!) : "No End Time"}',
+                style: TextStyle(color: Colors.grey),
               ),
             ],
           ),

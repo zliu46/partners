@@ -125,4 +125,12 @@ class TaskProvider extends ChangeNotifier {
       task.isCompleted = !task.isCompleted;
     }
   }
+
+  List<TaskDetails> getTasksForDate(DateTime selectedDate) {
+    return _tasks.where((task) {
+      return task.startTime.year == selectedDate.year &&
+          task.startTime.month == selectedDate.month &&
+          task.startTime.day == selectedDate.day;
+    }).toList();
+  }
 }
