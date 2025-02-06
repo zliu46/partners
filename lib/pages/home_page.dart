@@ -15,7 +15,6 @@ import 'package:partners/widgets/add_category_dialog.dart';
 
 import 'create_task_page.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -35,35 +34,32 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPageIndex = index;
-          });
-        },
-        selectedIndex: currentPageIndex,
-        destinations: <Widget>[
-          NavigationDestination(
-            selectedIcon: Icon(Icons.home),
-            icon: Icon(Icons.home_outlined),
-            label: 'Home'
-          ),
-          NavigationDestination(
-            icon: CircleAvatar(
-              radius: 20.0,
-              backgroundColor: Colors.purple[100],
-              child: Text(
-                'N',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+          onDestinationSelected: (int index) {
+            setState(() {
+              currentPageIndex = index;
+            });
+          },
+          selectedIndex: currentPageIndex,
+          destinations: <Widget>[
+            NavigationDestination(
+                selectedIcon: Icon(Icons.home),
+                icon: Icon(Icons.home_outlined),
+                label: 'Home'),
+            NavigationDestination(
+                icon: CircleAvatar(
+                  radius: 20.0,
+                  backgroundColor: Colors.purple[100],
+                  child: Text(
+                    'N',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            label: 'Profile'
-          )
-        ]
-      ),
+                label: 'Profile')
+          ]),
       body: <Widget>[
         SafeArea(
           child: Padding(
@@ -72,7 +68,9 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Header
-                Header(userName: 'Noah', ),
+                Header(
+                  userName: 'Noah',
+                ),
                 // Task Categories Section
                 TaskCategoriesSection(categories: categories),
                 const SizedBox(height: 20.0),
@@ -88,43 +86,39 @@ class _HomePageState extends State<HomePage> {
         ),
         ProfilePage(),
       ][currentPageIndex],
-      floatingActionButton: ExpandableFab(
-          distance: 112,
-          children: _expandableFabChildren(context),
-      ),
+      floatingActionButton: currentPageIndex == 0
+          ? ExpandableFab(
+              distance: 112,
+              children: _expandableFabChildren(context),
+            )
+          : null,
     );
   }
 }
 
-List<Widget> _expandableFabChildren(BuildContext context){
+List<Widget> _expandableFabChildren(BuildContext context) {
   return [
-    Row(
-      children: [
-        Text("Add task"),
-        ActionButton(
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => CreateTaskPage()
-              )
-            );
-          }, //add task
-          icon: const Icon(Icons.add),
-        )
-      ]
-    ),
-    Row(
-      children: [
-        Text("Add category"),
-        ActionButton(
-          onPressed: (() {showAddCategoryDialog(context);}),
-          icon: const Icon(Icons.add),
-        )
-      ]
-    )
+    Row(children: [
+      Text("Add task"),
+      ActionButton(
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => CreateTaskPage()));
+        }, //add task
+        icon: const Icon(Icons.add),
+      )
+    ]),
+    Row(children: [
+      Text("Add category"),
+      ActionButton(
+        onPressed: (() {
+          showAddCategoryDialog(context);
+        }),
+        icon: const Icon(Icons.add),
+      )
+    ])
   ];
 }
-
 
 @immutable
 class ActionButton extends StatelessWidget {
