@@ -174,6 +174,14 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
+                      final taskProvider = context.read<TaskProvider>();
+                      // Ensure required fields are filled
+                      if (_titleController.text.isEmpty || _category == null || _selectedDate == null || _startTime == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Please fill in all required fields')),
+                        );
+                        return;
+                      }
                       taskProvider.addTask(
                         _titleController.text,
                         _category!,
@@ -193,6 +201,10 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                             _endTime!.minute)
                             : null
                       );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Task added successfully!')),
+                      );
+
                       Navigator.pop(context);
                       // Handle task creation logic
                       // You can use _selectedDate, _startTime, and _endTime here
@@ -206,7 +218,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                       ),
                     ),
                     child: Text(
-                      'CREATE TASK',
+                      'CREATE ASK',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16.0,
