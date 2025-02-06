@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:partners/pages/calendar_page.dart';
 import 'package:partners/pages/profile_page.dart';
 import 'package:partners/widgets/expandable_fab.dart';
 import 'package:partners/widgets/header.dart';
@@ -46,6 +47,11 @@ class _HomePageState extends State<HomePage> {
                 icon: Icon(Icons.home_outlined),
                 label: 'Home'),
             NavigationDestination(
+              selectedIcon: Icon(Icons.calendar_today),
+              icon: Icon(Icons.calendar_today_outlined),
+              label: 'Calendar',
+            ),
+            NavigationDestination(
                 icon: CircleAvatar(
                   radius: 20.0,
                   backgroundColor: Colors.purple[100],
@@ -84,6 +90,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
+        CalendarPage(),
         ProfilePage(),
       ][currentPageIndex],
       floatingActionButton: currentPageIndex == 0
