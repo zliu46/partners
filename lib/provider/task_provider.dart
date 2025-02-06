@@ -117,4 +117,12 @@ class TaskProvider extends ChangeNotifier {
     final now = DateTime.now();
     return _tasks.where((task) => task.startTime.isAfter(now)).toList();
   }
+
+  void changeCompletion(String id) {
+    var taskList = _tasks.where((TaskDetails task) => task.id == id).toList();
+    if (taskList.isNotEmpty){
+      TaskDetails task = taskList[0];
+      task.isCompleted = !task.isCompleted;
+    }
+  }
 }

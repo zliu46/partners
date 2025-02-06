@@ -6,9 +6,9 @@ class TaskDetails {
   final String createdBy;
   final DateTime startTime;
   final DateTime? endTime;
-  final bool isCompleted;
+  bool isCompleted;
 
-  const TaskDetails( {
+  TaskDetails( {
     required this.id,
     required this.title,
     required this.category,
