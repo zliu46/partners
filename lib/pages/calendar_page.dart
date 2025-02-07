@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:partners/provider/task_provider.dart';
 import 'package:intl/intl.dart';
 
+import '../widgets/task_item_card.dart';
+
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});
 
@@ -20,7 +22,8 @@ class _CalendarPageState extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
     final taskProvider = Provider.of<TaskProvider>(context);
-    List<TaskDetails> tasksForSelectedDay = taskProvider.getTasksForDate(_selectedDay ?? _focusedDay);
+    List<TaskDetails> tasksForSelectedDay =
+        taskProvider.getTasksForDate(_selectedDay ?? _focusedDay);
 
     return Scaffold(
       appBar: AppBar(
@@ -28,8 +31,8 @@ class _CalendarPageState extends State<CalendarPage> {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()
-          )),
+          onPressed: () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => HomePage())),
         ),
         title: Text(
           'CALENDAR',
@@ -53,54 +56,31 @@ class _CalendarPageState extends State<CalendarPage> {
             },
             calendarFormat: CalendarFormat.week,
             calendarStyle: CalendarStyle(
-              selectedDecoration: BoxDecoration(color: Colors.black, shape: BoxShape.circle),
-              todayDecoration: BoxDecoration(color: Colors.grey[300], shape: BoxShape.circle),
+              selectedDecoration:
+                  BoxDecoration(color: Colors.black, shape: BoxShape.circle),
+              todayDecoration: BoxDecoration(
+                  color: Colors.grey[300], shape: BoxShape.circle),
             ),
-            headerStyle: HeaderStyle(formatButtonVisible: false, titleCentered: true),
+            headerStyle:
+                HeaderStyle(formatButtonVisible: false, titleCentered: true),
           ),
           const SizedBox(height: 10),
           // Task List
           Expanded(
             child: tasksForSelectedDay.isEmpty
                 ? Center(child: Text("No tasks for this day"))
-                : ListView.builder(
-              itemCount: tasksForSelectedDay.length,
-              itemBuilder: (context, index) {
-                final task = tasksForSelectedDay[index];
-                return _buildTaskTile(task);
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTaskTile(TaskDetails task) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      padding: EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Colors.blueGrey[100],
-        borderRadius: BorderRadius.circular(16.0),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            task.title,
-            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 5.0),
-          Row(
-            children: [
-              Icon(Icons.access_time, size: 16.0, color: Colors.red),
-              const SizedBox(width: 5.0),
-              Text(
-                '${DateFormat.jm().format(task.startTime)} - ${task.endTime != null ? DateFormat.jm().format(task.endTime!) : "No End Time"}',
-                style: TextStyle(color: Colors.grey),
-              ),
-            ],
+                : SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: ListView.builder(
+                        itemCount: tasksForSelectedDay.length,
+                        itemBuilder: (context, index) {
+                          final task = tasksForSelectedDay[index];
+                          return TaskItemCard(task: task);
+                        },
+                      ),
+                    ),
+                  ),
           ),
         ],
       ),
