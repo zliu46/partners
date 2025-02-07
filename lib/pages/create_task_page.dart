@@ -96,6 +96,18 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   controller: _titleController,
                 ),
                 SizedBox(height: 10.0),
+                // category
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text(
+                    "CATEGORY",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14.0,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                  SizedBox(height: 5.0),
+                ]),
                 _categoryPicker(taskProvider),
                 SizedBox(height: 20.0),
                 _buildInputField(
@@ -175,38 +187,42 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   child: ElevatedButton(
                     onPressed: () {
                       // Ensure required fields are filled
-                      if (_titleController.text.isEmpty || _category == null || _selectedDate == null || _startTime == null) {
+                      if (_titleController.text.isEmpty ||
+                          _category == null ||
+                          _selectedDate == null ||
+                          _startTime == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Please fill in all required fields')),
+                          SnackBar(
+                              content:
+                                  Text('Please fill in all required fields')),
                         );
                         return;
                       }
                       taskProvider.addTask(
-                        _titleController.text,
-                        _category!,
-                        _descriptionController.text,
-                        "Noah",
-                        DateTime(
-                            _selectedDate!.year,
-                            _selectedDate!.month,
-                            _selectedDate!.day,
-                            _startTime!.hour,
-                            _startTime!.minute),
-                        _endTime != null ? DateTime(
-                            _selectedDate!.year,
-                            _selectedDate!.month,
-                            _selectedDate!.day,
-                            _endTime!.hour,
-                            _endTime!.minute)
-                            : null
-                      );
+                          _titleController.text,
+                          _category!,
+                          _descriptionController.text,
+                          "Noah",
+                          DateTime(
+                              _selectedDate!.year,
+                              _selectedDate!.month,
+                              _selectedDate!.day,
+                              _startTime!.hour,
+                              _startTime!.minute),
+                          _endTime != null
+                              ? DateTime(
+                                  _selectedDate!.year,
+                                  _selectedDate!.month,
+                                  _selectedDate!.day,
+                                  _endTime!.hour,
+                                  _endTime!.minute)
+                              : null);
                       // Show a success message
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Task added successfully!')),
                       );
                       Navigator.pop(context);
                       // Handle task creation logic
-                      // You can use _selectedDate, _startTime, and _endTime here
                     },
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(
