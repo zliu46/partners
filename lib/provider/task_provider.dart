@@ -58,6 +58,9 @@ class TaskProvider extends ChangeNotifier {
   // Get Categories
   List<TaskCategory> get categories => _categories;
 
+  // Get Tasks
+  List<TaskDetails> get tasks => _tasks;
+
   // Get Ongoing Tasks (Tasks that have started but are not completed)
   List<TaskDetails> get ongoingTasks => _tasks
       .where((task) => task.startTime.isBefore(DateTime.now()) && !task.isCompleted)
