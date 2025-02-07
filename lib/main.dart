@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:partners/provider/task_provider.dart';
-import 'package:partners/pages/baby_task_page.dart';
 import 'package:partners/pages/calendar_page.dart';
 import 'package:partners/pages/create_task_page.dart';
 import 'package:partners/firebase_options.dart';
@@ -51,7 +50,6 @@ class MyApp extends StatelessWidget {
         '/upcomingTask' : (context) => UpcomingTaskPage(),
         '/calendar' : (context) => CalendarPage(),
         '/createTask' : (context) => CreateTaskPage(),
-        '/babyTask' : (context) => BabyTaskPage(),
         //'/taskDetail': (context) => TaskDetailsPage(task: null,),
       },
     );
