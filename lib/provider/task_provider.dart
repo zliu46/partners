@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../model/task_category.dart';
 import '../model/task_details.dart';
 
-class TaskProvider extends ChangeNotifier {
-  final List<TaskDetails> _tasks = [
+/*
+final List<TaskDetails> _tasks = [
     TaskDetails(
       id : '1',
       title: "Feed the baby",
@@ -39,6 +39,10 @@ class TaskProvider extends ChangeNotifier {
       startTime: DateTime.now().add(const Duration(hours: 6)),
     ),
   ];
+ */
+
+class TaskProvider extends ChangeNotifier {
+  final List<TaskDetails> _tasks = [];
 
   final List<TaskCategory> _categories = [
     TaskCategory(title: "Baby", color: Colors.amber[200]!),
