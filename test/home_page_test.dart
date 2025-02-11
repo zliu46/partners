@@ -28,4 +28,17 @@ main(){
     TaskProvider taskProvider = Provider.of<TaskProvider>(tester.element(find.byType(HomePage)), listen:false);
     expect(find.byType(TaskCategoryCard), findsNWidgets(taskProvider.categories.length));
   });
+
+  testWidgets("Adding categories to provider reflects in home page", (tester) async {
+    HomePage homePage = HomePage();
+    await tester.pumpWidget(ChangeNotifierProvider(
+      create: (context) => TaskProvider(),
+      child: MaterialApp(home: Scaffold(body: homePage))
+    ));
+    TaskProvider provider = Provider.of<TaskProvider>(tester.element(find.byType(HomePage)), listen: false);
+    expect(find.byType(TaskCategoryCard), findsNWidgets(provider.categories.length));
+    provider.addCategory("test category 1", Color(0));
+    await tester.pumpAndSettle();
+    expect(find.byType(TaskCategoryCard), findsNWidgets(provider.categories.length));
+  });
 }
