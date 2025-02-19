@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:partners/provider/task_provider.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -104,10 +108,10 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _signIn() async {
     try {
-      await _auth.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
+      UserCredential user = await Provider.of<AuthService>(context).signIn(
+        _emailController.text.trim(),
+       _passwordController.text.trim());
+      Provider.of<TaskProvider>(context).setUser(user);
       Navigator.pushReplacementNamed(context, '/home'); // Navigate to home page
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
