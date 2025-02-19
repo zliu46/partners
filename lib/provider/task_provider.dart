@@ -63,12 +63,12 @@ class TaskProvider extends ChangeNotifier {
 
   // Get Ongoing Tasks (Tasks that have started but are not completed)
   List<TaskDetails> get ongoingTasks => _tasks
-      .where((task) => task.startTime.isBefore(DateTime.now()) && !task.isCompleted)
+      .where((task) => (task.startTime ?? task.endTime).isBefore(DateTime.now()) && !task.isCompleted)
       .toList();
 
   // Get Upcoming Tasks (Tasks that are scheduled for later)
   List<TaskDetails> get upcomingTasks => _tasks
-      .where((task) => task.startTime.isAfter(DateTime.now()) && !task.isCompleted)
+      .where((task) => (task.startTime ?? task.endTime).isAfter(DateTime.now()) && !task.isCompleted)
       .toList();
 
   // Get Task Count by Category
@@ -77,7 +77,7 @@ class TaskProvider extends ChangeNotifier {
   }
 
   // Add a New Task
-  void addTask(String title, String category, String description, String createdBy, DateTime startTime, [DateTime? endTime]) {
+  void addTask(String title, String category, String description, String createdBy, DateTime endTime, [DateTime? startTime]) {
     final newTask = TaskDetails(
       id: Random().nextInt(10000).toString(), // Generate random ID
       title: title,
@@ -115,14 +115,14 @@ class TaskProvider extends ChangeNotifier {
   List<TaskDetails> getOngoingTasks() {
     final now = DateTime.now();
     return _tasks.where((task) {
-      final endTime = task.endTime ?? task.startTime.add(const Duration(minutes: 30)); //  Default 30 min duration
-      return task.startTime.isBefore(now) && endTime.isAfter(now);
+      final endTime = (task.startTime ?? task.endTime).add(const Duration(minutes: 30)); //  Default 30 min duration
+      return (task.startTime ?? task.endTime).isBefore(now) && endTime.isAfter(now);
     }).toList();
   }
   
   List<TaskDetails> getUpcomingTasks() {
     final now = DateTime.now();
-    return _tasks.where((task) => task.startTime.isAfter(now)).toList();
+    return _tasks.where((task) => (task.startTime ?? task.endTime).isAfter(now)).toList();
   }
 
   void changeCompletion(String id) {
@@ -135,9 +135,9 @@ class TaskProvider extends ChangeNotifier {
 
   List<TaskDetails> getTasksForDate(DateTime selectedDate) {
     return _tasks.where((task) {
-      return task.startTime.year == selectedDate.year &&
-          task.startTime.month == selectedDate.month &&
-          task.startTime.day == selectedDate.day;
+      return (task.startTime ?? task.endTime).year == selectedDate.year &&
+          (task.startTime ?? task.endTime).month == selectedDate.month &&
+          (task.startTime ?? task.endTime).day == selectedDate.day;
     }).toList();
   }
 }

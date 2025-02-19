@@ -4,8 +4,8 @@ class TaskDetails {
   final String category;
   final String description;
   final String createdBy;
-  final DateTime startTime;
-  final DateTime? endTime;
+  final DateTime endTime;
+  final DateTime? startTime;
   bool isCompleted;
 
   TaskDetails( {
@@ -14,10 +14,22 @@ class TaskDetails {
     required this.category,
     required this.description,
     required this.createdBy,
-    required this.startTime,
-    this.endTime,
+    required this.endTime,
+    this.startTime,
     this.isCompleted = false,
   });
+
+  factory TaskDetails.fromMap(Map data){
+    return TaskDetails(
+     id: data['id'],
+     title: data['title'],
+     category: data['category'],
+     description: data['description'],
+     createdBy: data['createdBy'],
+     startTime: DateTime.tryParse(data['startTime']),
+     endTime: DateTime.parse(data['endTime'])
+    );
+  }
 
   TaskDetails copyWith({required bool isCompleted}) {
     return TaskDetails(

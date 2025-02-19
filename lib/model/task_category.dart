@@ -3,7 +3,15 @@ import 'dart:ui';
 class TaskCategory{
   final String title;
   final Color color;
-  const TaskCategory({required this.title, required this.color});
+
+  TaskCategory({required this.title, required this.color});
+
+  factory TaskCategory.fromMap(Map data){
+    return TaskCategory(
+      title: data['title'],
+      color: data['color']
+    );
+  }
 
   @override
   String toString(){

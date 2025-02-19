@@ -50,7 +50,6 @@ class MyApp extends StatelessWidget {
         '/upcomingTask' : (context) => UpcomingTaskPage(),
         '/calendar' : (context) => CalendarPage(),
         '/createTask' : (context) => CreateTaskPage(),
-        //'/taskDetail': (context) => TaskDetailsPage(task: null,),
       },
     );
   }
