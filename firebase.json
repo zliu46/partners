@@ -1,1 +1,41 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"partnersapp-231a5","appId":"1:504716019464:android:90b6cda976f5a4582a0ebd","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"partnersapp-231a5","appId":"1:504716019464:ios:d97a08f07a04ddc42a0ebd","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"macos":{"default":{"projectId":"partnersapp-231a5","appId":"1:504716019464:ios:d97a08f07a04ddc42a0ebd","uploadDebugSymbols":false,"fileOutput":"macos/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"partnersapp-231a5","configurations":{"android":"1:504716019464:android:90b6cda976f5a4582a0ebd","ios":"1:504716019464:ios:d97a08f07a04ddc42a0ebd","macos":"1:504716019464:ios:d97a08f07a04ddc42a0ebd","web":"1:504716019464:web:e6849515a88afc8f2a0ebd","windows":"1:504716019464:web:6c0651ed4300fffc2a0ebd"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "partnersapp-231a5",
+          "appId": "1:504716019464:android:90b6cda976f5a4582a0ebd",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "partnersapp-231a5",
+          "appId": "1:504716019464:ios:d97a08f07a04ddc42a0ebd",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "macos": {
+        "default": {
+          "projectId": "partnersapp-231a5",
+          "appId": "1:504716019464:ios:d97a08f07a04ddc42a0ebd",
+          "uploadDebugSymbols": false,
+          "fileOutput": "macos/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "partnersapp-231a5",
+          "configurations": {
+            "android": "1:504716019464:android:90b6cda976f5a4582a0ebd",
+            "ios": "1:504716019464:ios:d97a08f07a04ddc42a0ebd",
+            "macos": "1:504716019464:ios:d97a08f07a04ddc42a0ebd",
+            "web": "1:504716019464:web:e6849515a88afc8f2a0ebd",
+            "windows": "1:504716019464:web:6c0651ed4300fffc2a0ebd"
+          }
+        }
+      }
+    }
+  }
+}
