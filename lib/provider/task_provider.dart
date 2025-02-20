@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '../model/task_category.dart';
 import '../model/task_details.dart';
@@ -41,8 +43,11 @@ final List<TaskDetails> _tasks = [
   ];
  */
 
+
 class TaskProvider extends ChangeNotifier {
-  final List<TaskDetails> _tasks = [];
+  // Implement a database
+  FirebaseFirestore _db = FirebaseFirestore.instance;
+  List<TaskDetails> _tasks = [];
 
   final List<TaskCategory> _categories = [
     TaskCategory(title: "Baby", color: Colors.amber[200]!),
@@ -62,47 +67,75 @@ class TaskProvider extends ChangeNotifier {
   List<TaskDetails> get tasks => _tasks;
 
   // Get Ongoing Tasks (Tasks that have started but are not completed)
-  List<TaskDetails> get ongoingTasks => _tasks
-      .where((task) => (task.startTime ?? task.endTime).isBefore(DateTime.now()) && !task.isCompleted)
-      .toList();
+  List<TaskDetails> get ongoingTasks =>
+      _tasks
+          .where((task) =>
+      (task.startTime ?? task.endTime).isBefore(DateTime.now()) &&
+          !task.isCompleted)
+          .toList();
 
   // Get Upcoming Tasks (Tasks that are scheduled for later)
-  List<TaskDetails> get upcomingTasks => _tasks
-      .where((task) => (task.startTime ?? task.endTime).isAfter(DateTime.now()) && !task.isCompleted)
-      .toList();
+  List<TaskDetails> get upcomingTasks =>
+      _tasks
+          .where((task) =>
+      (task.startTime ?? task.endTime).isAfter(DateTime.now()) &&
+          !task.isCompleted)
+          .toList();
 
   // Get Task Count by Category
   int getTaskCount(String categoryTitle) {
-    return _tasks.where((task) => task.category == categoryTitle).length;
+    return _tasks
+        .where((task) => task.category == categoryTitle)
+        .length;
   }
 
-  // Add a New Task
-  void addTask(String title, String category, String description, String createdBy, DateTime endTime, [DateTime? startTime]) {
+  // Add a New Task to Firestore
+  Future<void> addTask(String title, String category, String description,
+      String createdBy, DateTime endTime, [DateTime? startTime]) async {
     final newTask = TaskDetails(
-      id: Random().nextInt(10000).toString(), // Generate random ID
-      title: title,
-      category: category,
-      description: description,
-      createdBy: createdBy,
-      startTime: startTime,
-      endTime: endTime
+        id: Random().nextInt(10000).toString(),
+        // Generate random ID
+        title: title,
+        category: category,
+        description: description,
+        createdBy: createdBy,
+        startTime: startTime,
+        endTime: endTime
     );
-    _tasks.add(newTask);
-    notifyListeners();
+
+    await _db.collection('task').doc(newTask.id).set({
+      'id': newTask.id,
+      'title': newTask.title,
+      'category': newTask.category,
+      'description': newTask.description,
+      'createdBy': newTask.createdBy,
+      'startTime': newTask.startTime?.toIso8601String(),
+      'endTime': newTask.endTime.toIso8601String(),
+      'isCompleted': newTask.isCompleted,
+    });
+    /**
+        _tasks.add(newTask);
+        notifyListeners();
+     */
   }
 
   // Update Task Completion Status
-  void updateTaskCompletion(String taskId, bool isCompleted) {
+  Future<void> updateTaskCompletion(String taskId, bool isCompleted) async {
+    /**
     final index = _tasks.indexWhere((task) => task.id == taskId);
     if (index != -1) {
       _tasks[index] = _tasks[index].copyWith(isCompleted: isCompleted);
       notifyListeners();
     }
+     */
+    await _db.collection('task').doc(taskId).update({'isCompleted' : isCompleted});
+    notifyListeners();
   }
 
   //  Delete a Task
-  void deleteTask(String taskId) {
-    _tasks.removeWhere((task) => task.id == taskId);
+  Future<void> deleteTask(String taskId) async {
+    //_tasks.removeWhere((task) => task.id == taskId);
+    await _db.collection('task').doc(taskId).delete();
     notifyListeners();
   }
 
@@ -139,5 +172,13 @@ class TaskProvider extends ChangeNotifier {
           (task.startTime ?? task.endTime).month == selectedDate.month &&
           (task.startTime ?? task.endTime).day == selectedDate.day;
     }).toList();
+  }
+
+  //Fetch Tasks from Firestore Live Stream
+  void fetchTasks() {
+    _db.collection('task').snapshots().listen((snapshot) {
+      _tasks = snapshot.docs.map((doc) => TaskDetails.fromMap(doc.data())).toList();
+      notifyListeners();
+    });
   }
 }
