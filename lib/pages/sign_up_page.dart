@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+
+import 'package:partners/provider/auth_service.dart';
+import 'package:partners/provider/database_service.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -11,15 +15,35 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<void> _signUp() async {
+    AuthService authService = Provider.of<AuthService>(context, listen: false);
+    DatabaseService dbService = Provider.of<DatabaseService>(context, listen:false);
     try {
-      await _auth.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
+      // if username is empty or already exists, throw an exception
+      if (_usernameController.text.isEmpty ||
+          await dbService
+              .checkUsernameTaken(_usernameController.text.trim())) {
+        throw Exception("please change username");
+      }
+      UserCredential user = await authService.signUp(
+        _emailController.text.trim(),
+        _passwordController.text.trim(),
       );
-      Navigator.pushReplacementNamed(context, '/home'); // Navigate to home page after signup
+      print('after signup');
+      // tell db service to add record for new user
+      await dbService.addUser(
+          _usernameController.text.trim(),
+          _emailController.text.trim(),
+          _firstNameController.text.trim(),
+          _lastNameController.text.trim(),
+          user.user!.uid);
+      Navigator.pushReplacementNamed(
+          context, '/home'); // Navigate to home page after signup
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Signup failed: ${e.toString()}")),
@@ -38,9 +62,18 @@ class _SignUpPageState extends State<SignUpPage> {
         child: Column(
           children: [
             TextField(
+              controller: _usernameController,
+              decoration: const InputDecoration(
+                labelText: "Username",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 20),
+            TextField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(labelText: "Email",
+              decoration: const InputDecoration(
+                labelText: "Email",
                 border: OutlineInputBorder(),
               ),
             ),
@@ -48,24 +81,41 @@ class _SignUpPageState extends State<SignUpPage> {
             TextField(
               controller: _passwordController,
               obscureText: true,
-              decoration: const InputDecoration(labelText: "Password",
+              decoration: const InputDecoration(
+                labelText: "Password",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _firstNameController,
+              decoration: const InputDecoration(
+                labelText: "First Name",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _lastNameController,
+              decoration: const InputDecoration(
+                labelText: "Last Name",
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _signUp,
-              child: const Text("Sign Up",
-                style: TextStyle(color: Colors.white),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 80,
-                  vertical: 15,
+                onPressed: _signUp,
+                child: const Text(
+                  "Sign Up",
+                  style: TextStyle(color: Colors.white),
                 ),
-              )
-            ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 80,
+                    vertical: 15,
+                  ),
+                )),
           ],
         ),
       ),

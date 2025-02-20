@@ -34,7 +34,7 @@ void main() {
         description: 'Takeout the trash by the door when you leave the house',
         createdBy: 'Joseph',
         startTime: DateTime(2025, 2, 20, 10, 0),
-        endTime: null,
+        endTime: DateTime.now(),
       );
 
       expect(task.endTime, null);

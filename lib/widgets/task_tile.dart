@@ -31,7 +31,7 @@ class TaskTile extends StatelessWidget {
                   const Icon(Icons.access_time, size: 16.0, color: Colors.red),
                   const SizedBox(width: 5.0),
                   Text(
-                    _formatTaskTime(task.startTime),
+                    _formatTaskTime(task.endTime),
                     style: TextStyle(color: Colors.grey[600]),
                   ),
                 ],
@@ -39,7 +39,7 @@ class TaskTile extends StatelessWidget {
             ],
           ),
           Text(
-            _getTaskDuration(task.startTime),
+            _getTaskDuration(task.endTime),
             style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
           ),
         ],

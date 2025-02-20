@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:partners/provider/task_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../provider/auth_service.dart';
+import 'package:partners/provider/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,7 +15,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
 
 
@@ -107,11 +106,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _signIn() async {
+    AuthService authService =  Provider.of<AuthService>(context, listen: false);
     try {
-      UserCredential user = await Provider.of<AuthService>(context).signIn(
+      UserCredential user = await authService.signIn(
         _emailController.text.trim(),
        _passwordController.text.trim());
-      Provider.of<TaskProvider>(context).setUser(user);
+      //Provider.of<TaskProvider>(context).setUser(user);
       Navigator.pushReplacementNamed(context, '/home'); // Navigate to home page
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

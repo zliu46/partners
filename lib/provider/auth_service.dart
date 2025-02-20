@@ -9,4 +9,9 @@ class AuthService {
       password: password,
     );
   }
+
+  Future<UserCredential> signUp(String email, String password) async {
+    return await _auth.createUserWithEmailAndPassword(
+        email: email, password: password);
+  }
 }
