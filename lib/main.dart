@@ -26,7 +26,8 @@ void main() async {
         providers: [
           Provider<AuthService>(create: (_) => AuthService()),
           Provider<DatabaseService>(create: (_) => DatabaseService()),
-          ChangeNotifierProvider<TaskProvider>(create: (_) => TaskProvider()),
+          // Load task to start up the app
+          ChangeNotifierProvider<TaskProvider>(create: (_) => TaskProvider()..fetchTasks()),
         ],
         child: const MyApp()
       ),
