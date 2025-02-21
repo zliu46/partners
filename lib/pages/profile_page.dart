@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:partners/pages/people_page.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -45,9 +46,9 @@ class ProfilePage extends StatelessWidget {
               _buildProfileOption(Icons.edit, 'EDIT PROFILE', 'EDIT YOUR PROFILE', context, null),
               //Navigate to Partnership Page
               _buildProfileOption(Icons.people, 'PEOPLE', 'PARTNERS & ROOMMATE', context, () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => ShowPeoplePage()));
+                Navigator.push(context, MaterialPageRoute(builder: (_) => PeoplePage()));
               }),
-            _buildProfileOption(Icons.notifications, 'NOTIFICATIONS', 'TASKS REMINDER', context, null),
+              _buildProfileOption(Icons.notifications, 'NOTIFICATIONS', 'TASKS REMINDER', context, null),
               _buildProfileOption(Icons.history, 'HISTORY', 'TASKS HISTORY', context, null),
               _buildProfileOption(Icons.help, 'HELP', 'HELP CENTER, CONTACT US, PRIVACY POLICY', context, null),
               _buildProfileOption(Icons.settings, 'SETTINGS', 'THEME, ROLE, TASK TYPE', context, null),
@@ -59,7 +60,7 @@ class ProfilePage extends StatelessWidget {
                       () {
                     Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
                   }),
-              Spacer(),
+              const SizedBox(height: 20.0),
               TextButton(
                 onPressed: () {
                   // Add invite functionality
@@ -90,3 +91,4 @@ class ProfilePage extends StatelessWidget {
     );
   }
 }
+
