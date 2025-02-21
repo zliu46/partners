@@ -1,53 +1,31 @@
+import 'dart:ffi';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '../model/task_category.dart';
 import '../model/task_details.dart';
-
-/*
-final List<TaskDetails> _tasks = [
-    TaskDetails(
-      id : '1',
-      title: "Feed the baby",
-      category: "Baby",
-      description: "Heat up the milk in a bottle then feed the baby.",
-      createdBy: "Samantha",
-      startTime: DateTime.now(),
-      endTime: DateTime.now().add(const Duration(minutes: 15)),
-    ),
-    TaskDetails(
-      id : '2',
-      title: "Diaper Change",
-      category: "Baby",
-      description: "Change the baby's diaper.",
-      createdBy: "Samantha",
-      startTime: DateTime.now().add(const Duration(hours: 1)),
-    ),
-    TaskDetails(
-      id : '3',
-      title: "Pump Milk",
-      category: "Baby",
-      description: "Pump milk for baby feeding.",
-      createdBy: "Sarah",
-      startTime: DateTime.now().add(const Duration(hours: 2)),
-    ),
-    TaskDetails(
-      id : '4',
-      title: "Baby Bath",
-      category: 'Baby',
-      description: "Give the baby a warm bath before bedtime.",
-      createdBy: "Sarah",
-      startTime: DateTime.now().add(const Duration(hours: 6)),
-    ),
-  ];
- */
+import 'database_service.dart';
 
 
 class TaskProvider extends ChangeNotifier {
   // Implement a database
-  FirebaseFirestore _db = FirebaseFirestore.instance;
+  final DatabaseService _db = DatabaseService();
   List<TaskDetails> _tasks = [];
+
+  late UserCredential user;
+  // document id for current partnership, set with .setPartnership()
+  late String currentPartnership;
+
+  void setUser(UserCredential user){
+    user = user;
+  }
+
+  void setCurrentPartnership(String partnershipId){
+    currentPartnership = partnershipId;
+  }
+
 
   final List<TaskCategory> _categories = [
     TaskCategory(title: "Baby", color: Colors.amber[200]!),
@@ -92,56 +70,47 @@ class TaskProvider extends ChangeNotifier {
   // Add a New Task to Firestore
   Future<void> addTask(String title, String category, String description,
       String createdBy, DateTime endTime, [DateTime? startTime]) async {
-    final newTask = TaskDetails(
-        id: Random().nextInt(10000).toString(),
-        // Generate random ID
-        title: title,
-        category: category,
-        description: description,
-        createdBy: createdBy,
-        startTime: startTime,
-        endTime: endTime
-    );
 
-    await _db.collection('task').doc(newTask.id).set({
-      'id': newTask.id,
-      'title': newTask.title,
-      'category': newTask.category,
-      'description': newTask.description,
-      'createdBy': newTask.createdBy,
-      'startTime': newTask.startTime?.toIso8601String(),
-      'endTime': newTask.endTime.toIso8601String(),
-      'isCompleted': newTask.isCompleted,
-    });
-    /**
-        _tasks.add(newTask);
-        notifyListeners();
-     */
+    Map<String, dynamic> data = {
+      'title': title,
+      'category': category,
+      'description': description,
+      'createdBy': createdBy,
+      'startTime': startTime,
+      'endTime': endTime,
+      'isCompleted': false,
+    };
+
+    String id = await _db.addTask(data, currentPartnership);
+    data['id'] = id;
+    _tasks.add(TaskDetails.fromMap(data));
+    notifyListeners();
+
   }
 
   // Update Task Completion Status
   Future<void> updateTaskCompletion(String taskId, bool isCompleted) async {
-    /**
+    _db.updateCompletion(taskId, currentPartnership);
+
     final index = _tasks.indexWhere((task) => task.id == taskId);
     if (index != -1) {
       _tasks[index] = _tasks[index].copyWith(isCompleted: isCompleted);
       notifyListeners();
     }
-     */
-    await _db.collection('task').doc(taskId).update({'isCompleted' : isCompleted});
     notifyListeners();
   }
 
   //  Delete a Task
   Future<void> deleteTask(String taskId) async {
-    //_tasks.removeWhere((task) => task.id == taskId);
-    await _db.collection('task').doc(taskId).delete();
+    _db.deleteTask(taskId, currentPartnership);
+    _tasks.removeWhere((task) => task.id == taskId);
     notifyListeners();
   }
 
   //  Add a New Category (if needed)
   void addCategory(String title, Color color) {
     categories.add(TaskCategory(title: title, color: color));
+    _db.addCategory({'name': title, 'color': color}, currentPartnership);
     notifyListeners();
   }
 
@@ -176,8 +145,8 @@ class TaskProvider extends ChangeNotifier {
 
   //Fetch Tasks from Firestore Live Stream
   void fetchTasks() {
-    _db.collection('task').snapshots().listen((snapshot) {
-      _tasks = snapshot.docs.map((doc) => TaskDetails.fromMap(doc.data())).toList();
+    _db.fetchTasksStream(currentPartnership).listen((taskList){
+      _tasks = taskList;
       notifyListeners();
     });
   }

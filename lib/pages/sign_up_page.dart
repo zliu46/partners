@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:partners/provider/auth_service.dart';
 import 'package:partners/provider/database_service.dart';
 
+import '../provider/task_provider.dart';
+
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
@@ -34,7 +36,6 @@ class _SignUpPageState extends State<SignUpPage> {
         _emailController.text.trim(),
         _passwordController.text.trim(),
       );
-      print('after signup');
       // tell db service to add record for new user
       await dbService.addUser(
           _usernameController.text.trim(),
@@ -42,8 +43,11 @@ class _SignUpPageState extends State<SignUpPage> {
           _firstNameController.text.trim(),
           _lastNameController.text.trim(),
           user.user!.uid);
+
+      // Navigate to home page after signup
       Navigator.pushReplacementNamed(
-          context, '/home'); // Navigate to home page after signup
+          context, '/home');
+      Provider.of<TaskProvider>(context).setUser(user);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Signup failed: ${e.toString()}")),
