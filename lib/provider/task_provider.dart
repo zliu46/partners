@@ -17,7 +17,7 @@ class TaskProvider extends ChangeNotifier {
 
   late UserCredential user;
   // document id for current partnership, set with .setPartnership()
-  late String currentPartnership;
+  String currentPartnership = 'LeBWuVnd6MLOptvU9Yc0'; //hard code for now
 
   void setUser(UserCredential user) {
     user = user;
@@ -154,12 +154,16 @@ class TaskProvider extends ChangeNotifier {
     return await _db.checkUsernameTaken(username);
   }
 
+  Future<UserCredential> signIn(String email, String password) async {
+    return await _auth.signIn(email, password);
+  }
+
   Future<UserCredential> signUp(String email, String password) async {
     return await _auth.signUp(email, password);
   }
 
-  void addUser(String username, String email, String first_name, String last_name,
-      String uid) {
+  void addUser(String username, String email, String first_name,
+      String last_name, String uid) {
     _db.addUser(username, email, first_name, last_name, uid);
   }
 }

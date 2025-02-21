@@ -106,12 +106,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _signIn() async {
-    AuthService authService =  Provider.of<AuthService>(context, listen: false);
+    TaskProvider taskProvider = Provider.of<TaskProvider>(context, listen: false);
     try {
-      UserCredential user = await authService.signIn(
+      UserCredential user = await taskProvider.signIn(
         _emailController.text.trim(),
        _passwordController.text.trim());
-      Provider.of<TaskProvider>(context).setUser(user);
+      taskProvider.setUser(user);
       Navigator.pushReplacementNamed(context, '/home'); // Navigate to home page
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
