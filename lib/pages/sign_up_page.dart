@@ -23,21 +23,21 @@ class _SignUpPageState extends State<SignUpPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<void> _signUp() async {
-    AuthService authService = Provider.of<AuthService>(context, listen: false);
-    DatabaseService dbService = Provider.of<DatabaseService>(context, listen:false);
+    TaskProvider taskProvider =
+        Provider.of<TaskProvider>(context, listen: false);
     try {
       // if username is empty or already exists, throw an exception
       if (_usernameController.text.isEmpty ||
-          await dbService
+          await taskProvider
               .checkUsernameTaken(_usernameController.text.trim())) {
         throw Exception("please change username");
       }
-      UserCredential user = await authService.signUp(
+      UserCredential user = await taskProvider.signUp(
         _emailController.text.trim(),
         _passwordController.text.trim(),
       );
       // tell db service to add record for new user
-      await dbService.addUser(
+      taskProvider.addUser(
           _usernameController.text.trim(),
           _emailController.text.trim(),
           _firstNameController.text.trim(),
@@ -45,9 +45,8 @@ class _SignUpPageState extends State<SignUpPage> {
           user.user!.uid);
 
       // Navigate to home page after signup
-      Navigator.pushReplacementNamed(
-          context, '/home');
-      Provider.of<TaskProvider>(context).setUser(user);
+      Navigator.pushReplacementNamed(context, '/home');
+      taskProvider.setUser(user);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Signup failed: ${e.toString()}")),
