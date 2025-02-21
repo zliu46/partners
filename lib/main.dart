@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:partners/provider/auth_service.dart';
 import 'package:partners/provider/database_service.dart';
+import 'package:partners/provider/partnerships_service.dart';
 import 'package:partners/provider/task_provider.dart';
 import 'package:partners/pages/calendar_page.dart';
 import 'package:partners/pages/create_task_page.dart';
@@ -26,6 +27,7 @@ void main() async {
         providers: [
           Provider<AuthService>(create: (_) => AuthService()),
           Provider<DatabaseService>(create: (_) => DatabaseService()),
+          Provider(create: (_) => PartnershipsService()),
           // Load task to start up the app - we actually don't want to do this until user is signed in
           ChangeNotifierProvider<TaskProvider>(create: (_) => TaskProvider()),
         ],
