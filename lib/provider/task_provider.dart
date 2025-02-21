@@ -15,17 +15,40 @@ class TaskProvider extends ChangeNotifier {
   final AuthService _auth = AuthService();
   List<TaskDetails> _tasks = [];
   List<TaskCategory> _categories = [];
+  String? _currentUserId = 'uid1';
+  String? _currentPartnershipId;
+  String? get currentUserId => _currentUserId;
+  String? get currentPartnershipId => _currentPartnershipId;
+  String? _partnershipId;
+  String? get partnershipId => _partnershipId;
+
+  void setPartnershipId(String id) {
+    _partnershipId = id;
+    notifyListeners();
+  }
+
 
   late UserCredential user;
   // document id for current partnership, set with .setPartnership()
   String currentPartnership = 'LeBWuVnd6MLOptvU9Yc0'; //hard code for now
 
-  void setUser(UserCredential user) {
-    user = user;
+
+  //String? get currentPartnership => currentPartnership;
+
+  /// **Set the current user**
+  void setCurrentUser(String userId) {
+    _currentUserId = userId;
+    notifyListeners();
   }
 
-  void setCurrentPartnership(String partnershipId) {
-    currentPartnership = partnershipId;
+  /// **Set the current partnership ID**
+  void setCurrentPartnershipId(String? partnershipId) {
+    _currentPartnershipId = partnershipId;
+    notifyListeners();
+  }
+
+  void setUser(UserCredential user) {
+    user = user;
   }
 
 
@@ -52,6 +75,8 @@ class TaskProvider extends ChangeNotifier {
           (task.startTime ?? task.endTime).isAfter(DateTime.now()) &&
           !task.isCompleted)
       .toList();
+
+
 
   // Get Task Count by Category
   int getTaskCount(String categoryTitle) {
