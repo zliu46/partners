@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../model/task_category.dart';
 import '../model/task_details.dart';
 
 class DatabaseService {
@@ -26,7 +29,8 @@ class DatabaseService {
     return (await _db.collection('users').doc(username).get()).exists;
   }
 
-  Future<String> addTask(Map<String, dynamic> data, String partnershipId) async {
+  Future<String> addTask(
+      Map<String, dynamic> data, String partnershipId) async {
     DocumentReference docRef = await _db
         .collection('partnerships')
         .doc(partnershipId)
@@ -76,8 +80,34 @@ class DatabaseService {
         .snapshots()
         .map((snapshot) {
       return snapshot.docs
-          .map((doc) => TaskDetails.fromMap(doc.data()))
+          .map((doc) {
+            Map<String, dynamic> data = doc.data();
+            data['id'] = doc.id;
+            data['startTime'] = data['startTime'].toDate();
+            data['endTime'] = data['endTime'].toDate();
+            return TaskDetails.fromMap(data);
+          })
           .toList();
+    });
+  }
+
+  Stream<List<TaskCategory>> fetchCategoriesStream(String partnershipId) {
+    return _db
+        .collection('partnerships')
+        .doc(partnershipId)
+        .snapshots()
+        .map((snapshot) {
+      // Get the 'categories' field as a list of maps
+      List<dynamic> categoriesList = snapshot.get('categories') ?? [];
+
+      // Map each category to a TaskCategory object
+      return categoriesList.map((category) {
+        // Make sure 'category' is a Map and contains the necessary fields
+          return TaskCategory(
+            title: category['title'] ?? '',
+            color: Color(category['color']),
+          );
+      }).toList();
     });
   }
 }

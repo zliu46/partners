@@ -14,6 +14,7 @@ class TaskProvider extends ChangeNotifier {
   final DatabaseService _db = DatabaseService();
   final AuthService _auth = AuthService();
   List<TaskDetails> _tasks = [];
+  List<TaskCategory> _categories = [];
 
   late UserCredential user;
   // document id for current partnership, set with .setPartnership()
@@ -27,12 +28,6 @@ class TaskProvider extends ChangeNotifier {
     currentPartnership = partnershipId;
   }
 
-  final List<TaskCategory> _categories = [
-    TaskCategory(title: "Baby", color: Colors.amber[200]!),
-    TaskCategory(title: "Chores", color: Colors.green[200]!),
-    TaskCategory(title: "Groceries", color: Colors.purple[200]!),
-    TaskCategory(title: "Appointment", color: Colors.grey[300]!),
-  ];
 
   List<TaskDetails> getTasksByCategory(String category) {
     return _tasks.where((task) => task.category == category).toList();
@@ -102,10 +97,11 @@ class TaskProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  //  Add a New Category (if needed)
+  //  Add a New Category
+  // TODO: check if category already exists
   void addCategory(String title, Color color) {
     categories.add(TaskCategory(title: title, color: color));
-    _db.addCategory({'name': title, 'color': color}, currentPartnership);
+    _db.addCategory({'name': title, 'color': color.value}, currentPartnership);
     notifyListeners();
   }
 
@@ -146,6 +142,14 @@ class TaskProvider extends ChangeNotifier {
   void fetchTasks() {
     _db.fetchTasksStream(currentPartnership).listen((taskList) {
       _tasks = taskList;
+      notifyListeners();
+    });
+  }
+
+  //Fetch categories from Firestore stream
+  void fetchCategories(){
+    _db.fetchCategoriesStream(currentPartnership).listen((categories) {
+      _categories = categories;
       notifyListeners();
     });
   }

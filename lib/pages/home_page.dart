@@ -29,6 +29,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final taskProvider = Provider.of<TaskProvider>(context);
+    taskProvider.fetchTasks();
+    taskProvider.fetchCategories();
     final categories = taskProvider.categories;
     final ongoingTasks = taskProvider.ongoingTasks;
     final upcomingTasks = taskProvider.upcomingTasks;

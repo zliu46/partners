@@ -26,8 +26,8 @@ class TaskDetails {
      category: data['category'],
      description: data['description'],
      createdBy: data['createdBy'],
-     startTime: DateTime.tryParse(data['startTime']),
-     endTime: DateTime.parse(data['endTime'])
+     startTime: data['startTime'],
+     endTime: data['endTime']
     );
   }
 
