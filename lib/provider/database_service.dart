@@ -110,4 +110,34 @@ class DatabaseService {
       }).toList();
     });
   }
+
+  Future<String> createPartnership(String userName, String partnershipName) async {
+    Map<String, dynamic> data = {
+      'groupname' : partnershipName,
+      'users' : [userName],
+      'categories' : [],
+    };
+
+    var partnershipRef = await _db.collection('partnerships').add(data);
+
+    return partnershipRef.id;
+  }
+
+  Stream<Map<String, dynamic>> fetchPartnershipStream(String partnershipId) {
+    return FirebaseFirestore.instance
+        .collection('partnerships')
+        .doc(partnershipId)
+        .snapshots()
+        .map((snapshot) {
+      Map<String, dynamic> data = snapshot.data() ?? {};
+      return {
+        'id': snapshot.id,
+        'name': data['groupname'] ?? 'Unnamed Group',
+        'users': List<String>.from(data['users'] ?? []), // Ensure it's a List<String>
+      };
+    });
+  }
+
+  //TO DO
+  joinPartnership(String userId, String partnershipId) {}
 }
