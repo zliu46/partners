@@ -16,7 +16,9 @@ class TaskProvider extends ChangeNotifier {
   List<TaskDetails> _tasks = [];
   List<TaskCategory> _categories = [];
   late String _firstName;
+  late String _username;
   String get firstName => _firstName;
+  String get username => _username;
   String? get currentPartnershipId => currentPartnership;
   String? _partnershipId;
   String? get partnershipId => _partnershipId;
@@ -34,9 +36,14 @@ class TaskProvider extends ChangeNotifier {
 
   //String? get currentPartnership => currentPartnership;
 
-  /// **Set the current user's name**
+  /// **Set the current user's first name**
   void setFirstName(String firstName) {
     _firstName = firstName;
+    notifyListeners();
+  }
+
+  void setUsername(String username) {
+    _username = username;
     notifyListeners();
   }
 
@@ -48,8 +55,9 @@ class TaskProvider extends ChangeNotifier {
 
   void setUser(UserCredential user) async {
     user = user;
-    String firstName = (await _db.findUser(user.user!.uid))['first_name'];
-    setFirstName(firstName);
+    var userDoc = await _db.findUser(user.user!.uid);
+    setFirstName(userDoc.data()['first_name']);
+    setUsername(userDoc.id);
   }
 
 
@@ -183,5 +191,13 @@ class TaskProvider extends ChangeNotifier {
   void addUser(String username, String email, String first_name,
       String last_name, String uid) {
     _db.addUser(username, email, first_name, last_name, uid);
+  }
+
+  Stream<Map<String, dynamic>> fetchPartnershipStream(String partnershipId) {
+    return _db.fetchPartnershipStream(partnershipId);
+  }
+
+  Future<String> createPartnership(String username, String partnershipName) async {
+    return await _db.createPartnership(username, partnershipName);
   }
 }

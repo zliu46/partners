@@ -14,9 +14,8 @@ class _PartnershipsListPageState extends State<PartnershipsListPage> {
 
   @override
   Widget build(BuildContext context) {
-    final partnershipsService = context.watch<DatabaseService>();
     final taskProvider = context.watch<TaskProvider>();
-    final userName = taskProvider.userName; // Get user ID
+    final username = taskProvider.username; // Get user ID
     final partnershipId = taskProvider.currentPartnership;
 
     return Scaffold(
@@ -25,9 +24,9 @@ class _PartnershipsListPageState extends State<PartnershipsListPage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            _buildCreatePartnershipSection(userName, partnershipsService, taskProvider),
+            _buildCreatePartnershipSection(username, taskProvider),
             Divider(),
-            Expanded(child: _buildPartnershipList(partnershipsService, taskProvider, userName, partnershipId)),
+            Expanded(child: _buildPartnershipList(taskProvider, username, partnershipId)),
           ],
         ),
       ),
@@ -35,7 +34,7 @@ class _PartnershipsListPageState extends State<PartnershipsListPage> {
   }
 
   /// Create Partnership UI**
-  Widget _buildCreatePartnershipSection(String? userName, DatabaseService partnershipsService, TaskProvider taskProvider) {
+  Widget _buildCreatePartnershipSection(String? username, TaskProvider taskProvider) {
     return Column(
       children: [
         Text("Create a Partnership", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
@@ -53,11 +52,11 @@ class _PartnershipsListPageState extends State<PartnershipsListPage> {
             : ElevatedButton(
           onPressed: () async {
             final partnershipName = _partnershipNameController.text.trim();
-            if (partnershipName.isEmpty || userName == null) return;
+            if (partnershipName.isEmpty || username == null) return;
 
             setState(() => _isLoading = true);
 
-            String newPartnershipId = await partnershipsService.createPartnership(userName, partnershipName);
+            String newPartnershipId = await taskProvider.createPartnership(username, partnershipName);
 
             setState(() => _isLoading = false);
 
@@ -75,9 +74,9 @@ class _PartnershipsListPageState extends State<PartnershipsListPage> {
   }
 
   /// Display Partnerships with Join Option**
-  Widget _buildPartnershipList(DatabaseService partnershipsService, TaskProvider taskProvider, String? userName, String partnershipId) {
+  Widget _buildPartnershipList(TaskProvider taskProvider, String? username, String partnershipId) {
     return StreamBuilder<Map<String, dynamic>>(
-      stream: partnershipsService.fetchPartnershipStream(partnershipId),
+      stream: taskProvider.fetchPartnershipStream(partnershipId),
       builder: (context, snapshot) {
 
         if (!snapshot.hasData || snapshot.data == null) {

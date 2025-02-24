@@ -24,10 +24,10 @@ class DatabaseService {
     _db.collection('users').doc(username).set(data);
   }
 
-  Future<Map<String, dynamic>> findUser(String uid) async {
+  Future<QueryDocumentSnapshot<Map<String, dynamic>>> findUser(String uid) async {
     return (await _db.collection('users')
         .where('uid', isEqualTo: uid)
-        .get()).docs[0].data();
+        .get()).docs[0];
   }
 
   // if the username already exists, do not allow user to create account
@@ -123,9 +123,7 @@ class DatabaseService {
       'users' : [userName],
       'categories' : [],
     };
-
     var partnershipRef = await _db.collection('partnerships').add(data);
-
     return partnershipRef.id;
   }
 
