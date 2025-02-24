@@ -24,9 +24,6 @@ void main() async {
   runApp(
       MultiProvider(
         providers: [
-          Provider<AuthService>(create: (_) => AuthService()),
-          Provider<DatabaseService>(create: (_) => DatabaseService()),
-          // Load task to start up the app - we actually don't want to do this until user is signed in
           ChangeNotifierProvider<TaskProvider>(create: (_) => TaskProvider()),
         ],
         child: const MyApp()
