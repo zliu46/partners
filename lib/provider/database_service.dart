@@ -24,10 +24,10 @@ class DatabaseService {
     _db.collection('users').doc(username).set(data);
   }
 
-  Future<QueryDocumentSnapshot<Map<String, dynamic>>> findUser(String uid) async {
-    return (await _db.collection('users')
-        .where('uid', isEqualTo: uid)
-        .get()).docs[0];
+  Future<QueryDocumentSnapshot<Map<String, dynamic>>> findUser(
+      String uid) async {
+    return (await _db.collection('users').where('uid', isEqualTo: uid).get())
+        .docs[0];
   }
 
   // if the username already exists, do not allow user to create account
@@ -85,15 +85,13 @@ class DatabaseService {
         .collection('tasks')
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs
-          .map((doc) {
-            Map<String, dynamic> data = doc.data();
-            data['id'] = doc.id;
-            data['startTime'] = data['startTime'].toDate();
-            data['endTime'] = data['endTime'].toDate();
-            return TaskDetails.fromMap(data);
-          })
-          .toList();
+      return snapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data();
+        data['id'] = doc.id;
+        data['startTime'] = data['startTime'].toDate();
+        data['endTime'] = data['endTime'].toDate();
+        return TaskDetails.fromMap(data);
+      }).toList();
     });
   }
 
@@ -109,26 +107,26 @@ class DatabaseService {
       // Map each category to a TaskCategory object
       return categoriesList.map((category) {
         // Make sure 'category' is a Map and contains the necessary fields
-          return TaskCategory(
-            title: category['title'] ?? '',
-            color: Color(category['color']),
-          );
+        return TaskCategory(
+          title: category['title'] ?? '',
+          color: Color(category['color']),
+        );
       }).toList();
     });
   }
 
-  Future<String> createPartnership(String userName, String partnershipName) async {
+  Future<String> createPartnership(String partnershipName) async {
     Map<String, dynamic> data = {
-      'groupname' : partnershipName,
-      'users' : [userName],
-      'categories' : [],
+      'groupname': partnershipName,
+      'users': [],
+      'categories': [],
     };
     var partnershipRef = await _db.collection('partnerships').add(data);
     return partnershipRef.id;
   }
 
   Stream<Map<String, dynamic>> fetchPartnershipStream(String partnershipId) {
-    return FirebaseFirestore.instance
+    return _db
         .collection('partnerships')
         .doc(partnershipId)
         .snapshots()
@@ -137,11 +135,16 @@ class DatabaseService {
       return {
         'id': snapshot.id,
         'name': data['groupname'] ?? 'Unnamed Group',
-        'users': List<String>.from(data['users'] ?? []), // Ensure it's a List<String>
+        'users': List<String>.from(
+            data['users'] ?? []), // Ensure it's a List<String>
       };
     });
   }
 
   //TO DO
-  joinPartnership(String userId, String partnershipId) {}
+  joinPartnership(String username, String partnershipId) {
+    _db.collection('users').doc(username).update({
+      'partnerships': FieldValue.arrayUnion([partnershipId])
+    });
+  }
 }

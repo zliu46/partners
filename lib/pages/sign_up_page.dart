@@ -45,8 +45,8 @@ class _SignUpPageState extends State<SignUpPage> {
           user.user!.uid);
 
       // Navigate to home page after signup
-      Navigator.pushReplacementNamed(context, '/home');
       taskProvider.setUser(user);
+      Navigator.pushReplacementNamed(context, '/home');
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Signup failed: ${e.toString()}")),

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import '../model/partnership.dart';
 import '../model/task_category.dart';
 import '../model/task_details.dart';
 import 'auth_service.dart';
@@ -17,9 +18,10 @@ class TaskProvider extends ChangeNotifier {
   List<TaskCategory> _categories = [];
   late String _firstName;
   late String _username;
+  late Partnership _currentPartnership;
   String get firstName => _firstName;
   String get username => _username;
-  String? get currentPartnershipId => currentPartnership;
+  Partnership get currentPartnership => _currentPartnership;
   String? _partnershipId;
   String? get partnershipId => _partnershipId;
 
@@ -28,11 +30,8 @@ class TaskProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
   late UserCredential user;
   // document id for current partnership, set with .setPartnership()
-  String currentPartnership = 'LeBWuVnd6MLOptvU9Yc0'; //hard code for now
-
 
   //String? get currentPartnership => currentPartnership;
 
@@ -47,9 +46,10 @@ class TaskProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// **Set the current partnership ID**
-  void setCurrentPartnershipId(String partnershipId) {
-    currentPartnership = partnershipId;
+  /// **Set the current partnership**
+  void setCurrentPartnership(String partnershipId) async {
+    var partnershipData = await _db.fetchPartnershipStream(partnershipId).first;
+    _currentPartnership = Partnership(partnershipData['groupname'], partnershipData['id']);
     notifyListeners();
   }
 
@@ -59,7 +59,6 @@ class TaskProvider extends ChangeNotifier {
     setFirstName(userDoc.data()['first_name']);
     setUsername(userDoc.id);
   }
-
 
   List<TaskDetails> getTasksByCategory(String category) {
     return _tasks.where((task) => task.category == category).toList();
@@ -104,7 +103,7 @@ class TaskProvider extends ChangeNotifier {
       'isCompleted': false,
     };
 
-    String id = await _db.addTask(data, currentPartnership);
+    String id = await _db.addTask(data, currentPartnership.id);
     data['id'] = id;
     _tasks.add(TaskDetails.fromMap(data));
     notifyListeners();
@@ -112,7 +111,7 @@ class TaskProvider extends ChangeNotifier {
 
   //  Delete a Task
   Future<void> deleteTask(String taskId) async {
-    _db.deleteTask(taskId, currentPartnership);
+    _db.deleteTask(taskId, currentPartnership.id);
     _tasks.removeWhere((task) => task.id == taskId);
     notifyListeners();
   }
@@ -121,7 +120,7 @@ class TaskProvider extends ChangeNotifier {
   // TODO: check if category already exists
   void addCategory(String title, Color color) {
     categories.add(TaskCategory(title: title, color: color));
-    _db.addCategory({'name': title, 'color': color.value}, currentPartnership);
+    _db.addCategory({'name': title, 'color': color.value}, currentPartnership.id);
     notifyListeners();
   }
 
@@ -160,15 +159,15 @@ class TaskProvider extends ChangeNotifier {
 
   //Fetch Tasks from Firestore Live Stream
   void fetchTasks() {
-    _db.fetchTasksStream(currentPartnership).listen((taskList) {
+    _db.fetchTasksStream(currentPartnership.id).listen((taskList) {
       _tasks = taskList;
       notifyListeners();
     });
   }
 
   //Fetch categories from Firestore stream
-  void fetchCategories(){
-    _db.fetchCategoriesStream(currentPartnership).listen((categories) {
+  void fetchCategories() {
+    _db.fetchCategoriesStream(currentPartnership.id).listen((categories) {
       _categories = categories;
       notifyListeners();
     });
@@ -197,7 +196,10 @@ class TaskProvider extends ChangeNotifier {
     return _db.fetchPartnershipStream(partnershipId);
   }
 
-  Future<String> createPartnership(String username, String partnershipName) async {
-    return await _db.createPartnership(username, partnershipName);
+  Future<String> createPartnership(
+      String partnershipName) async {
+    String partnershipId = await _db.createPartnership(partnershipName);
+    _db.joinPartnership(username, partnershipId);
+    return partnershipId;
   }
 }
