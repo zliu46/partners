@@ -111,7 +111,6 @@ class _LoginPageState extends State<LoginPage> {
       UserCredential user = await taskProvider.signIn(
         _emailController.text.trim(),
        _passwordController.text.trim());
-      taskProvider.setUser(user);
       Navigator.pushReplacementNamed(context, '/home'); // Navigate to home page
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
