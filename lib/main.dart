@@ -27,7 +27,6 @@ void main() async {
         providers: [
           Provider<AuthService>(create: (_) => AuthService()),
           Provider<DatabaseService>(create: (_) => DatabaseService()),
-          Provider(create: (_) => PartnershipsService()),
           // Load task to start up the app - we actually don't want to do this until user is signed in
           ChangeNotifierProvider<TaskProvider>(create: (_) => TaskProvider()),
         ],
