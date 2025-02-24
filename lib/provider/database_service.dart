@@ -24,6 +24,12 @@ class DatabaseService {
     _db.collection('users').doc(username).set(data);
   }
 
+  Future<Map<String, dynamic>> findUser(String uid) async {
+    return (await _db.collection('users')
+        .where('uid', isEqualTo: uid)
+        .get()).docs[0].data();
+  }
+
   // if the username already exists, do not allow user to create account
   Future<bool> checkUsernameTaken(String username) async {
     return (await _db.collection('users').doc(username).get()).exists;

@@ -202,7 +202,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                           _titleController.text,
                           _category!,
                           _descriptionController.text,
-                          "Noah",
+                          taskProvider.firstName,
                           DateTime(
                               _selectedDate!.year,
                               _selectedDate!.month,
