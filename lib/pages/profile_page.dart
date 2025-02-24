@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:partners/pages/people_page.dart';
+import 'package:partners/pages/partnerships_list_page.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -46,7 +46,7 @@ class ProfilePage extends StatelessWidget {
               _buildProfileOption(Icons.edit, 'EDIT PROFILE', 'EDIT YOUR PROFILE', context, null),
               //Navigate to Partnership Page
               _buildProfileOption(Icons.people, 'PEOPLE', 'PARTNERS & ROOMMATE', context, () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => PeoplePage()));
+                Navigator.push(context, MaterialPageRoute(builder: (_) => PartnershipsListPage()));
               }),
               _buildProfileOption(Icons.notifications, 'NOTIFICATIONS', 'TASKS REMINDER', context, null),
               _buildProfileOption(Icons.history, 'HISTORY', 'TASKS HISTORY', context, null),
