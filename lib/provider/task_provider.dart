@@ -15,10 +15,9 @@ class TaskProvider extends ChangeNotifier {
   final AuthService _auth = AuthService();
   List<TaskDetails> _tasks = [];
   List<TaskCategory> _categories = [];
-  String? _currentUserId = 'uid1';
-  String? _currentPartnershipId;
-  String? get currentUserId => _currentUserId;
-  String? get currentPartnershipId => _currentPartnershipId;
+  String? _userName = 'zhou';
+  String? get userName => _userName;
+  String? get currentPartnershipId => currentPartnership;
   String? _partnershipId;
   String? get partnershipId => _partnershipId;
 
@@ -36,14 +35,14 @@ class TaskProvider extends ChangeNotifier {
   //String? get currentPartnership => currentPartnership;
 
   /// **Set the current user**
-  void setCurrentUser(String userId) {
-    _currentUserId = userId;
+  void setCurrentUser(String userName) {
+    _userName = userName;
     notifyListeners();
   }
 
   /// **Set the current partnership ID**
-  void setCurrentPartnershipId(String? partnershipId) {
-    _currentPartnershipId = partnershipId;
+  void setCurrentPartnershipId(String partnershipId) {
+    currentPartnership = partnershipId;
     notifyListeners();
   }
 
