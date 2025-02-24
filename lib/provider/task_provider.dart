@@ -75,8 +75,6 @@ class TaskProvider extends ChangeNotifier {
           !task.isCompleted)
       .toList();
 
-
-
   // Get Task Count by Category
   int getTaskCount(String categoryTitle) {
     return _tasks.where((task) => task.category == categoryTitle).length;
@@ -99,18 +97,6 @@ class TaskProvider extends ChangeNotifier {
     String id = await _db.addTask(data, currentPartnership);
     data['id'] = id;
     _tasks.add(TaskDetails.fromMap(data));
-    notifyListeners();
-  }
-
-  // Update Task Completion Status
-  Future<void> updateTaskCompletion(String taskId, bool isCompleted) async {
-    _db.updateCompletion(taskId, currentPartnership);
-
-    final index = _tasks.indexWhere((task) => task.id == taskId);
-    if (index != -1) {
-      _tasks[index] = _tasks[index].copyWith(isCompleted: isCompleted);
-      notifyListeners();
-    }
     notifyListeners();
   }
 
@@ -183,7 +169,9 @@ class TaskProvider extends ChangeNotifier {
   }
 
   Future<UserCredential> signIn(String email, String password) async {
-    return await _auth.signIn(email, password);
+    UserCredential user = await _auth.signIn(email, password);
+    setUser(user);
+    return user;
   }
 
   Future<UserCredential> signUp(String email, String password) async {
