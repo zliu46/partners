@@ -225,4 +225,10 @@ class TaskProvider extends ChangeNotifier {
   Future<bool> hasPartnerships() async {
     return (await _db.getPartnerships(username)).isNotEmpty;
   }
+
+  /// **Stream to fetch completed tasks from `DatabaseService`**
+  Stream<List<TaskDetails>> getCompletedTasksStream() {
+    return _db.fetchCompletedTasksStream(_currentPartnership.id);
+  }
+
 }
