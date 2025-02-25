@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:partners/pages/notification_test_page.dart';
 import 'package:partners/pages/partnerships_list_page.dart';
 import 'package:partners/pages/task_history_page.dart';
 
@@ -49,7 +50,9 @@ class ProfilePage extends StatelessWidget {
               _buildProfileOption(Icons.people, 'PEOPLE', 'PARTNERS & ROOMMATE', context, () {
                 Navigator.push(context, MaterialPageRoute(builder: (_) => PartnershipsListPage()));
               }),
-              _buildProfileOption(Icons.notifications, 'NOTIFICATIONS', 'TASKS REMINDER', context, null),
+              _buildProfileOption(Icons.notifications, 'NOTIFICATIONS', 'TASKS REMINDER', context, (){
+                Navigator.push(context, MaterialPageRoute(builder: (_) => NotificationTestPage()));
+              }),
               _buildProfileOption(Icons.history, 'HISTORY', 'TASKS HISTORY', context, (){
                 Navigator.push(context, MaterialPageRoute(builder: (_)=> TaskHistoryPage()));
               }),
