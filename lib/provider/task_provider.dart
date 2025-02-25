@@ -108,6 +108,15 @@ class TaskProvider extends ChangeNotifier {
     data['id'] = id;
     _tasks.add(TaskDetails.fromMap(data));
     notifyListeners();
+
+    // /// Schedule notification
+    // await _notiService.scheduleTaskNotification(
+    //   id: id.hashCode,
+    //   title: "Upcoming Task Reminder",
+    //   body: "Your task '$title' is due in 1 hour!",
+    //   hour : 23,
+    //   minute: 13,
+    // );
   }
 
   //  Delete a Task
