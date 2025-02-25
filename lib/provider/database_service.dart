@@ -215,4 +215,29 @@ class DatabaseService {
     return (await _db.collection('partnerships').doc(id).get())
         .data()!['groupname'];
   }
+
+  /// Stream to fetch completed tasks in real-time
+  Stream<List<TaskDetails>> fetchCompletedTasksStream(String? partnershipId) {
+    return _db
+        .collection('partnerships')
+        .doc(partnershipId)
+        .collection('tasks')
+        .where('isCompleted', isEqualTo: true) // Filter only completed tasks
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data();
+        return TaskDetails.fromMap({
+          'id': doc.id,
+          'title': data['title'],
+          'category': data['category'],
+          'description': data['description'],
+          'createdBy': data['createdBy'],
+          'startTime': (data['startTime'] as Timestamp).toDate(),
+          'endTime': (data['endTime'] as Timestamp).toDate(),
+          'isCompleted': data['isCompleted'],
+        });
+      }).toList();
+    });
+  }
 }
