@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:partners/pages/partnerships_list_page.dart';
+import 'package:partners/pages/task_history_page.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -49,7 +50,9 @@ class ProfilePage extends StatelessWidget {
                 Navigator.push(context, MaterialPageRoute(builder: (_) => PartnershipsListPage()));
               }),
               _buildProfileOption(Icons.notifications, 'NOTIFICATIONS', 'TASKS REMINDER', context, null),
-              _buildProfileOption(Icons.history, 'HISTORY', 'TASKS HISTORY', context, null),
+              _buildProfileOption(Icons.history, 'HISTORY', 'TASKS HISTORY', context, (){
+                Navigator.push(context, MaterialPageRoute(builder: (_)=> TaskHistoryPage()));
+              }),
               _buildProfileOption(Icons.help, 'HELP', 'HELP CENTER, CONTACT US, PRIVACY POLICY', context, null),
               _buildProfileOption(Icons.settings, 'SETTINGS', 'THEME, ROLE, TASK TYPE', context, null),
               _buildProfileOption(
