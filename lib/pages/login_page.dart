@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:partners/pages/no_partnerships_page.dart';
 import 'package:partners/provider/task_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -111,7 +112,14 @@ class _LoginPageState extends State<LoginPage> {
       UserCredential user = await taskProvider.signIn(
         _emailController.text.trim(),
        _passwordController.text.trim());
-      Navigator.pushReplacementNamed(context, '/home'); // Navigate to home page
+      if (await taskProvider.hasPartnerships()){
+        await taskProvider.fetchPartnerships();
+        await taskProvider.setCurrentPartnership(0);
+        Navigator.pushReplacementNamed(context, '/home'); // Navigate to home page
+
+      } else {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NoPartnershipsPage()));
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Login failed: ${e.toString()}")),

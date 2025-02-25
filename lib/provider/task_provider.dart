@@ -18,9 +18,11 @@ class TaskProvider extends ChangeNotifier {
   List<TaskCategory> _categories = [];
   late String _firstName;
   late String _username;
+  late List<Partnership> _partnerships;
   late Partnership _currentPartnership;
   String get firstName => _firstName;
   String get username => _username;
+  List<Partnership> get partnerships => _partnerships;
   Partnership get currentPartnership => _currentPartnership;
   String? _partnershipId;
   String? get partnershipId => _partnershipId;
@@ -47,13 +49,12 @@ class TaskProvider extends ChangeNotifier {
   }
 
   /// **Set the current partnership**
-  void setCurrentPartnership(String partnershipId) async {
-    var partnershipData = await _db.fetchPartnershipStream(partnershipId).first;
-    _currentPartnership = Partnership(partnershipData['groupname'], partnershipData['id']);
+  Future<void> setCurrentPartnership(int index) async {
+    _currentPartnership = partnerships[index];
     notifyListeners();
   }
 
-  void setUser(UserCredential user) async {
+  Future<void> setUser(UserCredential user) async {
     user = user;
     var userDoc = await _db.findUser(user.user!.uid);
     setFirstName(userDoc.data()['first_name']);
@@ -103,7 +104,7 @@ class TaskProvider extends ChangeNotifier {
       'isCompleted': false,
     };
 
-    String id = await _db.addTask(data, currentPartnership.id);
+    String id = await _db.addTask(data, _currentPartnership.id);
     data['id'] = id;
     _tasks.add(TaskDetails.fromMap(data));
     notifyListeners();
@@ -111,7 +112,7 @@ class TaskProvider extends ChangeNotifier {
 
   //  Delete a Task
   Future<void> deleteTask(String taskId) async {
-    _db.deleteTask(taskId, currentPartnership.id);
+    _db.deleteTask(taskId, _currentPartnership.id);
     _tasks.removeWhere((task) => task.id == taskId);
     notifyListeners();
   }
@@ -120,7 +121,7 @@ class TaskProvider extends ChangeNotifier {
   // TODO: check if category already exists
   void addCategory(String title, Color color) {
     categories.add(TaskCategory(title: title, color: color));
-    _db.addCategory({'name': title, 'color': color.value}, currentPartnership.id);
+    _db.addCategory({'name': title, 'color': color.value}, _currentPartnership.id);
     notifyListeners();
   }
 
@@ -157,9 +158,19 @@ class TaskProvider extends ChangeNotifier {
     }).toList();
   }
 
+  //Fetch partnerships for user
+  Future<void> fetchPartnerships() async {
+    List<dynamic> partnerships = await _db.getPartnerships(username);
+    _partnerships = [];
+    for (String id in partnerships){
+      String name = await _db.getPartnershipWithId(id);
+      _partnerships.add(Partnership(name, id));
+    }
+    print(_partnerships);
+  }
   //Fetch Tasks from Firestore Live Stream
-  void fetchTasks() {
-    _db.fetchTasksStream(currentPartnership.id).listen((taskList) {
+  Future<void> fetchTasks() async {
+    _db.fetchTasksStream(_currentPartnership.id).listen((taskList) {
       _tasks = taskList;
       notifyListeners();
     });
@@ -167,7 +178,7 @@ class TaskProvider extends ChangeNotifier {
 
   //Fetch categories from Firestore stream
   void fetchCategories() {
-    _db.fetchCategoriesStream(currentPartnership.id).listen((categories) {
+    _db.fetchCategoriesStream(_currentPartnership.id).listen((categories) {
       _categories = categories;
       notifyListeners();
     });
@@ -179,7 +190,7 @@ class TaskProvider extends ChangeNotifier {
 
   Future<UserCredential> signIn(String email, String password) async {
     UserCredential user = await _auth.signIn(email, password);
-    setUser(user);
+    await setUser(user);
     return user;
   }
 
@@ -201,5 +212,17 @@ class TaskProvider extends ChangeNotifier {
     String partnershipId = await _db.createPartnership(partnershipName);
     _db.joinPartnership(username, partnershipId);
     return partnershipId;
+  }
+
+  Future<void> joinPartnership(String code) async {
+    String partnershipId = await _db.findPartnershipWithCode(code);
+    if (partnershipId == "-1"){
+      throw Exception('invalid code');
+    }
+    _db.joinPartnership(username, partnershipId);
+  }
+
+  Future<bool> hasPartnerships() async {
+    return (await _db.getPartnerships(username)).isNotEmpty;
   }
 }

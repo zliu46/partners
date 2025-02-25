@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -103,12 +104,11 @@ class DatabaseService {
         .map((snapshot) {
       // Get the 'categories' field as a list of maps
       List<dynamic> categoriesList = snapshot.get('categories') ?? [];
-
       // Map each category to a TaskCategory object
       return categoriesList.map((category) {
         // Make sure 'category' is a Map and contains the necessary fields
         return TaskCategory(
-          title: category['title'] ?? '',
+          title: category['name'],
           color: Color(category['color']),
         );
       }).toList();
@@ -120,9 +120,45 @@ class DatabaseService {
       'groupname': partnershipName,
       'users': [],
       'categories': [],
+      'secret_code': await generateUniqueCode()
     };
     var partnershipRef = await _db.collection('partnerships').add(data);
     return partnershipRef.id;
+  }
+
+  /// Generates a unique 7- or 8-digit code
+  Future<String> generateUniqueCode() async {
+    String code;
+    bool exists;
+
+    do {
+      code = _generateRandomCode();
+      exists = await _checkIfCodeExists(code);
+    } while (exists);
+
+    return code;
+  }
+
+  /// Generates a secure random 7 or 8-digit code
+  String _generateRandomCode() {
+    Random random = Random.secure();
+    int length = random.nextBool() ? 7 : 8; // Randomly choose 7 or 8 digits
+    int min =
+        pow(10, length - 1).toInt(); // Smallest number with 'length' digits
+    int max =
+        pow(10, length).toInt() - 1; // Largest number with 'length' digits
+    return (random.nextInt(max - min) + min).toString();
+  }
+
+  /// Checks if the generated code already exists in Firestore
+  Future<bool> _checkIfCodeExists(String code) async {
+    QuerySnapshot query = await _db
+        .collection('partnerships')
+        .where('joinCode', isEqualTo: code)
+        .limit(1)
+        .get();
+
+    return query.docs.isNotEmpty; // True if the code already exists
   }
 
   Stream<Map<String, dynamic>> fetchPartnershipStream(String partnershipId) {
@@ -146,5 +182,37 @@ class DatabaseService {
     _db.collection('users').doc(username).update({
       'partnerships': FieldValue.arrayUnion([partnershipId])
     });
+    _db.collection('partnerships').doc(partnershipId).update({
+      'users': FieldValue.arrayUnion([username])
+    });
+  }
+
+  // returns partnership id of partnership with given code
+  Future<String> findPartnershipWithCode(String code) async {
+    var querySnapshot = await _db
+        .collection('partnerships')
+        .where('secret_code', isEqualTo: code)
+        .limit(1)
+        .get();
+    print(querySnapshot.docs.first);
+    if (querySnapshot.docs.isEmpty) {
+      return "-1";
+    }
+    return querySnapshot.docs.first.id;
+  }
+
+  Future<List<dynamic>> getPartnerships(String username) async {
+    var snapshot = await _db.collection('users').doc(username).get();
+    print('PRINT SNAPSHOT HERE\n\n');
+    print(snapshot.data());
+    print(username);
+    return (snapshot)
+        .get('partnerships') ??
+        [];
+  }
+
+  Future<String> getPartnershipWithId(String id) async {
+    return (await _db.collection('partnerships').doc(id).get())
+        .data()!['groupname'];
   }
 }

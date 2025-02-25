@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final taskProvider = Provider.of<TaskProvider>(context);
+    var taskProvider = Provider.of<TaskProvider>(context);
     taskProvider.fetchTasks();
     taskProvider.fetchCategories();
     final categories = taskProvider.categories;
@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                   userName: 'Noah',
                 ),
                 // Task Categories Section
-                TaskCategoriesSection(categories: categories),
+                TaskCategoriesSection(categories: taskProvider.categories),
                 const SizedBox(height: 20.0),
 
                 // Ongoing Tasks Section

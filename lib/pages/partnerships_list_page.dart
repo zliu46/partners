@@ -16,7 +16,7 @@ class _PartnershipsListPageState extends State<PartnershipsListPage> {
   Widget build(BuildContext context) {
     final taskProvider = context.watch<TaskProvider>();
     final username = taskProvider.username; // Get user ID
-    final partnershipId = taskProvider.currentPartnership;
+    final partnershipId = taskProvider.currentPartnership.id;
 
     return Scaffold(
       appBar: AppBar(title: Text("Partnerships")),
@@ -56,7 +56,7 @@ class _PartnershipsListPageState extends State<PartnershipsListPage> {
 
             setState(() => _isLoading = true);
 
-            String newPartnershipId = await taskProvider.createPartnership(username, partnershipName);
+            String newPartnershipId = await taskProvider.createPartnership(partnershipName);
 
             setState(() => _isLoading = false);
 

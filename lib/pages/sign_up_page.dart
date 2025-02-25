@@ -6,6 +6,7 @@ import 'package:partners/provider/auth_service.dart';
 import 'package:partners/provider/database_service.dart';
 
 import '../provider/task_provider.dart';
+import 'no_partnerships_page.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -45,8 +46,15 @@ class _SignUpPageState extends State<SignUpPage> {
           user.user!.uid);
 
       // Navigate to home page after signup
-      taskProvider.setUser(user);
-      Navigator.pushReplacementNamed(context, '/home');
+      await taskProvider.setUser(user);
+      if (await taskProvider.hasPartnerships()){
+        await taskProvider.fetchPartnerships();
+        await taskProvider.setCurrentPartnership(0);
+        Navigator.pushReplacementNamed(context, '/home'); // Navigate to home page
+
+      } else {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NoPartnershipsPage()));
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Signup failed: ${e.toString()}")),
