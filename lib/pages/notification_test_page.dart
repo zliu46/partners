@@ -17,16 +17,33 @@ class NotificationTestPage extends StatelessWidget {
         })
       ),
       body: Center(
-        child: ElevatedButton(
-            onPressed: () async {
-              await NotiService().initNotification();
-              NotiService().showNotification (
-            title: "Title",
-            body : "Body",
-          );
-        },
-            child: const Text('Send Notification'),
-        ),
+        child: Column(
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                await NotiService().showNotification(
+                  id: 0,
+                  title: "Test Notification",
+                  body: "This is a test notification.",
+                );
+              },
+              child: Text("Send Notification"),
+            ),
+
+            ElevatedButton(
+              onPressed: () async {
+                await NotiService().scheduleTaskNotification(
+                  id: 1,
+                  title: "hahahahaha",
+                  body: "This is a test scheduled notification.",
+                  hour : 6,
+                  minute: 46,
+                );
+              },
+              child: Text("Schedule Notification"),
+            ),
+          ],
+        )
       ),
     );
   }
