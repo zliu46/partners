@@ -63,20 +63,20 @@ class DatabaseService {
   }
 
   // change completion value for a task by inverting its current value
-  void updateCompletion(String taskId, String partnershipId) async {
-    bool completed = (await _db
+  Future<void> updateCompletion(String taskId, String partnershipId) async {
+    bool isCompleted = (await _db
             .collection('partnerships')
             .doc(partnershipId)
             .collection('tasks')
-            .doc('taskId')
+            .doc(taskId)
             .get())
-        .get('completed');
+        .get('isCompleted');
     _db
         .collection('partnerships')
         .doc(partnershipId)
         .collection('tasks')
-        .doc('taskId')
-        .update({'completed': !completed});
+        .doc(taskId)
+        .update({'isCompleted': !isCompleted});
   }
 
   Stream<List<TaskDetails>> fetchTasksStream(String partnershipId) {
@@ -203,13 +203,9 @@ class DatabaseService {
 
   Future<List<dynamic>> getPartnerships(String username) async {
     var snapshot = await _db.collection('users').doc(username).get();
-    print('PRINT SNAPSHOT HERE\n\n');
-    print(snapshot.data());
-    print(username);
-    return (snapshot)
-        .get('partnerships') ??
-        [];
+    return (snapshot).get('partnerships') ?? [];
   }
+
 
   Future<String> getPartnershipWithId(String id) async {
     return (await _db.collection('partnerships').doc(id).get())

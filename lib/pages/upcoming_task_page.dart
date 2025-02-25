@@ -35,7 +35,7 @@ class UpcomingTaskPage extends StatelessWidget {
             itemCount: upcomingTasks.length,
             itemBuilder: (context, index) {
               final task = upcomingTasks[index];
-              return TaskItemCard(task: task);
+              return TaskItemCard(taskId: task.id);
             },
           )
               : const Center(

@@ -42,7 +42,7 @@ class UpcomingTaskSection extends StatelessWidget {
 
         // 🔹 Display Upcoming Tasks
         upcomingTasks.isNotEmpty
-            ? Column(children: limitedTasks.map((task) => TaskItemCard(task: task)).toList())
+            ? Column(children: limitedTasks.map((task) => TaskItemCard(taskId: task.id)).toList())
             : const Text("No upcoming tasks", style: TextStyle(color: Colors.grey)),
       ],
     );

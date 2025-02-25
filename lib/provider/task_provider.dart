@@ -151,12 +151,19 @@ class TaskProvider extends ChangeNotifier {
         .toList();
   }
 
-  void changeCompletion(String id) {
-    var taskList = _tasks.where((TaskDetails task) => task.id == id).toList();
-    if (taskList.isNotEmpty) {
-      TaskDetails task = taskList[0];
-      task.isCompleted = !task.isCompleted;
+  Future<void> changeCompletion(String id) async {
+    int index = _tasks.indexWhere((task) => task.id == id);
+    if (index != -1) {
+      // Update database
+      await _db.updateCompletion(id, _currentPartnership.id);
+      notifyListeners();
+      // Note: We don't need to update _tasks or call notifyListeners() again
+      // The stream will handle that when the database changes propagate
     }
+  }
+
+  TaskDetails getTaskById(String id){
+    return _tasks.where((TaskDetails task) => task.id == id).toList()[0];
   }
 
   List<TaskDetails> getTasksForDate(DateTime selectedDate) {

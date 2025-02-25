@@ -15,8 +15,8 @@ class TaskDetails {
     required this.description,
     required this.createdBy,
     required this.endTime,
+    required this.isCompleted,
     this.startTime,
-    this.isCompleted = false,
   });
 
   factory TaskDetails.fromMap(Map data){
@@ -27,7 +27,8 @@ class TaskDetails {
      description: data['description'],
      createdBy: data['createdBy'],
      startTime: data['startTime'],
-     endTime: data['endTime']
+     endTime: data['endTime'],
+      isCompleted: data['isCompleted']
     );
   }
 
@@ -40,7 +41,13 @@ class TaskDetails {
       createdBy: createdBy,
       startTime: startTime,
       endTime: endTime,
-      isCompleted: isCompleted ?? this.isCompleted,
+      isCompleted: isCompleted
     );
+  }
+  void changeCompletion(){
+    isCompleted = !isCompleted;
+  }
+  toString(){
+    return "$id $title $category $description $isCompleted";
   }
 }

@@ -40,7 +40,7 @@ class OngoingTaskSection extends StatelessWidget {
         const SizedBox(height: 10.0),
 
         ongoingTasks.isNotEmpty
-            ? Column(children: limitedTasks.map((task) => TaskItemCard(task: task)).toList())
+            ? Column(children: limitedTasks.map((task) => TaskItemCard(taskId: task.id)).toList())
             : const Text("No ongoing tasks", style: TextStyle(color: Colors.grey)),
       ],
     );

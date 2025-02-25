@@ -5,8 +5,8 @@ import '../pages/task_details_page.dart';
 import '../provider/task_provider.dart';
 
 class TaskItemCard extends StatefulWidget {
-  final TaskDetails task;
-  const TaskItemCard({required this.task, super.key});
+  final String taskId;
+  const TaskItemCard({required this.taskId, super.key});
 
   @override
   State<TaskItemCard> createState() => _TaskItemCardState();
@@ -15,16 +15,18 @@ class TaskItemCard extends StatefulWidget {
 class _TaskItemCardState extends State<TaskItemCard> {
   @override
   Widget build(BuildContext context) {
+    final taskProvider = Provider.of<TaskProvider>(context, listen: true);
+    final TaskDetails task = taskProvider.getTaskById(widget.taskId);
     // ✅ Use default time if startTime or endTime is null
-    final startTime = widget.task.startTime ?? DateTime.now();
-    final endTime = widget.task.endTime ?? DateTime.now().add(const Duration(hours: 1));
-    final taskProvider = Provider.of<TaskProvider>(context);
+    final startTime = task.startTime ?? DateTime.now();
+    final endTime =
+        task.endTime ?? DateTime.now().add(const Duration(hours: 1));
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => TaskDetailsPage(task: widget.task),
+            builder: (context) => TaskDetailsPage(task: task),
           ),
         );
       },
@@ -42,13 +44,15 @@ class _TaskItemCardState extends State<TaskItemCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.task.title,
-                  style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                  task.title,
+                  style: const TextStyle(
+                      fontSize: 16.0, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 5.0),
                 Row(
                   children: [
-                    const Icon(Icons.access_time, size: 16.0, color: Colors.red),
+                    const Icon(Icons.access_time,
+                        size: 16.0, color: Colors.red),
                     const SizedBox(width: 5.0),
                     Text(
                       "${startTime.hour}:${startTime.minute.toString().padLeft(2, '0')} - ${endTime.hour}:${endTime.minute.toString().padLeft(2, '0')}",
@@ -59,14 +63,14 @@ class _TaskItemCardState extends State<TaskItemCard> {
               ],
             ),
             Checkbox(
-                value: widget.task.isCompleted,
+                value: task.isCompleted,
                 onChanged: (newValue) {
                   if (newValue != null) {
-                    taskProvider.changeCompletion(widget.task.id);
+                    taskProvider.changeCompletion(task.id);
+                    task.isCompleted = !task.isCompleted;
                     setState(() {});
                   }
-                }
-            ),
+                }),
             const Icon(Icons.arrow_forward_ios, size: 16.0, color: Colors.grey),
           ],
         ),
