@@ -1,21 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:partners/model/task_category.dart';
 
+// Mock class (if needed for future tests)
+class MockTaskCategory extends Mock implements TaskCategory {}
+
 void main() {
-  group ('Test TaskCategory class',() {
-    test('Should create TaskCategory successfully', () {
-      final taskCategory = TaskCategory(title: 'Baby care', color: Colors.red);
-      expect(taskCategory.title, 'Baby care');
-      expect(taskCategory.color, Colors.red);
-    }
-    );
+  group('TaskCategory Tests', () {
+    test('fromMap() should correctly convert Map to TaskCategory', () {
+      // Arrange: Define input data
+      final Map<String, dynamic> mockData = {
+        'title': 'Chores',
+        'color': Colors.blue, // Color stored as an integer
+      };
 
-    test('Test toString method',() {
-      final taskCategory = TaskCategory(title: 'Baby care', color: Colors.red);
-      expect(taskCategory.toString(), 'Baby care');
-    }
-    );
+      // Act: Convert to TaskCategory
+      final taskCategory = TaskCategory.fromMap(mockData);
 
+      // Assert: Verify the values
+      expect(taskCategory.title, 'Chores');
+      expect(taskCategory.color, Colors.blue);
+    });
+
+    test('toString() should return the category title', () {
+      // Arrange
+      final taskCategory = TaskCategory(title: 'Personal', color: Colors.red);
+
+      // Act & Assert
+      expect(taskCategory.toString(), 'Personal');
+    });
   });
 }
