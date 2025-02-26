@@ -44,6 +44,8 @@ dependencies:
   flutter_local_notifications: ^18.0.1
   flutter_timezone: ^4.1.0
   permission_handler: ^11.4.0
+  mockito: ^5.4.5
+  build_runner: ^2.4.15
 
 dev_dependencies:
   flutter_test:
