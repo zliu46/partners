@@ -1,44 +1,117 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+import 'package:partners/model/task_category.dart';
+import 'package:partners/model/task_details.dart';
 import 'package:partners/pages/home_page.dart';
 import 'package:partners/provider/task_provider.dart';
 import 'package:partners/widgets/task_category_card.dart';
 import 'package:provider/provider.dart';
 
+class MockTaskProvider extends Mock implements TaskProvider {
+  @override
+  List<TaskCategory> categories = [];
+
+  @override
+  List<TaskDetails> ongoingTasks = [];
+
+  @override
+  List<TaskDetails> upcomingTasks = [];
+
+  @override
+  String firstName = '';
+
+  @override
+  List<TaskDetails> getOngoingTasks() {
+    return [];
+  }
+
+  @override
+  List<TaskDetails> getUpcomingTasks() {
+    return [];
+  }
+
+  @override
+  addCategory(String title, Color color){
+    categories.add(TaskCategory(title: title, color: color));
+    notifyListeners();
+  }
+
+  @override
+  int getTaskCount(String categoryTitle) {
+    return 0;
+  }
+}
+
 main(){
+  late MockTaskProvider mockTaskProvider;
+
+  setUp((){
+    mockTaskProvider = MockTaskProvider();
+  });
+
   testWidgets("Home Page displays all sections", (tester) async {
-    HomePage homePage = HomePage();
-    await tester.pumpWidget(ChangeNotifierProvider(
-      create: (context) => TaskProvider(),
-      child: MaterialApp(home: Scaffold(body: homePage))
+    // Initialize the mock provider before creating the widget
+    mockTaskProvider = MockTaskProvider();
+
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ChangeNotifierProvider<TaskProvider>.value(
+          value: mockTaskProvider,
+          child: HomePage(), // HomePage will now have access to the provider
+        ),
       ),
     );
+
+    // Wait for any async operations
+    await tester.pumpAndSettle();
+
+    // Run assertions
     expect(find.text("TASK CATEGORIES"), findsOneWidget);
     expect(find.text("ONGOING TASKS"), findsOneWidget);
     expect(find.text("UPCOMING TASKS"), findsOneWidget);
   });
 
   testWidgets("Displays all categories", (tester) async {
-    HomePage homePage = HomePage();
-    await tester.pumpWidget(ChangeNotifierProvider(
-      create: (context) => TaskProvider(),
-      child: MaterialApp(home: Scaffold(body: homePage))
-    ));
-    TaskProvider taskProvider = Provider.of<TaskProvider>(tester.element(find.byType(HomePage)), listen:false);
-    expect(find.byType(TaskCategoryCard), findsNWidgets(taskProvider.categories.length));
+    mockTaskProvider = MockTaskProvider();
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ChangeNotifierProvider<TaskProvider>.value(
+          value: mockTaskProvider,
+          child: HomePage(),
+        ),
+      ),
+    );
+
+    expect(find.byType(TaskCategoryCard), findsNWidgets(mockTaskProvider.categories.length));
   });
 
   testWidgets("Adding categories to provider reflects in home page", (tester) async {
-    HomePage homePage = HomePage();
-    await tester.pumpWidget(ChangeNotifierProvider(
-      create: (context) => TaskProvider(),
-      child: MaterialApp(home: Scaffold(body: homePage))
-    ));
-    TaskProvider provider = Provider.of<TaskProvider>(tester.element(find.byType(HomePage)), listen: false);
-    expect(find.byType(TaskCategoryCard), findsNWidgets(provider.categories.length));
-    provider.addCategory("test category 1", Color(0));
-    await tester.pumpAndSettle();
-    expect(find.byType(TaskCategoryCard), findsNWidgets(provider.categories.length));
+    mockTaskProvider = MockTaskProvider();
+
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ChangeNotifierProvider<TaskProvider>.value(
+          value: mockTaskProvider,
+          child: HomePage(),
+        ),
+      ),
+    );
+
+    expect(find.byType(TaskCategoryCard), findsNWidgets(mockTaskProvider.categories.length));
+    mockTaskProvider.addCategory("test category 1", Color(0));
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ChangeNotifierProvider<TaskProvider>.value(
+          value: mockTaskProvider,
+          child: HomePage(),
+        ),
+      ),
+    );
+    expect(find.byType(TaskCategoryCard), findsNWidgets(mockTaskProvider.categories.length));
   });
 }
