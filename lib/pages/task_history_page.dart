@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../provider/task_provider.dart';
 import '../model/task_details.dart';
-import '../widgets/task_item_card.dart'; // Assuming this exists
 
 class TaskHistoryPage extends StatelessWidget {
   const TaskHistoryPage({super.key});
@@ -13,17 +12,17 @@ class TaskHistoryPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Task History"),
+        title: const Text("Task History"),
         centerTitle: true,
       ),
       body: StreamBuilder<List<TaskDetails>>(
         stream: taskProvider.getCompletedTasksStream(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text("No completed tasks found."));
+            return const Center(child: Text("No completed tasks found."));
           }
 
           final completedTasks = snapshot.data!;
@@ -31,7 +30,20 @@ class TaskHistoryPage extends StatelessWidget {
           return ListView.builder(
             itemCount: completedTasks.length,
             itemBuilder: (context, index) {
-              return TaskItemCard(taskId: completedTasks[index].id);
+              final task = completedTasks[index];
+              return Card(
+                elevation: 3,
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                child: ListTile(
+                  title: Text(task.title, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle: Text(
+                    "Completed on: ${task.endTime != null ? "${task.endTime!.toLocal()}" : "Unknown"}",
+                    style: TextStyle(color: Colors.grey[600]),
+                  ),
+                  leading: const Icon(Icons.check_circle, color: Colors.green),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                ),
+              );
             },
           );
         },
