@@ -90,7 +90,11 @@ class DatabaseService {
         Map<String, dynamic> data = doc.data();
         data['id'] = doc.id;
         data['startTime'] = data['startTime'].toDate();
-        data['endTime'] = data['endTime'].toDate();
+        if (data['endTime'] != null){
+          data['endTime'] = data['endTime'].toDate();
+        } else {
+          data['endTime'] = data['startTime'];
+        }
         return TaskDetails.fromMap(data);
       }).toList();
     });
@@ -223,17 +227,17 @@ class DatabaseService {
         .map((snapshot) {
       return snapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data();
-        return TaskDetails.fromMap({
-          'id': doc.id,
-          'title': data['title'],
-          'category': data['category'],
-          'description': data['description'],
-          'createdBy': data['createdBy'],
-          'startTime': (data['startTime'] as Timestamp).toDate(),
-          'endTime': (data['endTime'] as Timestamp).toDate(),
-          'isCompleted': data['isCompleted'],
-        });
+        data['id'] = doc.id;
+        return TaskDetails.fromMap(
+          data
+        );
       }).toList();
     });
+  }
+
+  Future<List<String>> getUsers(String partnershipId) async {
+    DocumentSnapshot doc = await _db.collection('partnerships')
+        .doc(partnershipId).get();
+    return List.from(doc.get('users'));
   }
 }

@@ -92,8 +92,8 @@ class TaskProvider extends ChangeNotifier {
 
   // Add a New Task to Firestore
   Future<void> addTask(String title, String category, String description,
-      String createdBy, DateTime endTime,
-      [DateTime? startTime]) async {
+      String createdBy, DateTime startTime, assignedTo,
+      [DateTime? endTime]) async {
     Map<String, dynamic> data = {
       'title': title,
       'category': category,
@@ -102,6 +102,7 @@ class TaskProvider extends ChangeNotifier {
       'startTime': startTime,
       'endTime': endTime,
       'isCompleted': false,
+      'assignedTo': assignedTo
     };
 
     String id = await _db.addTask(data, _currentPartnership.id);
@@ -247,4 +248,8 @@ class TaskProvider extends ChangeNotifier {
     return _db.fetchCompletedTasksStream(_currentPartnership.id);
   }
 
+  // return list of all users in partnership
+  Future<List<String>> getPartnershipUsers() async {
+    return await _db.getUsers(_currentPartnership.id);
+  }
 }

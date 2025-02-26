@@ -55,14 +55,14 @@ main() {
     expect(find.byType(TaskItemCard), findsNothing);
 
     // add task for today
-    provider.addTask('test', 'test', 'test', 'me', DateTime.now());
+    provider.addTask('test', 'test', 'test', 'me', DateTime.now(), '');
     await tester.pump();
 
     // assert that we now have 1 task displayed
     expect(find.byType(TaskItemCard), findsOneWidget);
 
     // add another task for today
-    provider.addTask('test', 'test', 'test', 'me', DateTime.now());
+    provider.addTask('test', 'test', 'test', 'me', DateTime.now(), '');
     await tester.pump();
     // assert that we now have 2 task displayed
     expect(find.byType(TaskItemCard), findsNWidgets(2));

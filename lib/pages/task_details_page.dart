@@ -63,6 +63,20 @@ class TaskDetailsPage extends StatelessWidget {
                 task.description,
                 style: const TextStyle(fontSize: 16.0),
               ),
+              if (task.assignedTo != '')
+                const SizedBox(height: 20.0),
+              if (task.assignedTo != '')
+                const Text(
+                  "Assigned To:",
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                ),
+              if (task.assignedTo != '')
+                const SizedBox(height: 10.0),
+              if (task.assignedTo != '')
+                Text(
+                  task.assignedTo,
+                  style: const TextStyle(fontSize: 16.0),
+                ),
               const SizedBox(height: 20.0),
               const Text(
                 "Created By:",

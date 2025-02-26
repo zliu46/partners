@@ -20,6 +20,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
   final _descriptionController = TextEditingController();
 
   String? _category;
+  String? _assignedTo;
 
   Future<void> _selectDate() async {
     final DateTime? picked = await showDatePicker(
@@ -117,6 +118,18 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   maxLines: 4,
                   controller: _descriptionController,
                 ),
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text(
+                    "ASSIGN TO",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14.0,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                  SizedBox(height: 5.0),
+                ]),
+                _assignToPicker(taskProvider),
                 SizedBox(height: 20.0),
                 Text(
                   'Schedule',
@@ -209,6 +222,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                               _selectedDate!.day,
                               _startTime!.hour,
                               _startTime!.minute),
+                          _assignedTo ?? '',
                           _endTime != null
                               ? DateTime(
                                   _selectedDate!.year,
@@ -267,6 +281,38 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
       }).toList(),
     );
   }
+
+  Widget _assignToPicker(TaskProvider provider) {
+    return FutureBuilder<List<String>>(
+      future: provider.getPartnershipUsers(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Text('No users available');
+        }
+
+        final users = snapshot.data!;
+
+        return DropdownButtonFormField<String>(
+          value: _assignedTo,
+          hint: const Text('Choose one'),
+          isExpanded: true,
+          onChanged: (value) {
+            setState(() {
+              _assignedTo = value;
+            });
+          },
+          items: users.map((user) {
+            return DropdownMenuItem(value: user, child: Text(user));
+          }).toList(),
+        );
+      },
+    );
+  }
+
 
   Widget _buildInputField({
     required String label,

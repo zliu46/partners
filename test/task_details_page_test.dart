@@ -15,6 +15,7 @@ void main() {
           createdBy: 'Zhou',
           startTime: DateTime(2025, 2, 20, 10, 0),
           endTime: DateTime(2025, 2, 20, 10, 20),
+          assignedTo: '',
           isCompleted: false
       );
     });
