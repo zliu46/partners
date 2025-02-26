@@ -30,9 +30,6 @@ class NotiService {
       await Permission.notification.request();
     }
 
-    if (await Permission.notification.isDenied) {
-      await Permission.notification.request();
-    }
 
     _isInitialized = true;
   }
@@ -87,9 +84,9 @@ class NotiService {
          id,
          title,
          body,
-         scheduledDate,
+         //scheduledDate,
+         tz.TZDateTime.now(tz.local).add(const Duration(seconds: 1)),
          notificationDetails(),
-
          uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle
