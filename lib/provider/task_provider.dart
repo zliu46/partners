@@ -254,10 +254,11 @@ class TaskProvider extends ChangeNotifier {
     return (await _db.getPartnerships(username)).isNotEmpty;
   }
 
-  /// **Stream to fetch completed tasks from `DatabaseService`**
+  /// Stream to fetch completed tasks from `DatabaseService`
   Stream<List<TaskDetails>> getCompletedTasksStream() {
     return _db.fetchCompletedTasksStream(_currentPartnership.id);
   }
+
 
   // return list of all users in partnership
   Future<List<String>> getPartnershipUsers() async {
