@@ -95,7 +95,7 @@ class DatabaseService {
       }).toList();
     });
   }
-
+  
   Stream<List<TaskCategory>> fetchCategoriesStream(String partnershipId) {
     return _db
         .collection('partnerships')
