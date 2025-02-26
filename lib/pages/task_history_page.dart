@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:partners/pages/task_details_page.dart';
 import 'package:provider/provider.dart';
 import '../provider/task_provider.dart';
 import '../model/task_details.dart';
@@ -42,6 +43,14 @@ class TaskHistoryPage extends StatelessWidget {
                   ),
                   leading: const Icon(Icons.check_circle, color: Colors.green),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TaskDetailsPage(task: task),
+                      ),
+                    );
+                  },
                 ),
               );
             },
