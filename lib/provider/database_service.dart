@@ -99,7 +99,7 @@ class DatabaseService {
       }).toList();
     });
   }
-  
+
   Stream<List<TaskCategory>> fetchCategoriesStream(String partnershipId) {
     return _db
         .collection('partnerships')
@@ -216,28 +216,33 @@ class DatabaseService {
         .data()!['groupname'];
   }
 
-  /// Stream to fetch completed tasks in real-time
-  Stream<List<TaskDetails>> fetchCompletedTasksStream(String? partnershipId) {
-    return _db
-        .collection('partnerships')
-        .doc(partnershipId)
-        .collection('tasks')
-        .where('isCompleted', isEqualTo: true) // Filter only completed tasks
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        Map<String, dynamic> data = doc.data();
-        data['id'] = doc.id;
-        return TaskDetails.fromMap(
-          data
-        );
-      }).toList();
-    });
-  }
 
   Future<List<String>> getUsers(String partnershipId) async {
     DocumentSnapshot doc = await _db.collection('partnerships')
         .doc(partnershipId).get();
     return List.from(doc.get('users'));
   }
+
+  Stream<List<TaskDetails>> fetchCompletedTasksStream(String partnershipId) {
+    return _db
+        .collection('partnerships')
+        .doc(partnershipId)
+        .collection('tasks')
+        .where('isCompleted', isEqualTo: true)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data();
+        data['id'] = doc.id;
+        data['startTime'] = data['startTime'].toDate();
+        if (data['endTime'] != null){
+          data['endTime'] = data['endTime'].toDate();
+        } else {
+          data['endTime'] = data['startTime'];
+        }
+        return TaskDetails.fromMap(data);
+      }).toList();
+    });
+  }
+
 }
