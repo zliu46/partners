@@ -84,16 +84,15 @@ class NotiService {
          id,
          title,
          body,
-         //scheduledDate,
-         tz.TZDateTime.now(tz.local).add(const Duration(seconds: 1)),
+         scheduledDate,
+         //tz.TZDateTime.now(tz.local).add(const Duration(seconds: 1)),
          notificationDetails(),
          uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle
      );
      print("Current Timezone: ${tz.local}");
-     print("Task Notification scheduled for $scheduledDate!");
+     print("Task Notification scheduled for $scheduledDate");
   }
 }
-
 
