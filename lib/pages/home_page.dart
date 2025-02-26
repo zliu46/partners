@@ -72,23 +72,25 @@ class _HomePageState extends State<HomePage> {
         SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header
-                Header(
-                  userName: taskProvider.firstName,
-                ),
-                // Task Categories Section
-                TaskCategoriesSection(categories: taskProvider.categories),
-                const SizedBox(height: 20.0),
-
-                // Ongoing Tasks Section
-                OngoingTaskSection(),
-                const SizedBox(height: 20.0),
-
-                UpcomingTaskSection(),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header
+                  Header(
+                    userName: taskProvider.firstName,
+                  ),
+                  // Task Categories Section
+                  TaskCategoriesSection(categories: taskProvider.categories),
+                  const SizedBox(height: 20.0),
+              
+                  // Ongoing Tasks Section
+                  OngoingTaskSection(),
+                  const SizedBox(height: 20.0),
+              
+                  UpcomingTaskSection(),
+                ],
+              ),
             ),
           ),
         ),
