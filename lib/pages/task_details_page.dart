@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../model/task_details.dart';
+import '../provider/task_provider.dart';
 
 class TaskDetailsPage extends StatelessWidget {
   final TaskDetails task;
@@ -7,6 +9,7 @@ class TaskDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final taskProvider = Provider.of<TaskProvider>(context, listen: true);
     // ✅ Provide default time if startTime or endTime is null
     final startTime = task.startTime ?? DateTime.now();
     final endTime = task.endTime ?? DateTime.now().add(const Duration(hours: 1));
@@ -86,6 +89,25 @@ class TaskDetailsPage extends StatelessWidget {
               Text(
                 task.createdBy,
                 style: const TextStyle(fontSize: 16.0),
+              ),
+              const SizedBox(height: 20.0),
+              Row(
+                children: [
+                  const Text(
+                    "Mark Complete",
+                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10.0),
+                  Checkbox(
+                      value: task.isCompleted,
+                      onChanged: (newValue) {
+                        if (newValue != null) {
+                          taskProvider.changeCompletion(task.id);
+                          task.isCompleted = !task.isCompleted;
+                          //setState(() {});
+                        }
+                      }),
+                ],
               ),
             ],
           ),
