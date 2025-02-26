@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 // Header
                 Header(
-                  userName: 'Noah',
+                  userName: taskProvider.firstName,
                 ),
                 // Task Categories Section
                 TaskCategoriesSection(categories: taskProvider.categories),
