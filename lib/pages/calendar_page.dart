@@ -76,7 +76,7 @@ class _CalendarPageState extends State<CalendarPage> {
                         itemCount: tasksForSelectedDay.length,
                         itemBuilder: (context, index) {
                           final task = tasksForSelectedDay[index];
-                          return TaskItemCard(task: task);
+                          return TaskItemCard(taskId: task.id);
                         },
                       ),
                     ),

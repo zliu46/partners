@@ -31,7 +31,7 @@ class TaskHistoryPage extends StatelessWidget {
           return ListView.builder(
             itemCount: completedTasks.length,
             itemBuilder: (context, index) {
-              return TaskItemCard(task: completedTasks[index]);
+              return TaskItemCard(taskId: completedTasks[index].id);
             },
           );
         },

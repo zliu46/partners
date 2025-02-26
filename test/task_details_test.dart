@@ -14,6 +14,7 @@ void main() {
         createdBy: 'Zhou',
         startTime: DateTime(2025, 2, 20, 10, 0),
         endTime: DateTime(2025, 2, 20, 10, 20),
+        isCompleted: false
       );
       expect(task.id, '1');
       expect(task.title, 'Wash baby bottles');
@@ -35,6 +36,7 @@ void main() {
         createdBy: 'Joseph',
         startTime: DateTime(2025, 2, 20, 10, 0),
         endTime: DateTime.now(),
+        isCompleted: false
       );
 
       expect(task.endTime, null);

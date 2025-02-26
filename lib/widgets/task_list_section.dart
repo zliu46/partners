@@ -36,7 +36,7 @@ class TaskListSection extends StatelessWidget {
         ),
         const SizedBox(height: 10.0),
         tasks.isNotEmpty
-            ? Column(children: tasks.map((task) => TaskItemCard(task: task)).toList())
+            ? Column(children: tasks.map((task) => TaskItemCard(taskId: task.id)).toList())
             : const Text("No tasks available", style: TextStyle(color: Colors.grey)),
       ],
     );

@@ -39,7 +39,7 @@ class TaskListPage extends StatelessWidget {
                     itemCount: categoryTasks.length,
                     itemBuilder: (context, index) {
                       final task = categoryTasks[index];
-                      return TaskItemCard(task: task);
+                      return TaskItemCard(taskId: task.id);
                     },
                   ),
           ),
