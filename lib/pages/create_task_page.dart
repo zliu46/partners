@@ -268,6 +268,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     List<String> categories =
         provider.categories.map((category) => category.title).toList();
     return DropdownButtonFormField(
+      key: Key('categoryDropdown'),
       value: _category,
       hint: Text('Choose one'),
       isExpanded: true,
@@ -297,6 +298,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         final users = snapshot.data!;
 
         return DropdownButtonFormField<String>(
+          key: Key('assignUserDropdown'),
           value: _assignedTo,
           hint: const Text('Choose one'),
           isExpanded: true,
