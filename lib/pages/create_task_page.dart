@@ -332,11 +332,13 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
             children: [
               Icon(icon, color: Colors.black),
               SizedBox(width: 10.0),
-              Text(
-                value,
-                style: TextStyle(
-                  fontSize: 16.0,
-                  color: Colors.grey[800],
+              Expanded(
+                child: Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.grey[800],
+                  ),
                 ),
               ),
             ],
