@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:partners/provider/noti_service.dart';
 import '../model/partnership.dart';
 import '../model/task_category.dart';
 import '../model/task_details.dart';
@@ -14,17 +15,24 @@ class TaskProvider extends ChangeNotifier {
   // Implement a database
   final DatabaseService _db = DatabaseService();
   final AuthService _auth = AuthService();
+  final NotiService _notiService = NotiService();
+
   List<TaskDetails> _tasks = [];
   List<TaskCategory> _categories = [];
   late String _firstName;
   late String _username;
   late List<Partnership> _partnerships;
   late Partnership _currentPartnership;
+
   String get firstName => _firstName;
+
   String get username => _username;
+
   List<Partnership> get partnerships => _partnerships;
+
   Partnership get currentPartnership => _currentPartnership;
   String? _partnershipId;
+
   String? get partnershipId => _partnershipId;
 
   void setPartnershipId(String id) {
@@ -33,6 +41,7 @@ class TaskProvider extends ChangeNotifier {
   }
 
   late UserCredential user;
+
   // document id for current partnership, set with .setPartnership()
 
   //String? get currentPartnership => currentPartnership;
@@ -110,14 +119,14 @@ class TaskProvider extends ChangeNotifier {
     _tasks.add(TaskDetails.fromMap(data));
     notifyListeners();
 
-    // /// Schedule notification
-    // await _notiService.scheduleTaskNotification(
-    //   id: id.hashCode,
-    //   title: "Upcoming Task Reminder",
-    //   body: "Your task '$title' is due in 1 hour!",
-    //   hour : 23,
-    //   minute: 13,
-    // );
+    /// Schedule notification
+    await _notiService.scheduleTaskNotification(
+      id: id.hashCode,
+      title: "Upcoming Task Reminder",
+      body: "Your task '$title'",
+      hour : startTime.hour,
+      minute: startTime.minute,
+    );
   }
 
   //  Delete a Task
@@ -131,7 +140,8 @@ class TaskProvider extends ChangeNotifier {
   // TODO: check if category already exists
   void addCategory(String title, Color color) {
     categories.add(TaskCategory(title: title, color: color));
-    _db.addCategory({'name': title, 'color': color.value}, _currentPartnership.id);
+    _db.addCategory(
+        {'name': title, 'color': color.value}, _currentPartnership.id);
     notifyListeners();
   }
 
@@ -163,9 +173,10 @@ class TaskProvider extends ChangeNotifier {
     }
   }
 
-  TaskDetails getTaskById(String id){
+  TaskDetails getTaskById(String id) {
     return _tasks.where((TaskDetails task) => task.id == id).toList()[0];
   }
+
 
   List<TaskDetails> getTasksForDate(DateTime selectedDate) {
     return _tasks.where((task) {
@@ -179,14 +190,15 @@ class TaskProvider extends ChangeNotifier {
   Future<void> fetchPartnerships() async {
     List<dynamic> partnerships = await _db.getPartnerships(username);
     _partnerships = [];
-    for (String id in partnerships){
+    for (String id in partnerships) {
       String name = await _db.getPartnershipWithId(id);
       _partnerships.add(Partnership(name, id));
     }
     print(_partnerships);
   }
+
   //Fetch Tasks from Firestore Live Stream
-  Future<void> fetchTasks() async {
+  void fetchTasks() {
     _db.fetchTasksStream(_currentPartnership.id).listen((taskList) {
       _tasks = taskList;
       notifyListeners();
@@ -224,8 +236,7 @@ class TaskProvider extends ChangeNotifier {
     return _db.fetchPartnershipStream(partnershipId);
   }
 
-  Future<String> createPartnership(
-      String partnershipName) async {
+  Future<String> createPartnership(String partnershipName) async {
     String partnershipId = await _db.createPartnership(partnershipName);
     _db.joinPartnership(username, partnershipId);
     return partnershipId;
@@ -233,7 +244,7 @@ class TaskProvider extends ChangeNotifier {
 
   Future<void> joinPartnership(String code) async {
     String partnershipId = await _db.findPartnershipWithCode(code);
-    if (partnershipId == "-1"){
+    if (partnershipId == "-1") {
       throw Exception('invalid code');
     }
     _db.joinPartnership(username, partnershipId);

@@ -22,12 +22,12 @@ void main() async {
   );
 
   runApp(
-      MultiProvider(
+    MultiProvider(
         providers: [
           ChangeNotifierProvider<TaskProvider>(create: (_) => TaskProvider()),
         ],
         child: const MyApp()
-      ),
+    ),
   );
 }
 
