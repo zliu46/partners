@@ -25,10 +25,10 @@ void main() {
 
     test('toString() should return the category title', () {
       // Arrange
-      final taskCategory = TaskCategory(title: 'Personal', color: Colors.red);
+      final taskCategory = TaskCategory(title: 'Appointment', color: Colors.red);
 
       // Act & Assert
-      expect(taskCategory.toString(), 'Personal');
+      expect(taskCategory.toString(), 'Appointment');
     });
   });
 }
