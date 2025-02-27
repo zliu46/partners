@@ -4,7 +4,6 @@ import 'package:partners/pages/no_partnerships_page.dart';
 import 'package:partners/provider/task_provider.dart';
 import 'package:provider/provider.dart';
 
-import 'package:partners/provider/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

@@ -52,6 +52,7 @@ class TaskDetails {
     isCompleted = !isCompleted;
   }
 
+  @override
   toString() {
     return "$id $title $category $description $isCompleted";
   }

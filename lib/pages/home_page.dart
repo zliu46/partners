@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:partners/pages/calendar_page.dart';
@@ -10,7 +9,6 @@ import 'package:partners/widgets/upcoming_task_section.dart';
 import 'package:provider/provider.dart';
 import 'package:partners/provider/task_provider.dart';
 import 'package:partners/widgets/task_categories_section.dart';
-import 'package:partners/widgets/task_list_section.dart';
 
 import 'package:partners/widgets/add_category_dialog.dart';
 

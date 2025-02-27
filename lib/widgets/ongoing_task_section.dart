@@ -23,7 +23,7 @@ class OngoingTaskSection extends StatelessWidget {
               'ONGOING TASKS',
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
-            if (ongoingTasks.length > 0) // Show "SEE ALL" only if more than 0 tasks
+            if (ongoingTasks.isNotEmpty) // Show "SEE ALL" only if more than 0 tasks
               TextButton(
                 onPressed: () {
                   Navigator.push(

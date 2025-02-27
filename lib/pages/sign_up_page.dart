@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
-import 'package:partners/provider/auth_service.dart';
-import 'package:partners/provider/database_service.dart';
 
 import '../provider/task_provider.dart';
 import 'no_partnerships_page.dart';
@@ -116,16 +114,16 @@ class _SignUpPageState extends State<SignUpPage> {
             const SizedBox(height: 20),
             ElevatedButton(
                 onPressed: _signUp,
-                child: const Text(
-                  "Sign Up",
-                  style: TextStyle(color: Colors.white),
-                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 80,
                     vertical: 15,
                   ),
+                ),
+                child: const Text(
+                  "Sign Up",
+                  style: TextStyle(color: Colors.white),
                 )),
           ],
         ),

@@ -10,13 +10,13 @@ class DatabaseService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // adds a new user to firestore Users collection, assumes all info is valid
-  addUser(String username, String email, String first_name, String last_name,
+  addUser(String username, String email, String firstName, String lastName,
       String uid) {
     Map<String, dynamic> data = {
       "username": username,
       "email": email,
-      "first_name": first_name,
-      "last_name": last_name,
+      "first_name": firstName,
+      "last_name": lastName,
       "uid": uid,
       "friends": [],
       "partnerships": [],

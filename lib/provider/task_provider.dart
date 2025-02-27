@@ -1,8 +1,4 @@
-import 'dart:ffi';
-import 'dart:math';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:partners/provider/noti_service.dart';
 import '../model/partnership.dart';
@@ -227,9 +223,9 @@ class TaskProvider extends ChangeNotifier {
     return await _auth.signUp(email, password);
   }
 
-  void addUser(String username, String email, String first_name,
-      String last_name, String uid) {
-    _db.addUser(username, email, first_name, last_name, uid);
+  void addUser(String username, String email, String firstName,
+      String lastName, String uid) {
+    _db.addUser(username, email, firstName, lastName, uid);
   }
 
   Stream<Map<String, dynamic>> fetchPartnershipStream(String partnershipId) {
