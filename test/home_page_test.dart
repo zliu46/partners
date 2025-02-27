@@ -9,40 +9,9 @@ import 'package:partners/provider/task_provider.dart';
 import 'package:partners/widgets/task_category_card.dart';
 import 'package:provider/provider.dart';
 
-class MockTaskProvider extends Mock implements TaskProvider {
-  @override
-  List<TaskCategory> categories = [];
+import 'mock_task_provider.dart';
 
-  @override
-  List<TaskDetails> ongoingTasks = [];
 
-  @override
-  List<TaskDetails> upcomingTasks = [];
-
-  @override
-  String firstName = '';
-
-  @override
-  List<TaskDetails> getOngoingTasks() {
-    return [];
-  }
-
-  @override
-  List<TaskDetails> getUpcomingTasks() {
-    return [];
-  }
-
-  @override
-  addCategory(String title, Color color){
-    categories.add(TaskCategory(title: title, color: color));
-    notifyListeners();
-  }
-
-  @override
-  int getTaskCount(String categoryTitle) {
-    return 0;
-  }
-}
 
 main(){
   late MockTaskProvider mockTaskProvider;
@@ -91,7 +60,6 @@ main(){
 
   testWidgets("Adding categories to provider reflects in home page", (tester) async {
     mockTaskProvider = MockTaskProvider();
-
 
     await tester.pumpWidget(
       MaterialApp(

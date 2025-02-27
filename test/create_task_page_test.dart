@@ -144,6 +144,7 @@ void main() {
     await tester.pumpAndSettle();
 
     /// Select a date
+    await tester.scrollUntilVisible(find.byIcon(Icons.calendar_today), 1, scrollable: find.byType(Scrollable).last);
     await tester.tap(find.byIcon(Icons.calendar_today));
     await tester.pumpAndSettle();
     // await tester.tap(find.text('OK'));
