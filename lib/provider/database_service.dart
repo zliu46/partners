@@ -177,6 +177,7 @@ class DatabaseService {
         'name': data['groupname'] ?? 'Unnamed Group',
         'users': List<String>.from(
             data['users'] ?? []), // Ensure it's a List<String>
+        'secret_code': data['secret_code']
       };
     });
   }
@@ -244,5 +245,4 @@ class DatabaseService {
       }).toList();
     });
   }
-
 }

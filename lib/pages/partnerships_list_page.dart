@@ -24,8 +24,8 @@ class _PartnershipsListPageState extends State<PartnershipsListPage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            _buildCreatePartnershipSection(username, taskProvider),
-            Divider(),
+            //_buildCreatePartnershipSection(username, taskProvider),
+            //Divider(),
             Expanded(child: _buildPartnershipList(taskProvider, username, partnershipId)),
           ],
         ),
@@ -91,6 +91,7 @@ class _PartnershipsListPageState extends State<PartnershipsListPage> {
             Text("Group Name: $partnershipName"),
             SizedBox(height: 10),
             Text("Members: ${members.join(', ')}"),
+            Text("Partnership code: ${partnership['secret_code']}")
           ],
         );
       },
