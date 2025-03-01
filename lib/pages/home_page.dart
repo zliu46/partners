@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:partners/pages/ai_chat_page.dart';
 import 'package:partners/pages/calendar_page.dart';
 import 'package:partners/pages/profile_page.dart';
 import 'package:partners/widgets/expandable_fab.dart';
@@ -56,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                   radius: 20.0,
                   backgroundColor: Colors.purple[100],
                   child: Text(
-                    'N',
+                    taskProvider.firstName[0],
                     style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
@@ -64,7 +65,12 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                label: 'Profile')
+                label: 'Profile'),
+            NavigationDestination(
+              selectedIcon: Icon(Icons.chat),
+              icon: Icon(Icons.chat),
+              label: 'AI Chat',
+            ),
           ]),
       body: <Widget>[
         SafeArea(
@@ -94,6 +100,7 @@ class _HomePageState extends State<HomePage> {
         ),
         CalendarPage(),
         ProfilePage(),
+        AIChatPage(),
       ][currentPageIndex],
       floatingActionButton: currentPageIndex == 0
           ? ExpandableFab(
