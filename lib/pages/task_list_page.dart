@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../provider/task_provider.dart';
-import '../model/task_details.dart';
 import 'package:partners/widgets/task_item_card.dart';
 
 class TaskListPage extends StatelessWidget {

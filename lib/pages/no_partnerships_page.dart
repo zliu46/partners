@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:partners/widgets/create_partnership_dialog.dart';
 import 'package:partners/widgets/join_with_code_dialog.dart';

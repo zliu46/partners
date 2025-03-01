@@ -38,7 +38,7 @@ class TaskHistoryPage extends StatelessWidget {
                 child: ListTile(
                   title: Text(task.title, style: const TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text(
-                    "Completed on: ${task.endTime != null ? "${task.endTime!.toLocal()}" : "Unknown"}",
+                    "Completed on: ${task.endTime != null ? "${task.endTime.toLocal()}" : "Unknown"}",
                     style: TextStyle(color: Colors.grey[600]),
                   ),
                   leading: const Icon(Icons.check_circle, color: Colors.green),

@@ -4,7 +4,6 @@ import 'package:partners/pages/home_page.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:provider/provider.dart';
 import 'package:partners/provider/task_provider.dart';
-import 'package:intl/intl.dart';
 
 import '../widgets/task_item_card.dart';
 

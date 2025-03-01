@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../provider/database_service.dart';
 import '../provider/task_provider.dart';
 
 class PartnershipsListPage extends StatefulWidget {
+  const PartnershipsListPage({super.key});
+
   @override
   _PartnershipsListPageState createState() => _PartnershipsListPageState();
 }

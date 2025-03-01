@@ -48,6 +48,7 @@ dependencies:
   build_runner: ^2.4.15
   firebase_vertexai: ^1.4.0
 
+  timezone: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,9 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-import 'package:partners/model/task_category.dart';
-import 'package:partners/model/task_details.dart';
 import 'package:partners/pages/home_page.dart';
 import 'package:partners/provider/task_provider.dart';
 import 'package:partners/widgets/task_category_card.dart';
@@ -71,7 +68,7 @@ main(){
     );
 
     expect(find.byType(TaskCategoryCard), findsNWidgets(mockTaskProvider.categories.length));
-    mockTaskProvider.addCategory("test category 1", Color(0));
+    mockTaskProvider.addCategory("test category 1", Color(0x00000000));
     await tester.pumpWidget(
       MaterialApp(
         home: ChangeNotifierProvider<TaskProvider>.value(
