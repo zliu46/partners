@@ -104,7 +104,6 @@ class TaskDetailsPage extends StatelessWidget {
                         if (newValue != null) {
                           taskProvider.changeCompletion(task.id);
                           task.isCompleted = !task.isCompleted;
-                          //setState(() {});
                         }
                       }),
                 ],

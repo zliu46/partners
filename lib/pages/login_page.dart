@@ -4,7 +4,6 @@ import 'package:partners/pages/no_partnerships_page.dart';
 import 'package:partners/provider/task_provider.dart';
 import 'package:provider/provider.dart';
 
-
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -15,8 +14,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +29,8 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
       body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(), // Hide keyboard when tapping outside
+        onTap: () => FocusScope.of(context)
+            .unfocus(), // Hide keyboard when tapping outside
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -49,23 +47,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 40.0),
-                  TextField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      labelText: 'EMAIL',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
+                  _inputField(_emailController, 'EMAIL'),
                   const SizedBox(height: 20.0),
-                  TextField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'PASSWORD',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
+                  _inputField(_passwordController, 'PASSWORD'),
                   const SizedBox(height: 40.0),
                   Center(
                     child: ElevatedButton(
@@ -105,19 +89,31 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Widget _inputField(TextEditingController controller, String label) {
+    return TextField(
+      controller: controller,
+      keyboardType: TextInputType.emailAddress,
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(),
+      ),
+    );
+  }
+
   Future<void> _signIn() async {
-    TaskProvider taskProvider = Provider.of<TaskProvider>(context, listen: false);
+    TaskProvider taskProvider =
+        Provider.of<TaskProvider>(context, listen: false);
     try {
       UserCredential user = await taskProvider.signIn(
-        _emailController.text.trim(),
-       _passwordController.text.trim());
-      if (await taskProvider.hasPartnerships()){
+          _emailController.text.trim(), _passwordController.text.trim());
+      if (await taskProvider.hasPartnerships()) {
         await taskProvider.fetchPartnerships();
         await taskProvider.setCurrentPartnership(0);
-        Navigator.pushReplacementNamed(context, '/home'); // Navigate to home page
-
+        Navigator.pushReplacementNamed(
+            context, '/home'); // Navigate to home page
       } else {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NoPartnershipsPage()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => NoPartnershipsPage()));
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

@@ -162,7 +162,6 @@ class _PartnershipSelectorState extends State<_PartnershipSelector> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting &&
                   !snapshot.hasData) {
-                // Only show loading indicator on initial load when we have no data
                 return const Card(
                   margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                   child: ListTile(
@@ -188,8 +187,6 @@ class _PartnershipSelectorState extends State<_PartnershipSelector> {
                 );
               }
 
-              // If we have data, use it even during refresh to prevent flickering
-              // Only show "no data" if we're not loading and there's really no data
               if (!snapshot.hasData || snapshot.data == null) {
                 return const Card(
                   margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
@@ -199,10 +196,7 @@ class _PartnershipSelectorState extends State<_PartnershipSelector> {
                   ),
                 );
               }
-
-              // Now safe to use the data
               var partnershipData = snapshot.data!;
-
               return Card(
                 margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                 child: ListTile(

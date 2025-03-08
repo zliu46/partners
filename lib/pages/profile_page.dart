@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:partners/pages/notification_test_page.dart';
 import 'package:partners/pages/partnerships_list_page.dart';
 import 'package:partners/pages/task_history_page.dart';
+import 'package:partners/provider/task_provider.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    TaskProvider taskProvider = Provider.of<TaskProvider>(context);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -29,7 +32,7 @@ class ProfilePage extends StatelessWidget {
                 radius: 50.0,
                 backgroundColor: Colors.grey[300],
                 child: Text(
-                  'N',
+                  taskProvider.username[0],
                   style: TextStyle(
                     fontSize: 40.0,
                     fontWeight: FontWeight.bold,

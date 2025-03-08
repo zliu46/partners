@@ -33,13 +33,10 @@ class _HomePageState extends State<HomePage> {
     final categories = taskProvider.categories;
     final ongoingTasks = taskProvider.ongoingTasks;
     final upcomingTasks = taskProvider.upcomingTasks;
-
     return Scaffold(
       bottomNavigationBar: NavigationBar(
           onDestinationSelected: (int index) {
-            setState(() {
-              currentPageIndex = index;
-            });
+            setState(() {currentPageIndex = index;});
           },
           selectedIndex: currentPageIndex,
           destinations: <Widget>[
@@ -80,18 +77,13 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Header
                   Header(
                     userName: taskProvider.firstName,
                   ),
-                  // Task Categories Section
                   TaskCategoriesSection(categories: taskProvider.categories),
                   const SizedBox(height: 20.0),
-              
-                  // Ongoing Tasks Section
                   OngoingTaskSection(),
                   const SizedBox(height: 20.0),
-              
                   UpcomingTaskSection(),
                 ],
               ),
