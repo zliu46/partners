@@ -54,7 +54,6 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
   @override
   Widget build(BuildContext context) {
     final taskProvider = Provider.of<TaskProvider>(context, listen: false);
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey[200],
@@ -98,14 +97,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                 SizedBox(height: 10.0),
                 // category
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(
-                    "CATEGORY",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14.0,
-                      color: Colors.grey[700],
-                    ),
-                  ),
+                  _inputLabel("CATEGORY"),
                   SizedBox(height: 5.0),
                 ]),
                 _categoryPicker(taskProvider),
@@ -118,147 +110,31 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   controller: _descriptionController,
                 ),
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(
-                    "ASSIGN TO",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14.0,
-                      color: Colors.grey[700],
-                    ),
-                  ),
+                  _inputLabel('ASSIGN TO'),
                   SizedBox(height: 5.0),
                 ]),
                 _assignToPicker(taskProvider),
                 SizedBox(height: 20.0),
-                Text(
-                  'Schedule',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 10.0),
-                GestureDetector(
-                  onTap: _selectDate,
-                  child: _buildDateTimeField(
-                    label: 'Date',
-                    value: _selectedDate != null
-                        ? '${_selectedDate!.year}-${_selectedDate!.month}-${_selectedDate!.day}'
-                        : 'Select date',
-                    icon: Icons.calendar_today,
-                  ),
-                ),
+                ..._buildScheduleSection(),
                 SizedBox(height: 20.0),
-                Row(
-                  children: [
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () => _selectTime(isStartTime: true),
-                        child: _buildDateTimeField(
-                          label: 'Start Time',
-                          value: _startTime != null
-                              ? _startTime!.format(context)
-                              : 'Select start time',
-                          icon: Icons.access_time,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10.0),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () => _selectTime(isStartTime: false),
-                        child: _buildDateTimeField(
-                          label: 'End Time',
-                          value: _endTime != null
-                              ? _endTime!.format(context)
-                              : 'Select end time',
-                          icon: Icons.access_time,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                _notificationBar(),
                 SizedBox(height: 20.0),
-                Row(
-                  children: [
-                    Icon(Icons.notifications, color: Colors.black),
-                    SizedBox(width: 10.0),
-                    Expanded(
-                      child: SwitchListTile(
-                        title: Text('Get Alert for This Task'),
-                        value: false,
-                        onChanged: (value) {
-                          // Handle switch logic
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20.0),
-                Center(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Ensure required fields are filled
-                      if (_titleController.text.isEmpty ||
-                          _category == null ||
-                          _selectedDate == null ||
-                          _startTime == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content:
-                                  Text('Please fill in all required fields')),
-                        );
-                        return;
-                      }
-                      taskProvider.addTask(
-                          _titleController.text,
-                          _category!,
-                          _descriptionController.text,
-                          taskProvider.firstName,
-                          DateTime(
-                              _selectedDate!.year,
-                              _selectedDate!.month,
-                              _selectedDate!.day,
-                              _startTime!.hour,
-                              _startTime!.minute),
-                          _assignedTo ?? '',
-                          _endTime != null
-                              ? DateTime(
-                                  _selectedDate!.year,
-                                  _selectedDate!.month,
-                                  _selectedDate!.day,
-                                  _endTime!.hour,
-                                  _endTime!.minute)
-                              : null);
-                      // Show a success message
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Task added successfully!')),
-                      );
-                      Navigator.pop(context);
-                      // Handle task creation logic
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 50.0, vertical: 15.0),
-                      backgroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                    ),
-                    child: Text(
-                      'CREATE TASK',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
+                _buildCreateTaskButton(taskProvider),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _inputLabel(String text){
+    return Text(
+      text,
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 14.0,
+        color: Colors.grey[700],
       ),
     );
   }
@@ -314,6 +190,58 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     );
   }
 
+  List<Widget> _buildScheduleSection() {
+    return [
+      Text(
+        'Schedule',
+        style: TextStyle(
+          fontSize: 20.0,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      SizedBox(height: 10.0),
+      GestureDetector(
+        onTap: _selectDate,
+        child: _buildDateTimeField(
+          label: 'Date',
+          value: _selectedDate != null
+              ? '${_selectedDate!.year}-${_selectedDate!.month}-${_selectedDate!.day}'
+              : 'Select date',
+          icon: Icons.calendar_today,
+        ),
+      ),
+      SizedBox(height: 20.0),
+      Row(
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: () => _selectTime(isStartTime: true),
+              child: _buildDateTimeField(
+                label: 'Start Time',
+                value: _startTime != null
+                    ? _startTime!.format(context)
+                    : 'Select start time',
+                icon: Icons.access_time,
+              ),
+            ),
+          ),
+          SizedBox(width: 10.0),
+          Expanded(
+            child: GestureDetector(
+              onTap: () => _selectTime(isStartTime: false),
+              child: _buildDateTimeField(
+                label: 'End Time',
+                value: _endTime != null
+                    ? _endTime!.format(context)
+                    : 'Select end time',
+                icon: Icons.access_time,
+              ),
+            ),
+          ),
+        ],
+      ),
+    ];
+  }
 
   Widget _buildInputField({
     required String label,
@@ -325,14 +253,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label.toUpperCase(),
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 14.0,
-            color: Colors.grey[700],
-          ),
-        ),
+        _inputLabel(label.toUpperCase()),
         SizedBox(height: 5.0),
         TextField(
           controller: controller,
@@ -392,6 +313,76 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _notificationBar(){
+    return Row(
+      children: [
+        Icon(Icons.notifications, color: Colors.black),
+        SizedBox(width: 10.0),
+        Expanded(
+          child: SwitchListTile(
+            title: Text('Get Alert for This Task'),
+            value: false,
+            onChanged: (value) {
+              // Handle switch logic
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCreateTaskButton(TaskProvider taskProvider) {
+    return Center(
+      child: ElevatedButton(
+        onPressed: () {
+          // Ensure required fields are filled
+          if (_titleController.text.isEmpty ||
+              _category == null ||
+              _selectedDate == null ||
+              _startTime == null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Please fill in all required fields')),
+            );
+            return;
+          }
+          taskProvider.addTask(
+              _titleController.text,
+              _category!,
+              _descriptionController.text,
+              taskProvider.firstName,
+              DateTime(_selectedDate!.year, _selectedDate!.month,
+                  _selectedDate!.day, _startTime!.hour, _startTime!.minute),
+              _assignedTo ?? '',
+              _endTime != null
+                  ? DateTime(_selectedDate!.year, _selectedDate!.month,
+                      _selectedDate!.day, _endTime!.hour, _endTime!.minute)
+                  : null);
+          // Show a success message
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Task added successfully!')),
+          );
+          Navigator.pop(context);
+          // Handle task creation logic
+        },
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 15.0),
+          backgroundColor: Colors.black,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+        ),
+        child: Text(
+          'CREATE TASK',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
     );
   }
 }
