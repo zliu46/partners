@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../model/partnership.dart';
 import '../provider/task_provider.dart';
 
 class PartnershipsListPage extends StatefulWidget {
@@ -25,9 +26,9 @@ class _PartnershipsListPageState extends State<PartnershipsListPage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            //_buildCreatePartnershipSection(username, taskProvider),
-            //Divider(),
-            Expanded(child: _buildPartnershipList(taskProvider, username, partnershipId)),
+            _buildCreatePartnershipSection(username, taskProvider),
+            Divider(),
+            Expanded(child: _PartnershipSelector()),
           ],
         ),
       ),
@@ -74,32 +75,75 @@ class _PartnershipsListPageState extends State<PartnershipsListPage> {
     );
   }
 
-  /// Display Partnerships with Join Option**
-  Widget _buildPartnershipList(TaskProvider taskProvider, String? username, String partnershipId) {
-    return StreamBuilder<Map<String, dynamic>>(
-      stream: taskProvider.fetchPartnershipStream(partnershipId),
-      builder: (context, snapshot) {
+}
 
-        if (!snapshot.hasData || snapshot.data == null) {
-          return Center(child: Text("Partnership not found."));
+
+class _PartnershipSelector extends StatefulWidget {
+
+  _PartnershipSelector({
+    Key? key,
+
+  }) : super(key: key);
+
+  @override
+  State<_PartnershipSelector> createState() => _PartnershipSelectorState();
+}
+
+class _PartnershipSelectorState extends State<_PartnershipSelector> {
+  late int? _activePartnershipIndex;
+  late List<Partnership> partnerships;
+  late TaskProvider taskProvider;
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void _handlePartnershipSelection(int index) {
+    setState(() {
+      _activePartnershipIndex = index;
+    });
+    taskProvider.setCurrentPartnership(index);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    taskProvider = Provider.of<TaskProvider>(context);
+    _activePartnershipIndex = taskProvider.currentPartnershipIndex;
+    partnerships = taskProvider.partnerships;
+    return ListView.builder(
+      itemCount: partnerships.length,
+      itemBuilder: (context, index) {
+        final isSelected = index == _activePartnershipIndex;
+        Partnership partnership = partnerships[index];
+        return StreamBuilder<Map<String, dynamic>> (
+          stream: taskProvider.fetchPartnershipStream(partnership.id),
+            builder: (context, snapshot)
+        {
+          var partnership = snapshot.data!;
+          return Card(
+            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+            child: ListTile(
+              leading: Checkbox(
+                value: isSelected,
+                onChanged: (_) => _handlePartnershipSelection(index),
+                shape: const CircleBorder(),
+              ),
+              title: Text(
+                partnership['name'],
+                style: TextStyle(
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                ),
+              ),
+              subtitle: Text('Code: ${partnership['secret_code']}'),
+              onTap: () => _handlePartnershipSelection(index),
+            ),
+          );
         }
-
-        var partnership = snapshot.data!;
-        String partnershipName = partnership['name'];
-        List<String> members = partnership['users'];
-        return Column(
-          children: [
-            Text("Group Name: $partnershipName"),
-            SizedBox(height: 10),
-            Text("Members: ${members.join(', ')}"),
-            Text("Partnership code: ${partnership['secret_code']}")
-          ],
         );
       },
     );
   }
 }
-
 
 
 

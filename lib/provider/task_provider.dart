@@ -20,6 +20,9 @@ class TaskProvider extends ChangeNotifier {
   late List<Partnership> _partnerships;
   late Partnership _currentPartnership;
 
+  late int _currentPartnershipIndex;
+  int get currentPartnershipIndex => _currentPartnershipIndex;
+
   String get firstName => _firstName;
 
   String get username => _username;
@@ -56,6 +59,7 @@ class TaskProvider extends ChangeNotifier {
   /// **Set the current partnership**
   Future<void> setCurrentPartnership(int index) async {
     _currentPartnership = partnerships[index];
+    _currentPartnershipIndex = index;
     notifyListeners();
   }
 
