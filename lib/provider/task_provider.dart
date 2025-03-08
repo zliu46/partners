@@ -247,7 +247,8 @@ class TaskProvider extends ChangeNotifier {
     if (partnershipId == "-1") {
       throw Exception('invalid code');
     }
-    _db.joinPartnership(username, partnershipId);
+    String name = await _db.joinPartnership(username, partnershipId);
+    _partnerships.add(Partnership(name, partnershipId));
   }
 
   Future<bool> hasPartnerships() async {

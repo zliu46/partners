@@ -182,14 +182,15 @@ class DatabaseService {
     });
   }
 
-  //TO DO
-  joinPartnership(String username, String partnershipId) {
+
+  Future<String> joinPartnership(String username, String partnershipId) async {
     _db.collection('users').doc(username).update({
       'partnerships': FieldValue.arrayUnion([partnershipId])
     });
     _db.collection('partnerships').doc(partnershipId).update({
       'users': FieldValue.arrayUnion([username])
     });
+    return (await _db.collection('partnerships').doc(partnershipId).get()).get('groupname');
   }
 
   // returns partnership id of partnership with given code

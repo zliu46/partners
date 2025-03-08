@@ -11,14 +11,16 @@ class PartnershipsListPage extends StatefulWidget {
 }
 
 class _PartnershipsListPageState extends State<PartnershipsListPage> {
-  final TextEditingController _partnershipNameController = TextEditingController();
+  final TextEditingController _partnershipNameController =
+      TextEditingController();
+  final TextEditingController _partnershipCodeController =
+  TextEditingController();
   bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     final taskProvider = context.watch<TaskProvider>();
     final username = taskProvider.username; // Get user ID
-    final partnershipId = taskProvider.currentPartnership.id;
 
     return Scaffold(
       appBar: AppBar(title: Text("Partnerships")),
@@ -26,7 +28,9 @@ class _PartnershipsListPageState extends State<PartnershipsListPage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            _buildCreatePartnershipSection(username, taskProvider),
+            _buildCreatePartnershipSection(username),
+            Divider(),
+            _buildJoinPartnershipSection(username),
             Divider(),
             Expanded(child: _PartnershipSelector()),
           ],
@@ -36,10 +40,12 @@ class _PartnershipsListPageState extends State<PartnershipsListPage> {
   }
 
   /// Create Partnership UI**
-  Widget _buildCreatePartnershipSection(String? username, TaskProvider taskProvider) {
+  Widget _buildCreatePartnershipSection(String? username) {
+    TaskProvider taskProvider = Provider.of<TaskProvider>(context);
     return Column(
       children: [
-        Text("Create a Partnership", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+        Text("Create a Partnership",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
         SizedBox(height: 10),
         TextField(
           controller: _partnershipNameController,
@@ -52,37 +58,73 @@ class _PartnershipsListPageState extends State<PartnershipsListPage> {
         _isLoading
             ? CircularProgressIndicator()
             : ElevatedButton(
-          onPressed: () async {
-            final partnershipName = _partnershipNameController.text.trim();
-            if (partnershipName.isEmpty || username == null) return;
+                onPressed: () async {
+                  final partnershipName =
+                      _partnershipNameController.text.trim();
+                  if (partnershipName.isEmpty || username == null) return;
 
-            setState(() => _isLoading = true);
+                  setState(() => _isLoading = true);
 
-            String newPartnershipId = await taskProvider.createPartnership(partnershipName);
+                  String newPartnershipId =
+                      await taskProvider.createPartnership(partnershipName);
 
-            setState(() => _isLoading = false);
+                  setState(() => _isLoading = false);
 
-            if (newPartnershipId.isNotEmpty) {
-              taskProvider.setPartnershipId(newPartnershipId);
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Partnership Created!")));
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Failed to create partnership.")));
-            }
-          },
-          child: Text("Create Partnership"),
-        ),
+                  if (newPartnershipId.isNotEmpty) {
+                    taskProvider.setPartnershipId(newPartnershipId);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Partnership Created!")));
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text("Failed to create partnership.")));
+                  }
+                },
+                child: Text("Create Partnership"),
+              ),
       ],
     );
   }
 
+  /// Join Partnership UI**
+  Widget _buildJoinPartnershipSection(String? username) {
+    TaskProvider taskProvider = Provider.of<TaskProvider>(context);
+    return Column(
+      children: [
+        Text("Join a Partnership",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+        SizedBox(height: 10),
+        TextField(
+          controller: _partnershipCodeController,
+          decoration: InputDecoration(
+            labelText: "Enter Partnership Code",
+            border: OutlineInputBorder(),
+          ),
+        ),
+        SizedBox(height: 10),
+        _isLoading
+            ? CircularProgressIndicator()
+            : ElevatedButton(
+          onPressed: () async {
+            final partnershipCode =
+            _partnershipCodeController.text.trim();
+            if (partnershipCode.isEmpty || username == null) return;
+
+            setState(() => _isLoading = true);
+
+            await taskProvider.joinPartnership(partnershipCode);
+
+            setState(() => _isLoading = false);
+          },
+          child: Text("Join Partnership"),
+        ),
+      ],
+    );
+  }
 }
 
-
 class _PartnershipSelector extends StatefulWidget {
-
   _PartnershipSelector({
     Key? key,
-
   }) : super(key: key);
 
   @override
@@ -115,35 +157,74 @@ class _PartnershipSelectorState extends State<_PartnershipSelector> {
       itemBuilder: (context, index) {
         final isSelected = index == _activePartnershipIndex;
         Partnership partnership = partnerships[index];
-        return StreamBuilder<Map<String, dynamic>> (
-          stream: taskProvider.fetchPartnershipStream(partnership.id),
-            builder: (context, snapshot)
-        {
-          var partnership = snapshot.data!;
-          return Card(
-            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-            child: ListTile(
-              leading: Checkbox(
-                value: isSelected,
-                onChanged: (_) => _handlePartnershipSelection(index),
-                shape: const CircleBorder(),
-              ),
-              title: Text(
-                partnership['name'],
-                style: TextStyle(
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+        return StreamBuilder<Map<String, dynamic>>(
+            stream: taskProvider.fetchPartnershipStream(partnership.id),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting &&
+                  !snapshot.hasData) {
+                // Only show loading indicator on initial load when we have no data
+                return const Card(
+                  margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  child: ListTile(
+                    title: Text('Loading...'),
+                    leading: SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  ),
+                );
+              }
+
+              if (snapshot.hasError) {
+                return Card(
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  child: ListTile(
+                    title: const Text('Error loading partnership'),
+                    subtitle: Text('${snapshot.error}'),
+                    leading: const Icon(Icons.error, color: Colors.red),
+                  ),
+                );
+              }
+
+              // If we have data, use it even during refresh to prevent flickering
+              // Only show "no data" if we're not loading and there's really no data
+              if (!snapshot.hasData || snapshot.data == null) {
+                return const Card(
+                  margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  child: ListTile(
+                    title: Text('No data available'),
+                    leading: Icon(Icons.info_outline),
+                  ),
+                );
+              }
+
+              // Now safe to use the data
+              var partnershipData = snapshot.data!;
+
+              return Card(
+                margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                child: ListTile(
+                  leading: Checkbox(
+                    value: isSelected,
+                    onChanged: (_) => _handlePartnershipSelection(index),
+                    shape: const CircleBorder(),
+                  ),
+                  title: Text(
+                    partnershipData['name'] ?? 'Unnamed Partnership',
+                    style: TextStyle(
+                      fontWeight:
+                          isSelected ? FontWeight.bold : FontWeight.normal,
+                    ),
+                  ),
+                  subtitle:
+                      Text('Code: ${partnershipData['secret_code'] ?? 'N/A'}'),
+                  onTap: () => _handlePartnershipSelection(index),
                 ),
-              ),
-              subtitle: Text('Code: ${partnership['secret_code']}'),
-              onTap: () => _handlePartnershipSelection(index),
-            ),
-          );
-        }
-        );
+              );
+            });
       },
     );
   }
 }
-
-
-
