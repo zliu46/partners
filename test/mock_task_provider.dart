@@ -16,8 +16,10 @@ class MockTaskProvider extends Mock implements TaskProvider {
   List<TaskDetails> upcomingTasks = [];
 
   @override
-  String firstName = '';
+  String firstName = 'test';
 
+  @override
+  String username = 'testUser';
   @override
   List<TaskDetails> getOngoingTasks() {
     return [];
