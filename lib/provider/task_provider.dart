@@ -130,6 +130,7 @@ class TaskProvider extends ChangeNotifier {
         body: "Your task '$title'",
         hour: startTime.hour,
         minute: startTime.minute,
+        second: 10,
       );
     }
   }

@@ -67,6 +67,7 @@ class NotiService {
     required String body,
     required int hour,
     required int minute,
+    required int second,
 
   }) async {
      final now = tz.TZDateTime.now(tz.local);
@@ -78,6 +79,7 @@ class NotiService {
        now.day,
        hour,
        minute,
+       second,
      );
 
      await notificationsPlugin.zonedSchedule(

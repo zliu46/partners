@@ -39,6 +39,7 @@ class NotificationTestPage extends StatelessWidget {
                   body: "This is a test scheduled notification.",
                   hour : 19,
                   minute: 19,
+                  second: 10,
                 );
               },
               child: Text("Schedule Notification"),
