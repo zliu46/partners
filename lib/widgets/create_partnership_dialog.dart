@@ -28,9 +28,11 @@ class _CreatePartnershipDialogState extends State<CreatePartnershipDialog> {
           child: const Text("Cancel"),
         ),
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             if (nameController.text.isNotEmpty) {
-              taskProvider.createPartnership(nameController.text);
+              await taskProvider.createPartnership(nameController.text);
+              await taskProvider.fetchPartnerships();
+              await taskProvider.setCurrentPartnership(0);
               Navigator.pushReplacementNamed(context, '/home');
             }
           },
