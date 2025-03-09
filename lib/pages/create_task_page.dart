@@ -403,17 +403,20 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
             return;
           }
           taskProvider.addTask(
-              _titleController.text,
-              _category!,
-              _descriptionController.text,
-              taskProvider.firstName,
-              DateTime(_selectedDate!.year, _selectedDate!.month,
-                  _selectedDate!.day, _startTime!.hour, _startTime!.minute),
-              _assignedTo ?? '',
-              _endTime != null
-                  ? DateTime(_selectedDate!.year, _selectedDate!.month,
-                      _selectedDate!.day, _endTime!.hour, _endTime!.minute)
-                  : null);
+            _titleController.text,
+            _category!,
+            _descriptionController.text,
+            taskProvider.firstName,
+            DateTime(_selectedDate!.year, _selectedDate!.month,
+                _selectedDate!.day, _startTime!.hour, _startTime!.minute),
+            _assignedTo ?? '',
+            _enableNotification,
+            _endTime != null
+                ? DateTime(_selectedDate!.year, _selectedDate!.month,
+                    _selectedDate!.day, _endTime!.hour, _endTime!.minute)
+                : null,
+          );
+
           // Show a success message
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Task added successfully!')),
