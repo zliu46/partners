@@ -1,11 +1,30 @@
 import 'dart:ui';
 
 import 'package:mockito/mockito.dart';
+import 'package:partners/model/partnership.dart';
 import 'package:partners/model/task_category.dart';
 import 'package:partners/model/task_details.dart';
 import 'package:partners/provider/task_provider.dart';
 
 class MockTaskProvider extends Mock implements TaskProvider {
+
+  @override
+  late List<Partnership> partnerships;
+
+  late Partnership _currentPartnership;
+
+  late int _currentPartnershipIndex;
+  @override
+  int get currentPartnershipIndex => _currentPartnershipIndex;
+
+  @override
+  Future<void> setCurrentPartnership(int index) async {
+    _currentPartnership = partnerships[index];
+    _currentPartnershipIndex = index;
+    notifyListeners();
+  }
+
+
   @override
   List<TaskCategory> categories = [];
 

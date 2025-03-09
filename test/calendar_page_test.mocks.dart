@@ -67,6 +67,14 @@ class MockTaskProvider extends _i1.Mock implements _i5.TaskProvider {
   );
 
   @override
+  int get currentPartnershipIndex =>
+      (super.noSuchMethod(
+            Invocation.getter(#currentPartnershipIndex),
+            returnValue: 0,
+          )
+          as int);
+
+  @override
   String get firstName =>
       (super.noSuchMethod(
             Invocation.getter(#firstName),
@@ -339,11 +347,11 @@ class MockTaskProvider extends _i1.Mock implements _i5.TaskProvider {
   void addUser(
     String? username,
     String? email,
-    String? first_name,
-    String? last_name,
+    String? firstName,
+    String? lastName,
     String? uid,
   ) => super.noSuchMethod(
-    Invocation.method(#addUser, [username, email, first_name, last_name, uid]),
+    Invocation.method(#addUser, [username, email, firstName, lastName, uid]),
     returnValueForMissingStub: null,
   );
 

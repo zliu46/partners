@@ -79,12 +79,12 @@ class _PartnershipsListPageState extends State<PartnershipsListPage> {
                         content: Text("Failed to create partnership.")));
                   }
                 },
-                child: Text("Create Partnership"),
-              ),
+        ),
       ],
     );
   }
 
+  child: Text("Create Partnership"),
   /// Join Partnership UI**
   Widget _buildJoinPartnershipSection(String? username) {
     TaskProvider taskProvider = Provider.of<TaskProvider>(context);
