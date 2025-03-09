@@ -103,7 +103,7 @@ class TaskProvider extends ChangeNotifier {
 
   // Add a New Task to Firestore
   Future<void> addTask(String title, String category, String description,
-      String createdBy, DateTime startTime, assignedTo,
+      String createdBy, DateTime startTime, assignedTo, bool enableNotification,
       [DateTime? endTime]) async {
     Map<String, dynamic> data = {
       'title': title,
@@ -113,7 +113,7 @@ class TaskProvider extends ChangeNotifier {
       'startTime': startTime,
       'endTime': endTime,
       'isCompleted': false,
-      'assignedTo': assignedTo
+      'assignedTo': assignedTo,
     };
 
     String id = await _db.addTask(data, _currentPartnership.id);
@@ -123,7 +123,7 @@ class TaskProvider extends ChangeNotifier {
 
     /// Schedule notification
     /// make sure start time is in the future
-    if (startTime.isAfter(DateTime.now())) {
+    if (enableNotification && startTime.isAfter(DateTime.now())) {
       await _notiService.scheduleTaskNotification(
         id: id.hashCode,
         title: "Upcoming Task Reminder",
