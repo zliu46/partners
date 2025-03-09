@@ -35,16 +35,65 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     }
   }
 
+  // Future<void> _selectTime({required bool isStartTime}) async {
+  //   final TimeOfDay? picked = await showTimePicker(
+  //     context: context,
+  //     initialTime: TimeOfDay.now(),
+  //   );
+  //   if (picked != null) {
+  //     setState(() {
+  //       if (isStartTime) {
+  //         _startTime = picked;
+  //       } else {
+  //         _endTime = picked;
+  //       }
+  //     });
+  //   }
+  // }
   Future<void> _selectTime({required bool isStartTime}) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
     );
+
     if (picked != null) {
+      final now = DateTime.now();
+      final selectedDate = _selectedDate ?? now; // Use selected date if available, else today
+      final selectedDateTime = DateTime(
+        selectedDate.year, selectedDate.month, selectedDate.day, picked.hour, picked.minute,
+      );
+
+      // Ensure selected time is in the future
+      if (selectedDateTime.isBefore(now)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Please select a future time")),
+        );
+        return;
+      }
+
       setState(() {
         if (isStartTime) {
           _startTime = picked;
         } else {
+          if (_startTime == null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Please select a start time first")),
+            );
+            return;
+          }
+
+          // Convert TimeOfDay to DateTime for comparison
+          final startDateTime = DateTime(
+            selectedDate.year, selectedDate.month, selectedDate.day, _startTime!.hour, _startTime!.minute,
+          );
+
+          if (selectedDateTime.isBefore(startDateTime)) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("End time must be after start time")),
+            );
+            return;
+          }
+
           _endTime = picked;
         }
       });
