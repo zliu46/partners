@@ -20,6 +20,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
 
   String? _category;
   String? _assignedTo;
+  bool _enableNotification = false; // Default: No Notification
 
   Future<void> _selectDate() async {
     final DateTime? picked = await showDatePicker(
@@ -365,7 +366,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     );
   }
 
-  Widget _notificationBar(){
+  Widget _notificationBar() {
     return Row(
       children: [
         Icon(Icons.notifications, color: Colors.black),
@@ -373,15 +374,19 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         Expanded(
           child: SwitchListTile(
             title: Text('Get Alert for This Task'),
-            value: false,
-            onChanged: (value) {
-              // Handle switch logic
+            value: _enableNotification, // Bind to state variable
+            onChanged: (bool value) {
+              setState(() {
+                _enableNotification = value; // Update state properly
+              });
+              print("Notification Toggle: $_enableNotification"); // Debugging
             },
           ),
         ),
       ],
     );
   }
+
 
   Widget _buildCreateTaskButton(TaskProvider taskProvider) {
     return Center(
