@@ -122,13 +122,16 @@ class TaskProvider extends ChangeNotifier {
     notifyListeners();
 
     /// Schedule notification
-    await _notiService.scheduleTaskNotification(
-      id: id.hashCode,
-      title: "Upcoming Task Reminder",
-      body: "Your task '$title'",
-      hour : startTime.hour,
-      minute: startTime.minute,
-    );
+    /// make sure start time is in the future
+    if (startTime.isAfter(DateTime.now())) {
+      await _notiService.scheduleTaskNotification(
+        id: id.hashCode,
+        title: "Upcoming Task Reminder",
+        body: "Your task '$title'",
+        hour: startTime.hour,
+        minute: startTime.minute,
+      );
+    }
   }
 
   //  Delete a Task
