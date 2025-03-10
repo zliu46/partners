@@ -197,6 +197,7 @@ class _PartnershipSelectorState extends State<_PartnershipSelector> {
                 );
               }
               var partnershipData = snapshot.data!;
+
               return Card(
                 margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                 child: ListTile(
@@ -212,8 +213,10 @@ class _PartnershipSelectorState extends State<_PartnershipSelector> {
                           isSelected ? FontWeight.bold : FontWeight.normal,
                     ),
                   ),
-                  subtitle:
-                      Text('Code: ${partnershipData['secret_code'] ?? 'N/A'}'),
+                  subtitle: Text(
+                    'Code: ${partnershipData['secret_code'] ?? 'N/A'}\n'
+                    'Partners: ${partnershipData['users'].isNotEmpty ? partnershipData['users'].join(', ') : 'No users'}',
+                  ),
                   onTap: () => _handlePartnershipSelection(index),
                 ),
               );
