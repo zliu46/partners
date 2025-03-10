@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:partners/pages/splash_screen.dart';
 import 'package:partners/provider/noti_service.dart';
 import 'package:partners/provider/task_provider.dart';
 import 'package:partners/pages/calendar_page.dart';
@@ -45,7 +46,8 @@ class MyApp extends StatelessWidget {
       // Define routes
       initialRoute: '/',
       routes: {
-        '/': (context) => WelcomePage(),
+        '/': (context) => SplashScreen(),
+        '/welcome': (context) => WelcomePage(),
         '/login': (context) => LoginPage(),
         '/signUp': (context) => SignUpPage(),
         '/home': (context) => HomePage(),// Add other pages here
