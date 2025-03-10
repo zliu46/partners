@@ -211,7 +211,8 @@ class MockTaskProvider extends _i1.Mock implements _i5.TaskProvider {
     String? description,
     String? createdBy,
     DateTime? startTime,
-    dynamic assignedTo, [
+    dynamic assignedTo,
+    bool? enableNotification, [
     DateTime? endTime,
   ]) =>
       (super.noSuchMethod(
@@ -222,6 +223,7 @@ class MockTaskProvider extends _i1.Mock implements _i5.TaskProvider {
               createdBy,
               startTime,
               assignedTo,
+              enableNotification,
               endTime,
             ]),
             returnValue: _i8.Future<void>.value(),
