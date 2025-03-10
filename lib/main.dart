@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:partners/pages/splash_screen.dart';
+import 'package:partners/provider/auth_service.dart';
 import 'package:partners/provider/database_service.dart';
 import 'package:partners/provider/noti_service.dart';
 import 'package:partners/provider/task_provider.dart';
@@ -24,12 +25,10 @@ void main() async {
   );
 
   runApp(
-    MultiProvider(
-        providers: [
-          ChangeNotifierProvider<TaskProvider>(create: (_) => TaskProvider(db: DatabaseService())),
-        ],
-        child: const MyApp()
-    ),
+    MultiProvider(providers: [
+      ChangeNotifierProvider<TaskProvider>(
+          create: (_) => TaskProvider(db: DatabaseService(), auth: AuthService(), noti: NotiService())),
+    ], child: const MyApp()),
   );
 }
 
@@ -51,14 +50,13 @@ class MyApp extends StatelessWidget {
         '/welcome': (context) => WelcomePage(),
         '/login': (context) => LoginPage(),
         '/signUp': (context) => SignUpPage(),
-        '/home': (context) => HomePage(),// Add other pages here
-        '/taskCategories' : (context) => TaskCategoriesPage(),
-        '/profile' : (context) => ProfilePage(),
-        '/upcomingTask' : (context) => UpcomingTaskPage(),
-        '/calendar' : (context) => CalendarPage(),
-        '/createTask' : (context) => CreateTaskPage(),
+        '/home': (context) => HomePage(), // Add other pages here
+        '/taskCategories': (context) => TaskCategoriesPage(),
+        '/profile': (context) => ProfilePage(),
+        '/upcomingTask': (context) => UpcomingTaskPage(),
+        '/calendar': (context) => CalendarPage(),
+        '/createTask': (context) => CreateTaskPage(),
       },
     );
   }
 }
-

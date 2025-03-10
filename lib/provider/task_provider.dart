@@ -10,16 +10,29 @@ import 'database_service.dart';
 class TaskProvider extends ChangeNotifier {
   // Implement a database
   final DatabaseService _db;
-  final AuthService _auth = AuthService();
-  final NotiService _notiService = NotiService();
+  final AuthService _auth;
+  final NotiService _notiService;
 
-  TaskProvider({required DatabaseService db}) : _db = db;
+  TaskProvider(
+      {required DatabaseService db,
+      required AuthService auth,
+      required NotiService noti})
+      : _db = db,
+        _auth = auth,
+        _notiService = noti;
 
   List<TaskDetails> _tasks = [];
   List<TaskCategory> _categories = [];
+
+  // Get Categories
+  List<TaskCategory> get categories => _categories;
+
+  // Get Tasks
+  List<TaskDetails> get tasks => _tasks;
+
   late String _firstName;
   late String _username;
-  late List<Partnership> _partnerships;
+  late List<Partnership> _partnerships = [];
   late Partnership _currentPartnership;
 
   late int _currentPartnershipIndex;
@@ -72,12 +85,6 @@ class TaskProvider extends ChangeNotifier {
     return _tasks.where((task) => task.category == category).toList();
   }
 
-  // Get Categories
-  List<TaskCategory> get categories => _categories;
-
-  // Get Tasks
-  List<TaskDetails> get tasks => _tasks;
-
   // Get Ongoing Tasks (Tasks that have started but are not completed)
   List<TaskDetails> get ongoingTasks => _tasks
       .where((task) =>
@@ -107,7 +114,7 @@ class TaskProvider extends ChangeNotifier {
       'description': description,
       'createdBy': createdBy,
       'startTime': startTime,
-      'endTime': endTime,
+      'endTime': endTime ?? startTime,
       'isCompleted': false,
       'assignedTo': assignedTo,
     };
@@ -167,18 +174,15 @@ class TaskProvider extends ChangeNotifier {
   Future<void> changeCompletion(String id) async {
     int index = _tasks.indexWhere((task) => task.id == id);
     if (index != -1) {
-      // Update database
       await _db.updateCompletion(id, _currentPartnership.id);
+      _tasks[index].isCompleted = !_tasks[index].isCompleted;
       notifyListeners();
-      // Note: We don't need to update _tasks or call notifyListeners() again
-      // The stream will handle that when the database changes propagate
     }
   }
 
   TaskDetails getTaskById(String id) {
     return _tasks.where((TaskDetails task) => task.id == id).toList()[0];
   }
-
 
   List<TaskDetails> getTasksForDate(DateTime selectedDate) {
     return _tasks.where((task) {
@@ -191,12 +195,11 @@ class TaskProvider extends ChangeNotifier {
   //Fetch partnerships for user
   Future<void> fetchPartnerships() async {
     List<dynamic> partnerships = await _db.getPartnerships(username);
-    _partnerships = [];
+
     for (String id in partnerships) {
       String name = await _db.getPartnershipWithId(id);
       _partnerships.add(Partnership(name, id));
     }
-    print(_partnerships);
   }
 
   //Fetch Tasks from Firestore Live Stream
@@ -229,8 +232,8 @@ class TaskProvider extends ChangeNotifier {
     return await _auth.signUp(email, password);
   }
 
-  void addUser(String username, String email, String firstName,
-      String lastName, String uid) {
+  void addUser(String username, String email, String firstName, String lastName,
+      String uid) {
     _db.addUser(username, email, firstName, lastName, uid);
   }
 
@@ -241,6 +244,7 @@ class TaskProvider extends ChangeNotifier {
   Future<String> createPartnership(String partnershipName) async {
     String partnershipId = await _db.createPartnership(partnershipName);
     _db.joinPartnership(username, partnershipId);
+    _partnerships.add(Partnership(partnershipName, partnershipId));
     return partnershipId;
   }
 
@@ -261,7 +265,6 @@ class TaskProvider extends ChangeNotifier {
   Stream<List<TaskDetails>> getCompletedTasksStream() {
     return _db.fetchCompletedTasksStream(_currentPartnership.id);
   }
-
 
   // return list of all users in partnership
   Future<List<String>> getPartnershipUsers() async {

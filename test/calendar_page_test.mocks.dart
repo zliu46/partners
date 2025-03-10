@@ -8,9 +8,9 @@ import 'dart:ui' as _i9;
 
 import 'package:firebase_auth/firebase_auth.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i6;
+import 'package:mockito/src/dummies.dart' as _i7;
 import 'package:partners/model/partnership.dart' as _i3;
-import 'package:partners/model/task_category.dart' as _i7;
+import 'package:partners/model/task_category.dart' as _i6;
 import 'package:partners/model/task_details.dart' as _i4;
 import 'package:partners/provider/task_provider.dart' as _i5;
 
@@ -67,6 +67,22 @@ class MockTaskProvider extends _i1.Mock implements _i5.TaskProvider {
   );
 
   @override
+  List<_i6.TaskCategory> get categories =>
+      (super.noSuchMethod(
+            Invocation.getter(#categories),
+            returnValue: <_i6.TaskCategory>[],
+          )
+          as List<_i6.TaskCategory>);
+
+  @override
+  List<_i4.TaskDetails> get tasks =>
+      (super.noSuchMethod(
+            Invocation.getter(#tasks),
+            returnValue: <_i4.TaskDetails>[],
+          )
+          as List<_i4.TaskDetails>);
+
+  @override
   int get currentPartnershipIndex =>
       (super.noSuchMethod(
             Invocation.getter(#currentPartnershipIndex),
@@ -78,7 +94,7 @@ class MockTaskProvider extends _i1.Mock implements _i5.TaskProvider {
   String get firstName =>
       (super.noSuchMethod(
             Invocation.getter(#firstName),
-            returnValue: _i6.dummyValue<String>(
+            returnValue: _i7.dummyValue<String>(
               this,
               Invocation.getter(#firstName),
             ),
@@ -89,7 +105,7 @@ class MockTaskProvider extends _i1.Mock implements _i5.TaskProvider {
   String get username =>
       (super.noSuchMethod(
             Invocation.getter(#username),
-            returnValue: _i6.dummyValue<String>(
+            returnValue: _i7.dummyValue<String>(
               this,
               Invocation.getter(#username),
             ),
@@ -114,22 +130,6 @@ class MockTaskProvider extends _i1.Mock implements _i5.TaskProvider {
             ),
           )
           as _i3.Partnership);
-
-  @override
-  List<_i7.TaskCategory> get categories =>
-      (super.noSuchMethod(
-            Invocation.getter(#categories),
-            returnValue: <_i7.TaskCategory>[],
-          )
-          as List<_i7.TaskCategory>);
-
-  @override
-  List<_i4.TaskDetails> get tasks =>
-      (super.noSuchMethod(
-            Invocation.getter(#tasks),
-            returnValue: <_i4.TaskDetails>[],
-          )
-          as List<_i4.TaskDetails>);
 
   @override
   List<_i4.TaskDetails> get ongoingTasks =>
@@ -372,7 +372,7 @@ class MockTaskProvider extends _i1.Mock implements _i5.TaskProvider {
       (super.noSuchMethod(
             Invocation.method(#createPartnership, [partnershipName]),
             returnValue: _i8.Future<String>.value(
-              _i6.dummyValue<String>(
+              _i7.dummyValue<String>(
                 this,
                 Invocation.method(#createPartnership, [partnershipName]),
               ),

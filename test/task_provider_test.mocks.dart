@@ -3,14 +3,19 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i4;
+import 'dart:async' as _i6;
 
 import 'package:cloud_firestore/cloud_firestore.dart' as _i2;
+import 'package:firebase_auth/firebase_auth.dart' as _i3;
+import 'package:flutter_local_notifications/flutter_local_notifications.dart'
+    as _i4;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i5;
-import 'package:partners/model/task_category.dart' as _i7;
-import 'package:partners/model/task_details.dart' as _i6;
-import 'package:partners/provider/database_service.dart' as _i3;
+import 'package:mockito/src/dummies.dart' as _i7;
+import 'package:partners/model/task_category.dart' as _i9;
+import 'package:partners/model/task_details.dart' as _i8;
+import 'package:partners/provider/auth_service.dart' as _i10;
+import 'package:partners/provider/database_service.dart' as _i5;
+import 'package:partners/provider/noti_service.dart' as _i11;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -32,10 +37,30 @@ class _FakeQueryDocumentSnapshot_0<T extends Object?> extends _i1.SmartFake
     : super(parent, parentInvocation);
 }
 
+class _FakeUserCredential_1 extends _i1.SmartFake
+    implements _i3.UserCredential {
+  _FakeUserCredential_1(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeFlutterLocalNotificationsPlugin_2 extends _i1.SmartFake
+    implements _i4.FlutterLocalNotificationsPlugin {
+  _FakeFlutterLocalNotificationsPlugin_2(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(parent, parentInvocation);
+}
+
+class _FakeNotificationDetails_3 extends _i1.SmartFake
+    implements _i4.NotificationDetails {
+  _FakeNotificationDetails_3(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
 /// A class which mocks [DatabaseService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockDatabaseService extends _i1.Mock implements _i3.DatabaseService {
+class MockDatabaseService extends _i1.Mock implements _i5.DatabaseService {
   MockDatabaseService() {
     _i1.throwOnMissingStub(this);
   }
@@ -52,12 +77,12 @@ class MockDatabaseService extends _i1.Mock implements _i3.DatabaseService {
   );
 
   @override
-  _i4.Future<_i2.QueryDocumentSnapshot<Map<String, dynamic>>> findUser(
+  _i6.Future<_i2.QueryDocumentSnapshot<Map<String, dynamic>>> findUser(
     String? uid,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#findUser, [uid]),
-            returnValue: _i4.Future<
+            returnValue: _i6.Future<
               _i2.QueryDocumentSnapshot<Map<String, dynamic>>
             >.value(
               _FakeQueryDocumentSnapshot_0<Map<String, dynamic>>(
@@ -66,31 +91,31 @@ class MockDatabaseService extends _i1.Mock implements _i3.DatabaseService {
               ),
             ),
           )
-          as _i4.Future<_i2.QueryDocumentSnapshot<Map<String, dynamic>>>);
+          as _i6.Future<_i2.QueryDocumentSnapshot<Map<String, dynamic>>>);
 
   @override
-  _i4.Future<bool> checkUsernameTaken(String? username) =>
+  _i6.Future<bool> checkUsernameTaken(String? username) =>
       (super.noSuchMethod(
             Invocation.method(#checkUsernameTaken, [username]),
-            returnValue: _i4.Future<bool>.value(false),
+            returnValue: _i6.Future<bool>.value(false),
           )
-          as _i4.Future<bool>);
+          as _i6.Future<bool>);
 
   @override
-  _i4.Future<String> addTask(
+  _i6.Future<String> addTask(
     Map<String, dynamic>? data,
     String? partnershipId,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#addTask, [data, partnershipId]),
-            returnValue: _i4.Future<String>.value(
-              _i5.dummyValue<String>(
+            returnValue: _i6.Future<String>.value(
+              _i7.dummyValue<String>(
                 this,
                 Invocation.method(#addTask, [data, partnershipId]),
               ),
             ),
           )
-          as _i4.Future<String>);
+          as _i6.Future<String>);
 
   @override
   void deleteTask(String? taskId, String? partnershipId) => super.noSuchMethod(
@@ -106,130 +131,245 @@ class MockDatabaseService extends _i1.Mock implements _i3.DatabaseService {
       );
 
   @override
-  _i4.Future<void> updateCompletion(String? taskId, String? partnershipId) =>
+  _i6.Future<void> updateCompletion(String? taskId, String? partnershipId) =>
       (super.noSuchMethod(
             Invocation.method(#updateCompletion, [taskId, partnershipId]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i6.Future<void>);
 
   @override
-  _i4.Stream<List<_i6.TaskDetails>> fetchTasksStream(String? partnershipId) =>
+  _i6.Stream<List<_i8.TaskDetails>> fetchTasksStream(String? partnershipId) =>
       (super.noSuchMethod(
             Invocation.method(#fetchTasksStream, [partnershipId]),
-            returnValue: _i4.Stream<List<_i6.TaskDetails>>.empty(),
+            returnValue: _i6.Stream<List<_i8.TaskDetails>>.empty(),
           )
-          as _i4.Stream<List<_i6.TaskDetails>>);
+          as _i6.Stream<List<_i8.TaskDetails>>);
 
   @override
-  _i4.Stream<List<_i7.TaskCategory>> fetchCategoriesStream(
+  _i6.Stream<List<_i9.TaskCategory>> fetchCategoriesStream(
     String? partnershipId,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#fetchCategoriesStream, [partnershipId]),
-            returnValue: _i4.Stream<List<_i7.TaskCategory>>.empty(),
+            returnValue: _i6.Stream<List<_i9.TaskCategory>>.empty(),
           )
-          as _i4.Stream<List<_i7.TaskCategory>>);
+          as _i6.Stream<List<_i9.TaskCategory>>);
 
   @override
-  _i4.Future<String> createPartnership(String? partnershipName) =>
+  _i6.Future<String> createPartnership(String? partnershipName) =>
       (super.noSuchMethod(
             Invocation.method(#createPartnership, [partnershipName]),
-            returnValue: _i4.Future<String>.value(
-              _i5.dummyValue<String>(
+            returnValue: _i6.Future<String>.value(
+              _i7.dummyValue<String>(
                 this,
                 Invocation.method(#createPartnership, [partnershipName]),
               ),
             ),
           )
-          as _i4.Future<String>);
+          as _i6.Future<String>);
 
   @override
-  _i4.Future<String> generateUniqueCode() =>
+  _i6.Future<String> generateUniqueCode() =>
       (super.noSuchMethod(
             Invocation.method(#generateUniqueCode, []),
-            returnValue: _i4.Future<String>.value(
-              _i5.dummyValue<String>(
+            returnValue: _i6.Future<String>.value(
+              _i7.dummyValue<String>(
                 this,
                 Invocation.method(#generateUniqueCode, []),
               ),
             ),
           )
-          as _i4.Future<String>);
+          as _i6.Future<String>);
 
   @override
-  _i4.Stream<Map<String, dynamic>> fetchPartnershipStream(
+  _i6.Stream<Map<String, dynamic>> fetchPartnershipStream(
     String? partnershipId,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#fetchPartnershipStream, [partnershipId]),
-            returnValue: _i4.Stream<Map<String, dynamic>>.empty(),
+            returnValue: _i6.Stream<Map<String, dynamic>>.empty(),
           )
-          as _i4.Stream<Map<String, dynamic>>);
+          as _i6.Stream<Map<String, dynamic>>);
 
   @override
-  _i4.Future<String> joinPartnership(String? username, String? partnershipId) =>
+  _i6.Future<String> joinPartnership(String? username, String? partnershipId) =>
       (super.noSuchMethod(
             Invocation.method(#joinPartnership, [username, partnershipId]),
-            returnValue: _i4.Future<String>.value(
-              _i5.dummyValue<String>(
+            returnValue: _i6.Future<String>.value(
+              _i7.dummyValue<String>(
                 this,
                 Invocation.method(#joinPartnership, [username, partnershipId]),
               ),
             ),
           )
-          as _i4.Future<String>);
+          as _i6.Future<String>);
 
   @override
-  _i4.Future<String> findPartnershipWithCode(String? code) =>
+  _i6.Future<String> findPartnershipWithCode(String? code) =>
       (super.noSuchMethod(
             Invocation.method(#findPartnershipWithCode, [code]),
-            returnValue: _i4.Future<String>.value(
-              _i5.dummyValue<String>(
+            returnValue: _i6.Future<String>.value(
+              _i7.dummyValue<String>(
                 this,
                 Invocation.method(#findPartnershipWithCode, [code]),
               ),
             ),
           )
-          as _i4.Future<String>);
+          as _i6.Future<String>);
 
   @override
-  _i4.Future<List<dynamic>> getPartnerships(String? username) =>
+  _i6.Future<List<dynamic>> getPartnerships(String? username) =>
       (super.noSuchMethod(
             Invocation.method(#getPartnerships, [username]),
-            returnValue: _i4.Future<List<dynamic>>.value(<dynamic>[]),
+            returnValue: _i6.Future<List<dynamic>>.value(<dynamic>[]),
           )
-          as _i4.Future<List<dynamic>>);
+          as _i6.Future<List<dynamic>>);
 
   @override
-  _i4.Future<String> getPartnershipWithId(String? id) =>
+  _i6.Future<String> getPartnershipWithId(String? id) =>
       (super.noSuchMethod(
             Invocation.method(#getPartnershipWithId, [id]),
-            returnValue: _i4.Future<String>.value(
-              _i5.dummyValue<String>(
+            returnValue: _i6.Future<String>.value(
+              _i7.dummyValue<String>(
                 this,
                 Invocation.method(#getPartnershipWithId, [id]),
               ),
             ),
           )
-          as _i4.Future<String>);
+          as _i6.Future<String>);
 
   @override
-  _i4.Future<List<String>> getUsers(String? partnershipId) =>
+  _i6.Future<List<String>> getUsers(String? partnershipId) =>
       (super.noSuchMethod(
             Invocation.method(#getUsers, [partnershipId]),
-            returnValue: _i4.Future<List<String>>.value(<String>[]),
+            returnValue: _i6.Future<List<String>>.value(<String>[]),
           )
-          as _i4.Future<List<String>>);
+          as _i6.Future<List<String>>);
 
   @override
-  _i4.Stream<List<_i6.TaskDetails>> fetchCompletedTasksStream(
+  _i6.Stream<List<_i8.TaskDetails>> fetchCompletedTasksStream(
     String? partnershipId,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#fetchCompletedTasksStream, [partnershipId]),
-            returnValue: _i4.Stream<List<_i6.TaskDetails>>.empty(),
+            returnValue: _i6.Stream<List<_i8.TaskDetails>>.empty(),
           )
-          as _i4.Stream<List<_i6.TaskDetails>>);
+          as _i6.Stream<List<_i8.TaskDetails>>);
+}
+
+/// A class which mocks [AuthService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAuthService extends _i1.Mock implements _i10.AuthService {
+  MockAuthService() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i6.Future<_i3.UserCredential> signIn(String? email, String? password) =>
+      (super.noSuchMethod(
+            Invocation.method(#signIn, [email, password]),
+            returnValue: _i6.Future<_i3.UserCredential>.value(
+              _FakeUserCredential_1(
+                this,
+                Invocation.method(#signIn, [email, password]),
+              ),
+            ),
+          )
+          as _i6.Future<_i3.UserCredential>);
+
+  @override
+  _i6.Future<_i3.UserCredential> signUp(String? email, String? password) =>
+      (super.noSuchMethod(
+            Invocation.method(#signUp, [email, password]),
+            returnValue: _i6.Future<_i3.UserCredential>.value(
+              _FakeUserCredential_1(
+                this,
+                Invocation.method(#signUp, [email, password]),
+              ),
+            ),
+          )
+          as _i6.Future<_i3.UserCredential>);
+}
+
+/// A class which mocks [NotiService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockNotiService extends _i1.Mock implements _i11.NotiService {
+  MockNotiService() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.FlutterLocalNotificationsPlugin get notificationsPlugin =>
+      (super.noSuchMethod(
+            Invocation.getter(#notificationsPlugin),
+            returnValue: _FakeFlutterLocalNotificationsPlugin_2(
+              this,
+              Invocation.getter(#notificationsPlugin),
+            ),
+          )
+          as _i4.FlutterLocalNotificationsPlugin);
+
+  @override
+  _i6.Future<void> initNotification() =>
+      (super.noSuchMethod(
+            Invocation.method(#initNotification, []),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
+
+  @override
+  _i4.NotificationDetails notificationDetails() =>
+      (super.noSuchMethod(
+            Invocation.method(#notificationDetails, []),
+            returnValue: _FakeNotificationDetails_3(
+              this,
+              Invocation.method(#notificationDetails, []),
+            ),
+          )
+          as _i4.NotificationDetails);
+
+  @override
+  _i6.Future<void> showNotification({
+    required int? id,
+    required String? title,
+    required String? body,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#showNotification, [], {
+              #id: id,
+              #title: title,
+              #body: body,
+            }),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
+
+  @override
+  _i6.Future<void> scheduleTaskNotification({
+    required int? id,
+    required String? title,
+    required String? body,
+    required int? hour,
+    required int? minute,
+    required int? second,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#scheduleTaskNotification, [], {
+              #id: id,
+              #title: title,
+              #body: body,
+              #hour: hour,
+              #minute: minute,
+              #second: second,
+            }),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
 }
