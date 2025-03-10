@@ -77,9 +77,9 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Header(
-                    userName: taskProvider.firstName,
-                  ),
+                  // Header(
+                  //   userName: taskProvider.firstName,
+                  // ),
                   TaskCategoriesSection(categories: taskProvider.categories),
                   const SizedBox(height: 20.0),
                   OngoingTaskSection(),
@@ -155,3 +155,4 @@ class ActionButton extends StatelessWidget {
     );
   }
 }
+
