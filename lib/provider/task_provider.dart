@@ -9,9 +9,11 @@ import 'database_service.dart';
 
 class TaskProvider extends ChangeNotifier {
   // Implement a database
-  final DatabaseService _db = DatabaseService();
+  final DatabaseService _db;
   final AuthService _auth = AuthService();
   final NotiService _notiService = NotiService();
+
+  TaskProvider({required DatabaseService db}) : _db = db;
 
   List<TaskDetails> _tasks = [];
   List<TaskCategory> _categories = [];
@@ -22,8 +24,6 @@ class TaskProvider extends ChangeNotifier {
 
   late int _currentPartnershipIndex;
   int get currentPartnershipIndex => _currentPartnershipIndex;
-
-
 
   String get firstName => _firstName;
 
@@ -42,10 +42,6 @@ class TaskProvider extends ChangeNotifier {
   }
 
   late UserCredential user;
-
-  // document id for current partnership, set with .setPartnership()
-
-  //String? get currentPartnership => currentPartnership;
 
   /// **Set the current user's first name**
   void setFirstName(String firstName) {
