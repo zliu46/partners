@@ -139,9 +139,17 @@ class TaskProvider extends ChangeNotifier {
   }
 
   //  Add a New Category
-  // TODO: check if category already exists
   void addCategory(String title, Color color) {
-    categories.add(TaskCategory(title: title, color: color));
+    final normalizedTitle = title.trim().toLowerCase();
+    bool categoryExists = categories.any(
+          (category) => category.title.toLowerCase() == normalizedTitle,
+    );
+    if (categoryExists) {
+      print("Category '$title' already exists!"); // Replace with UI feedback if needed
+      return;
+    }
+    final newCategory = TaskCategory(title: title, color: color);
+    categories.add(newCategory);
     _db.addCategory(
         {'name': title, 'color': color.value}, _currentPartnership.id);
     notifyListeners();
@@ -150,12 +158,13 @@ class TaskProvider extends ChangeNotifier {
   List<TaskDetails> getOngoingTasks() {
     final now = DateTime.now();
     return _tasks.where((task) {
-      final endTime = (task.startTime ?? task.endTime)
-          .add(const Duration(minutes: 30)); //  Default 30 min duration
-      return (task.startTime ?? task.endTime).isBefore(now) &&
-          endTime.isAfter(now);
+      final startTime = task.startTime ?? task.endTime.subtract(const Duration(minutes: 30));
+      final endTime = task.endTime ?? startTime.add(const Duration(hours: 1)); // Ensure valid end time
+
+      return startTime.isBefore(now) && endTime.isAfter(now);
     }).toList();
   }
+
 
   List<TaskDetails> getUpcomingTasks() {
     final now = DateTime.now();
