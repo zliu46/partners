@@ -19,10 +19,10 @@ class TaskCategoryCard extends StatelessWidget {
         tileColor: taskCategory.color.withValues(alpha: 0.2), // Softer background
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),),
-        leading: CircleAvatar(
-          backgroundColor: taskCategory.color.withValues(alpha: 0.8), // Use category color
-          child: Icon(Icons.category, color: Colors.white),
-        ),
+        // leading: CircleAvatar(
+        //   backgroundColor: taskCategory.color.withValues(alpha: 0.8), // Use category color
+        //   child: Icon(Icons.category, color: Colors.white),
+        // ),
         title: Text(
           taskCategory.title,
           style: const TextStyle(
