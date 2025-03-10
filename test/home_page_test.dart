@@ -8,8 +8,6 @@ import 'package:provider/provider.dart';
 
 import 'mock_task_provider.dart';
 
-
-
 main(){
   late MockTaskProvider mockTaskProvider;
 
