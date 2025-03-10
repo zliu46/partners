@@ -28,14 +28,10 @@ class _CalendarPageState extends State<CalendarPage> {
       appBar: AppBar(
         backgroundColor: Colors.blue[100],
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.push(
-              context, MaterialPageRoute(builder: (context) => HomePage())),
-        ),
+        automaticallyImplyLeading: false,
         title: Text(
           'CALENDAR',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
       ),
