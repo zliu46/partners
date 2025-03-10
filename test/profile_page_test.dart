@@ -25,7 +25,7 @@ void main() {
     // ensure all sections appear
     expect(find.text('PROFILE'), findsOneWidget);
     expect(find.text('EDIT PROFILE'), findsOneWidget);
-    expect(find.text('PEOPLE'), findsOneWidget);
+    expect(find.text('PARTNERSHIPS'), findsOneWidget);
     expect(find.text('NOTIFICATIONS'), findsOneWidget);
     expect(find.text('HISTORY'), findsOneWidget);
     expect(find.text('HELP'), findsOneWidget);

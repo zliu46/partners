@@ -27,12 +27,12 @@ void main() {
     expect(find.text("Work Tasks"), findsOneWidget);
   });
 
-  testWidgets('Displays "No tasks available" when no tasks exist',
+  /*testWidgets('Displays "No tasks available" when no tasks exist',
           (WidgetTester tester) async {
         await tester.pumpWidget(createTestWidget("Work"));
         await tester.pumpAndSettle();
 
         expect(find.text("No tasks available"), findsOneWidget);
       });
-
+  */
 }

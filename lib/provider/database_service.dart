@@ -200,16 +200,12 @@ class DatabaseService {
         .where('secret_code', isEqualTo: code)
         .limit(1)
         .get();
-    print(querySnapshot.docs.first);
-    if (querySnapshot.docs.isEmpty) {
-      return "-1";
-    }
-    return querySnapshot.docs.first.id;
+
+    return querySnapshot.docs.isEmpty ? "-1" : querySnapshot.docs.first.id;
   }
 
   Future<List<dynamic>> getPartnerships(String username) async {
-    var snapshot = await _db.collection('users').doc(username).get();
-    return (snapshot).get('partnerships') ?? [];
+    return (await _db.collection('users').doc(username).get()).get('partnerships') ?? [];
   }
 
 
