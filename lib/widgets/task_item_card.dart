@@ -17,10 +17,10 @@ class _TaskItemCardState extends State<TaskItemCard> {
   Widget build(BuildContext context) {
     final taskProvider = Provider.of<TaskProvider>(context, listen: true);
     final TaskDetails task = taskProvider.getTaskById(widget.taskId);
-    // ✅ Use default time if startTime or endTime is null
+
+    // Default to current time if missing startTime/endTime
     final startTime = task.startTime ?? DateTime.now();
-    final endTime =
-        task.endTime ?? DateTime.now().add(const Duration(hours: 1));
+    final endTime = task.endTime ?? startTime.add(const Duration(hours: 1));
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -31,46 +31,70 @@ class _TaskItemCardState extends State<TaskItemCard> {
         );
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 5.0),
-        padding: const EdgeInsets.all(16.0),
+        margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+        padding: const EdgeInsets.all(14.0),
         decoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius: BorderRadius.circular(10.0),
+          color: task.isCompleted ? Colors.grey[100] : Colors.white,
+          borderRadius: BorderRadius.circular(16.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.08),
+              blurRadius: 6,
+              offset: Offset(2, 4),
+            ),
+          ],
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  task.title,
-                  style: const TextStyle(
-                      fontSize: 16.0, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 5.0),
-                Row(
-                  children: [
-                    const Icon(Icons.access_time,
-                        size: 16.0, color: Colors.red),
-                    const SizedBox(width: 5.0),
-                    Text(
-                      "${startTime.hour}:${startTime.minute.toString().padLeft(2, '0')} - ${endTime.hour}:${endTime.minute.toString().padLeft(2, '0')}",
-                      style: TextStyle(color: Colors.grey[600]),
-                    ),
-                  ],
-                ),
-              ],
+            // Circular Icon with Background Color
+            CircleAvatar(
+              backgroundColor: task.isCompleted ? Colors.grey : Colors.blue[100],
+              child: Icon(Icons.task, color: Colors.white),
             ),
+            const SizedBox(width: 12), // Ensures proper spacing
+
+            // Task Info Column
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    task.title,
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                      color: task.isCompleted ? Colors.grey[700] : Colors.black87,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      const Icon(Icons.access_time, size: 16.0, color: Colors.red),
+                      const SizedBox(width: 5),
+                      Text(
+                        "${startTime.hour}:${startTime.minute.toString().padLeft(2, '0')} - "
+                            "${endTime.hour}:${endTime.minute.toString().padLeft(2, '0')}",
+                        style: TextStyle(color: Colors.grey[600]),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            // Checkbox & Navigation Arrow
             Checkbox(
-                value: task.isCompleted,
-                onChanged: (newValue) {
-                  if (newValue != null) {
-                    taskProvider.changeCompletion(task.id);
+              value: task.isCompleted,
+              onChanged: (newValue) {
+                if (newValue != null) {
+                  taskProvider.changeCompletion(task.id);
+                  setState(() {
                     task.isCompleted = !task.isCompleted;
-                    setState(() {});
-                  }
-                }),
+                  });
+                }
+              },
+            ),
             const Icon(Icons.arrow_forward_ios, size: 16.0, color: Colors.grey),
           ],
         ),
