@@ -3,15 +3,14 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i5;
-import 'dart:typed_data' as _i7;
+import 'dart:async' as _i4;
 
-import 'package:cloud_firestore/cloud_firestore.dart' as _i4;
-import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart'
-    as _i3;
-import 'package:firebase_core/firebase_core.dart' as _i2;
+import 'package:cloud_firestore/cloud_firestore.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i6;
+import 'package:mockito/src/dummies.dart' as _i5;
+import 'package:partners/model/task_category.dart' as _i7;
+import 'package:partners/model/task_details.dart' as _i6;
+import 'package:partners/provider/database_service.dart' as _i3;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -27,378 +26,210 @@ import 'package:mockito/src/dummies.dart' as _i6;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeFirebaseApp_0 extends _i1.SmartFake implements _i2.FirebaseApp {
-  _FakeFirebaseApp_0(Object parent, Invocation parentInvocation)
+class _FakeQueryDocumentSnapshot_0<T extends Object?> extends _i1.SmartFake
+    implements _i2.QueryDocumentSnapshot<T> {
+  _FakeQueryDocumentSnapshot_0(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeSettings_1 extends _i1.SmartFake implements _i3.Settings {
-  _FakeSettings_1(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
-class _FakeCollectionReference_2<T extends Object?> extends _i1.SmartFake
-    implements _i4.CollectionReference<T> {
-  _FakeCollectionReference_2(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
-class _FakeWriteBatch_3 extends _i1.SmartFake implements _i4.WriteBatch {
-  _FakeWriteBatch_3(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
-class _FakeLoadBundleTask_4 extends _i1.SmartFake
-    implements _i4.LoadBundleTask {
-  _FakeLoadBundleTask_4(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
-class _FakeQuerySnapshot_5<T1 extends Object?> extends _i1.SmartFake
-    implements _i4.QuerySnapshot<T1> {
-  _FakeQuerySnapshot_5(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
-class _FakeQuery_6<T extends Object?> extends _i1.SmartFake
-    implements _i4.Query<T> {
-  _FakeQuery_6(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
-class _FakeDocumentReference_7<T extends Object?> extends _i1.SmartFake
-    implements _i4.DocumentReference<T> {
-  _FakeDocumentReference_7(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
-class _FakeFuture_8<T1> extends _i1.SmartFake implements _i5.Future<T1> {
-  _FakeFuture_8(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
-/// A class which mocks [FirebaseFirestore].
+/// A class which mocks [DatabaseService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockFirebaseFirestore extends _i1.Mock implements _i4.FirebaseFirestore {
-  MockFirebaseFirestore() {
+class MockDatabaseService extends _i1.Mock implements _i3.DatabaseService {
+  MockDatabaseService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.FirebaseApp get app =>
-      (super.noSuchMethod(
-            Invocation.getter(#app),
-            returnValue: _FakeFirebaseApp_0(this, Invocation.getter(#app)),
-          )
-          as _i2.FirebaseApp);
-
-  @override
-  set app(_i2.FirebaseApp? _app) => super.noSuchMethod(
-    Invocation.setter(#app, _app),
-    returnValueForMissingStub: null,
+  dynamic addUser(
+    String? username,
+    String? email,
+    String? firstName,
+    String? lastName,
+    String? uid,
+  ) => super.noSuchMethod(
+    Invocation.method(#addUser, [username, email, firstName, lastName, uid]),
   );
 
   @override
-  String get databaseURL =>
-      (super.noSuchMethod(
-            Invocation.getter(#databaseURL),
-            returnValue: _i6.dummyValue<String>(
-              this,
-              Invocation.getter(#databaseURL),
-            ),
-          )
-          as String);
-
-  @override
-  set databaseURL(String? _databaseURL) => super.noSuchMethod(
-    Invocation.setter(#databaseURL, _databaseURL),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  String get databaseId =>
-      (super.noSuchMethod(
-            Invocation.getter(#databaseId),
-            returnValue: _i6.dummyValue<String>(
-              this,
-              Invocation.getter(#databaseId),
-            ),
-          )
-          as String);
-
-  @override
-  set databaseId(String? _databaseId) => super.noSuchMethod(
-    Invocation.setter(#databaseId, _databaseId),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  set settings(_i3.Settings? settings) => super.noSuchMethod(
-    Invocation.setter(#settings, settings),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  _i3.Settings get settings =>
-      (super.noSuchMethod(
-            Invocation.getter(#settings),
-            returnValue: _FakeSettings_1(this, Invocation.getter(#settings)),
-          )
-          as _i3.Settings);
-
-  @override
-  Map<dynamic, dynamic> get pluginConstants =>
-      (super.noSuchMethod(
-            Invocation.getter(#pluginConstants),
-            returnValue: <dynamic, dynamic>{},
-          )
-          as Map<dynamic, dynamic>);
-
-  @override
-  _i4.CollectionReference<Map<String, dynamic>> collection(
-    String? collectionPath,
+  _i4.Future<_i2.QueryDocumentSnapshot<Map<String, dynamic>>> findUser(
+    String? uid,
   ) =>
       (super.noSuchMethod(
-            Invocation.method(#collection, [collectionPath]),
-            returnValue: _FakeCollectionReference_2<Map<String, dynamic>>(
-              this,
-              Invocation.method(#collection, [collectionPath]),
-            ),
-          )
-          as _i4.CollectionReference<Map<String, dynamic>>);
-
-  @override
-  _i4.WriteBatch batch() =>
-      (super.noSuchMethod(
-            Invocation.method(#batch, []),
-            returnValue: _FakeWriteBatch_3(this, Invocation.method(#batch, [])),
-          )
-          as _i4.WriteBatch);
-
-  @override
-  _i5.Future<void> clearPersistence() =>
-      (super.noSuchMethod(
-            Invocation.method(#clearPersistence, []),
-            returnValue: _i5.Future<void>.value(),
-            returnValueForMissingStub: _i5.Future<void>.value(),
-          )
-          as _i5.Future<void>);
-
-  @override
-  _i5.Future<void> enablePersistence([
-    _i3.PersistenceSettings? persistenceSettings,
-  ]) =>
-      (super.noSuchMethod(
-            Invocation.method(#enablePersistence, [persistenceSettings]),
-            returnValue: _i5.Future<void>.value(),
-            returnValueForMissingStub: _i5.Future<void>.value(),
-          )
-          as _i5.Future<void>);
-
-  @override
-  _i4.LoadBundleTask loadBundle(_i7.Uint8List? bundle) =>
-      (super.noSuchMethod(
-            Invocation.method(#loadBundle, [bundle]),
-            returnValue: _FakeLoadBundleTask_4(
-              this,
-              Invocation.method(#loadBundle, [bundle]),
-            ),
-          )
-          as _i4.LoadBundleTask);
-
-  @override
-  void useFirestoreEmulator(
-    String? host,
-    int? port, {
-    bool? sslEnabled = false,
-    bool? automaticHostMapping = true,
-  }) => super.noSuchMethod(
-    Invocation.method(
-      #useFirestoreEmulator,
-      [host, port],
-      {#sslEnabled: sslEnabled, #automaticHostMapping: automaticHostMapping},
-    ),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  _i5.Future<_i4.QuerySnapshot<T>> namedQueryWithConverterGet<T>(
-    String? name, {
-    _i3.GetOptions? options = const _i3.GetOptions(),
-    required _i4.FromFirestore<T>? fromFirestore,
-    required _i4.ToFirestore<T>? toFirestore,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(
-              #namedQueryWithConverterGet,
-              [name],
-              {
-                #options: options,
-                #fromFirestore: fromFirestore,
-                #toFirestore: toFirestore,
-              },
-            ),
-            returnValue: _i5.Future<_i4.QuerySnapshot<T>>.value(
-              _FakeQuerySnapshot_5<T>(
+            Invocation.method(#findUser, [uid]),
+            returnValue: _i4.Future<
+              _i2.QueryDocumentSnapshot<Map<String, dynamic>>
+            >.value(
+              _FakeQueryDocumentSnapshot_0<Map<String, dynamic>>(
                 this,
-                Invocation.method(
-                  #namedQueryWithConverterGet,
-                  [name],
-                  {
-                    #options: options,
-                    #fromFirestore: fromFirestore,
-                    #toFirestore: toFirestore,
-                  },
-                ),
+                Invocation.method(#findUser, [uid]),
               ),
             ),
           )
-          as _i5.Future<_i4.QuerySnapshot<T>>);
+          as _i4.Future<_i2.QueryDocumentSnapshot<Map<String, dynamic>>>);
 
   @override
-  _i5.Future<_i4.QuerySnapshot<Map<String, dynamic>>> namedQueryGet(
-    String? name, {
-    _i3.GetOptions? options = const _i3.GetOptions(),
-  }) =>
+  _i4.Future<bool> checkUsernameTaken(String? username) =>
       (super.noSuchMethod(
-            Invocation.method(#namedQueryGet, [name], {#options: options}),
-            returnValue:
-                _i5.Future<_i4.QuerySnapshot<Map<String, dynamic>>>.value(
-                  _FakeQuerySnapshot_5<Map<String, dynamic>>(
-                    this,
-                    Invocation.method(
-                      #namedQueryGet,
-                      [name],
-                      {#options: options},
-                    ),
-                  ),
-                ),
+            Invocation.method(#checkUsernameTaken, [username]),
+            returnValue: _i4.Future<bool>.value(false),
           )
-          as _i5.Future<_i4.QuerySnapshot<Map<String, dynamic>>>);
+          as _i4.Future<bool>);
 
   @override
-  _i4.Query<Map<String, dynamic>> collectionGroup(String? collectionPath) =>
+  _i4.Future<String> addTask(
+    Map<String, dynamic>? data,
+    String? partnershipId,
+  ) =>
       (super.noSuchMethod(
-            Invocation.method(#collectionGroup, [collectionPath]),
-            returnValue: _FakeQuery_6<Map<String, dynamic>>(
-              this,
-              Invocation.method(#collectionGroup, [collectionPath]),
+            Invocation.method(#addTask, [data, partnershipId]),
+            returnValue: _i4.Future<String>.value(
+              _i5.dummyValue<String>(
+                this,
+                Invocation.method(#addTask, [data, partnershipId]),
+              ),
             ),
           )
-          as _i4.Query<Map<String, dynamic>>);
+          as _i4.Future<String>);
 
   @override
-  _i5.Future<void> disableNetwork() =>
+  void deleteTask(String? taskId, String? partnershipId) => super.noSuchMethod(
+    Invocation.method(#deleteTask, [taskId, partnershipId]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void addCategory(Map<String, dynamic>? data, String? partnershipId) =>
+      super.noSuchMethod(
+        Invocation.method(#addCategory, [data, partnershipId]),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  _i4.Future<void> updateCompletion(String? taskId, String? partnershipId) =>
       (super.noSuchMethod(
-            Invocation.method(#disableNetwork, []),
-            returnValue: _i5.Future<void>.value(),
-            returnValueForMissingStub: _i5.Future<void>.value(),
+            Invocation.method(#updateCompletion, [taskId, partnershipId]),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
           )
-          as _i5.Future<void>);
+          as _i4.Future<void>);
 
   @override
-  _i4.DocumentReference<Map<String, dynamic>> doc(String? documentPath) =>
+  _i4.Stream<List<_i6.TaskDetails>> fetchTasksStream(String? partnershipId) =>
       (super.noSuchMethod(
-            Invocation.method(#doc, [documentPath]),
-            returnValue: _FakeDocumentReference_7<Map<String, dynamic>>(
-              this,
-              Invocation.method(#doc, [documentPath]),
+            Invocation.method(#fetchTasksStream, [partnershipId]),
+            returnValue: _i4.Stream<List<_i6.TaskDetails>>.empty(),
+          )
+          as _i4.Stream<List<_i6.TaskDetails>>);
+
+  @override
+  _i4.Stream<List<_i7.TaskCategory>> fetchCategoriesStream(
+    String? partnershipId,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#fetchCategoriesStream, [partnershipId]),
+            returnValue: _i4.Stream<List<_i7.TaskCategory>>.empty(),
+          )
+          as _i4.Stream<List<_i7.TaskCategory>>);
+
+  @override
+  _i4.Future<String> createPartnership(String? partnershipName) =>
+      (super.noSuchMethod(
+            Invocation.method(#createPartnership, [partnershipName]),
+            returnValue: _i4.Future<String>.value(
+              _i5.dummyValue<String>(
+                this,
+                Invocation.method(#createPartnership, [partnershipName]),
+              ),
             ),
           )
-          as _i4.DocumentReference<Map<String, dynamic>>);
+          as _i4.Future<String>);
 
   @override
-  _i5.Future<void> enableNetwork() =>
+  _i4.Future<String> generateUniqueCode() =>
       (super.noSuchMethod(
-            Invocation.method(#enableNetwork, []),
-            returnValue: _i5.Future<void>.value(),
-            returnValueForMissingStub: _i5.Future<void>.value(),
-          )
-          as _i5.Future<void>);
-
-  @override
-  _i5.Stream<void> snapshotsInSync() =>
-      (super.noSuchMethod(
-            Invocation.method(#snapshotsInSync, []),
-            returnValue: _i5.Stream<void>.empty(),
-          )
-          as _i5.Stream<void>);
-
-  @override
-  _i5.Future<T> runTransaction<T>(
-    _i4.TransactionHandler<T>? transactionHandler, {
-    Duration? timeout = const Duration(seconds: 30),
-    int? maxAttempts = 5,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(
-              #runTransaction,
-              [transactionHandler],
-              {#timeout: timeout, #maxAttempts: maxAttempts},
+            Invocation.method(#generateUniqueCode, []),
+            returnValue: _i4.Future<String>.value(
+              _i5.dummyValue<String>(
+                this,
+                Invocation.method(#generateUniqueCode, []),
+              ),
             ),
-            returnValue:
-                _i6.ifNotNull(
-                  _i6.dummyValueOrNull<T>(
-                    this,
-                    Invocation.method(
-                      #runTransaction,
-                      [transactionHandler],
-                      {#timeout: timeout, #maxAttempts: maxAttempts},
-                    ),
-                  ),
-                  (T v) => _i5.Future<T>.value(v),
-                ) ??
-                _FakeFuture_8<T>(
-                  this,
-                  Invocation.method(
-                    #runTransaction,
-                    [transactionHandler],
-                    {#timeout: timeout, #maxAttempts: maxAttempts},
-                  ),
-                ),
           )
-          as _i5.Future<T>);
+          as _i4.Future<String>);
 
   @override
-  _i5.Future<void> terminate() =>
+  _i4.Stream<Map<String, dynamic>> fetchPartnershipStream(
+    String? partnershipId,
+  ) =>
       (super.noSuchMethod(
-            Invocation.method(#terminate, []),
-            returnValue: _i5.Future<void>.value(),
-            returnValueForMissingStub: _i5.Future<void>.value(),
+            Invocation.method(#fetchPartnershipStream, [partnershipId]),
+            returnValue: _i4.Stream<Map<String, dynamic>>.empty(),
           )
-          as _i5.Future<void>);
+          as _i4.Stream<Map<String, dynamic>>);
 
   @override
-  _i5.Future<void> waitForPendingWrites() =>
+  _i4.Future<String> joinPartnership(String? username, String? partnershipId) =>
       (super.noSuchMethod(
-            Invocation.method(#waitForPendingWrites, []),
-            returnValue: _i5.Future<void>.value(),
-            returnValueForMissingStub: _i5.Future<void>.value(),
+            Invocation.method(#joinPartnership, [username, partnershipId]),
+            returnValue: _i4.Future<String>.value(
+              _i5.dummyValue<String>(
+                this,
+                Invocation.method(#joinPartnership, [username, partnershipId]),
+              ),
+            ),
           )
-          as _i5.Future<void>);
+          as _i4.Future<String>);
 
   @override
-  _i5.Future<void> setIndexConfiguration({
-    required List<_i3.Index>? indexes,
-    List<_i3.FieldOverrides>? fieldOverrides,
-  }) =>
+  _i4.Future<String> findPartnershipWithCode(String? code) =>
       (super.noSuchMethod(
-            Invocation.method(#setIndexConfiguration, [], {
-              #indexes: indexes,
-              #fieldOverrides: fieldOverrides,
-            }),
-            returnValue: _i5.Future<void>.value(),
-            returnValueForMissingStub: _i5.Future<void>.value(),
+            Invocation.method(#findPartnershipWithCode, [code]),
+            returnValue: _i4.Future<String>.value(
+              _i5.dummyValue<String>(
+                this,
+                Invocation.method(#findPartnershipWithCode, [code]),
+              ),
+            ),
           )
-          as _i5.Future<void>);
+          as _i4.Future<String>);
 
   @override
-  _i5.Future<void> setIndexConfigurationFromJSON(String? json) =>
+  _i4.Future<List<dynamic>> getPartnerships(String? username) =>
       (super.noSuchMethod(
-            Invocation.method(#setIndexConfigurationFromJSON, [json]),
-            returnValue: _i5.Future<void>.value(),
-            returnValueForMissingStub: _i5.Future<void>.value(),
+            Invocation.method(#getPartnerships, [username]),
+            returnValue: _i4.Future<List<dynamic>>.value(<dynamic>[]),
           )
-          as _i5.Future<void>);
+          as _i4.Future<List<dynamic>>);
+
+  @override
+  _i4.Future<String> getPartnershipWithId(String? id) =>
+      (super.noSuchMethod(
+            Invocation.method(#getPartnershipWithId, [id]),
+            returnValue: _i4.Future<String>.value(
+              _i5.dummyValue<String>(
+                this,
+                Invocation.method(#getPartnershipWithId, [id]),
+              ),
+            ),
+          )
+          as _i4.Future<String>);
+
+  @override
+  _i4.Future<List<String>> getUsers(String? partnershipId) =>
+      (super.noSuchMethod(
+            Invocation.method(#getUsers, [partnershipId]),
+            returnValue: _i4.Future<List<String>>.value(<String>[]),
+          )
+          as _i4.Future<List<String>>);
+
+  @override
+  _i4.Stream<List<_i6.TaskDetails>> fetchCompletedTasksStream(
+    String? partnershipId,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#fetchCompletedTasksStream, [partnershipId]),
+            returnValue: _i4.Stream<List<_i6.TaskDetails>>.empty(),
+          )
+          as _i4.Stream<List<_i6.TaskDetails>>);
 }

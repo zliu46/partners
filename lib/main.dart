@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:partners/pages/splash_screen.dart';
+import 'package:partners/provider/database_service.dart';
 import 'package:partners/provider/noti_service.dart';
 import 'package:partners/provider/task_provider.dart';
 import 'package:partners/pages/calendar_page.dart';
@@ -25,7 +26,7 @@ void main() async {
   runApp(
     MultiProvider(
         providers: [
-          ChangeNotifierProvider<TaskProvider>(create: (_) => TaskProvider()),
+          ChangeNotifierProvider<TaskProvider>(create: (_) => TaskProvider(db: DatabaseService())),
         ],
         child: const MyApp()
     ),

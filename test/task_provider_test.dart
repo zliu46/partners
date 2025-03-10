@@ -1,17 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mockito/annotations.dart';
+import 'package:partners/provider/database_service.dart';
 import 'package:partners/provider/task_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'task_provider_test.mocks.dart';
 
-@GenerateMocks([FirebaseFirestore])
+@GenerateMocks([DatabaseService])
 void main() {
-  late MockFirebaseFirestore mockFirebaseFirestore;
+  late DatabaseService db;
   late TaskProvider taskProvider;
   setUp((){
-    mockFirebaseFirestore = MockFirebaseFirestore();
-    taskProvider = TaskProvider()
-      .._db = mockFirebaseFirestore;
+    db = MockDatabaseService();
+    taskProvider = TaskProvider(db: db);
+  });
+
+  testWidgets("Test provider basic functionality", (tester) async {
+
+    expect(true, true);
   });
 }

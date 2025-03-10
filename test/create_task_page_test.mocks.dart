@@ -241,7 +241,7 @@ class MockTaskProvider extends _i1.Mock implements _i5.TaskProvider {
           as _i8.Future<void>);
 
   @override
-  void addCategory(String? title, _i9.Color? color) => super.noSuchMethod(
+  void addCategory(String? title, dynamic color) => super.noSuchMethod(
     Invocation.method(#addCategory, [title, color]),
     returnValueForMissingStub: null,
   );
