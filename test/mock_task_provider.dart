@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:mockito/mockito.dart';
@@ -58,5 +59,28 @@ class MockTaskProvider extends Mock implements TaskProvider {
   @override
   int getTaskCount(String categoryTitle) {
     return 0;
+  }
+  @override
+  List<TaskDetails> getTasksByCategory(String category) {
+    return [];
+  }
+
+  // FIX: Return a real stream instead of using `when()`
+  final StreamController<List<TaskDetails>> _completedTasksController =
+  StreamController<List<TaskDetails>>();
+
+  @override
+  Stream<List<TaskDetails>> getCompletedTasksStream() {
+    return _completedTasksController.stream;
+  }
+
+  // Use this function in your test to set completed tasks
+  void setCompletedTasks(List<TaskDetails> tasks) {
+    _completedTasksController.add(tasks);
+  }
+
+  // Close the stream to avoid memory leaks
+  void dispose() {
+    _completedTasksController.close();
   }
 }
