@@ -15,7 +15,7 @@ class TaskListPage extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.blue[100],
           elevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.black),
@@ -25,7 +25,7 @@ class TaskListPage extends StatelessWidget {
           ),
           title: Text(
             '$category Tasks',
-            style: const TextStyle(color: Colors.black),
+            style: const TextStyle(color: Colors.white),
           ),
           centerTitle: true,
         ),
