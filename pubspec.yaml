@@ -49,9 +49,13 @@ dependencies:
   firebase_vertexai: ^1.4.0
 
   timezone: any
+  flutter_animated_splash: ^0.0.10
+  lottie: ^3.3.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -65,6 +69,9 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+      - lib/assets/Animation.json
+
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
