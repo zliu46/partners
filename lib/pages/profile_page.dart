@@ -13,7 +13,7 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.purple[100],
+        backgroundColor: Colors.blue[100],
         elevation: 0,
         title: Text(
           'PROFILE',
@@ -31,11 +31,11 @@ class ProfilePage extends StatelessWidget {
                 radius: 50.0,
                 backgroundColor: Colors.grey[300],
                 child: Text(
-                  taskProvider.username[0],
+                  taskProvider.firstName[0],
                   style: TextStyle(
                     fontSize: 40.0,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: Colors.grey,
                   ),
                 ),
               ),

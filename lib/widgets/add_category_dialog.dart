@@ -30,7 +30,7 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
         ElevatedButton(
           onPressed: () {
             if (categoryController.text.isNotEmpty) {
-              taskProvider.addCategory(categoryController.text, Colors.blue[100]!);
+              taskProvider.addCategory(categoryController.text, Colors.purple[100]!);
               Navigator.pop(context);
             }
           },
@@ -41,10 +41,12 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
   }
 }
 
-// 🔹 Function to Show the Dialog
+//  Function to Show the Dialog
 void showAddCategoryDialog(BuildContext context) {
   showDialog(
     context: context,
     builder: (context) => const AddCategoryDialog(),
   );
 }
+
+

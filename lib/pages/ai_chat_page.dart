@@ -57,8 +57,8 @@ class _AIChatPageState extends State<AIChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('AI Chat'),
-        backgroundColor: Colors.purple[100],
+        title: Text('AI Chat', style: TextStyle(color: Colors.black)),
+        backgroundColor: Colors.blue[100],
       ),
       body: Column(
         children: [
@@ -74,7 +74,7 @@ class _AIChatPageState extends State<AIChatPage> {
                     margin: EdgeInsets.symmetric(vertical: 5),
                     padding: EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: message.containsKey("user") ? Colors.purple[100] : Colors.grey[300],
+                      color: message.containsKey("user") ? Colors.blue[100] : Colors.grey[300],
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
@@ -101,7 +101,7 @@ class _AIChatPageState extends State<AIChatPage> {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.send, color: Colors.purple[100]),
+                  icon: Icon(Icons.send, color: Colors.blue[100]),
                   onPressed: _sendMessage,
                 ),
               ],

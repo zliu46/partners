@@ -26,7 +26,7 @@ class _CalendarPageState extends State<CalendarPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.purple[100],
+        backgroundColor: Colors.blue[100],
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
@@ -35,7 +35,7 @@ class _CalendarPageState extends State<CalendarPage> {
         ),
         title: Text(
           'CALENDAR',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
       ),
