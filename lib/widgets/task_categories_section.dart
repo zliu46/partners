@@ -12,21 +12,24 @@ class TaskCategoriesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final taskProvider = Provider.of<TaskProvider>(context);
+    final displayedCategories = categories.take(4).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const TaskCategoriesHeader(),
         const SizedBox(height: 10.0),
-        Wrap(
-          spacing: 10,
-          runSpacing: 10,
-          children: categories
-              .map((category) => TaskCategoryCard(
-            taskCategory: category,
-            taskCount: taskProvider.getTaskCount(category.title),
-          ))
-              .toList(),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: displayedCategories.length,
+          itemBuilder: (context, index) {
+            final category = categories[index];
+            return TaskCategoryCard(
+              taskCategory: category,
+              taskCount: taskProvider.getTaskCount(category.title),
+            );
+          },
         ),
       ],
     );
