@@ -49,7 +49,7 @@ void main() {
   //   await tester.pumpAndSettle();
   //
   //   expect(find.byType(TaskItemCard), findsOneWidget);
-  //   //expect(find.text("Ongoing Task"), findsOneWidget);
+  //   expect(find.text("Ongoing Task"), findsOneWidget);
   // });
 
   testWidgets('Displays "No ongoing tasks available" when no tasks exist', (WidgetTester tester) async {
