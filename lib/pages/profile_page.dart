@@ -49,7 +49,7 @@ class ProfilePage extends StatelessWidget {
               SizedBox(height: 20.0),
               _buildProfileOption(Icons.edit, 'EDIT PROFILE', 'EDIT YOUR PROFILE', context, null),
               //Navigate to Partnership Page
-              _buildProfileOption(Icons.people, 'PEOPLE', 'PARTNERS & ROOMMATE', context, () {
+              _buildProfileOption(Icons.people, 'PARTNERSHIPS', 'PARTNERS & ROOMMATE', context, () {
                 Navigator.push(context, MaterialPageRoute(builder: (_) => PartnershipsListPage()));
               }),
               _buildProfileOption(Icons.notifications, 'NOTIFICATIONS', 'TASKS REMINDER', context, (){

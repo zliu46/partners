@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:partners/model/task_details.dart';
 import 'package:partners/pages/home_page.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -59,20 +60,36 @@ class _CalendarPageState extends State<CalendarPage> {
             headerStyle:
                 HeaderStyle(formatButtonVisible: false, titleCentered: true),
           ),
-          const SizedBox(height: 10),
           // Task List
           Expanded(
             child: tasksForSelectedDay.isEmpty
-                ? Center(child: Text("No tasks for this day"))
+                ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset(
+                    'lib/assets/calendar.json', // Ensure this file exists in assets folder
+                    width: 200,
+                    height: 200,
+                    fit: BoxFit.contain,
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    "No tasks for this day",
+                    style: TextStyle(color: Colors.grey, fontSize: 16),
+                  ),
+                ],
+              ),
+            )
                 : SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: ListView.builder(
-                        itemCount: tasksForSelectedDay.length,
-                        itemBuilder: (context, index) {
-                          final task = tasksForSelectedDay[index];
-                          return TaskItemCard(taskId: task.id);
-                        },
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ListView.builder(
+                  itemCount: tasksForSelectedDay.length,
+                  itemBuilder: (context, index) {
+                    final task = tasksForSelectedDay[index];
+                    return TaskItemCard(taskId: task.id);
+                  },
                       ),
                     ),
                   ),

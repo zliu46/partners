@@ -23,7 +23,7 @@ class _PartnershipsListPageState extends State<PartnershipsListPage> {
     final username = taskProvider.username; // Get user ID
 
     return Scaffold(
-      appBar: AppBar(title: Text("Partnerships")),
+      appBar: AppBar(title: Text("Partnerships"),backgroundColor: Colors.blue[100],),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

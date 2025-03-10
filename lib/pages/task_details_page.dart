@@ -10,13 +10,13 @@ class TaskDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final taskProvider = Provider.of<TaskProvider>(context, listen: true);
-    // ✅ Provide default time if startTime or endTime is null
+    // Provide default time if startTime or endTime is null
     final startTime = task.startTime ?? DateTime.now();
     final endTime = task.endTime ?? DateTime.now().add(const Duration(hours: 1));
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.blue[100],
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
@@ -26,7 +26,7 @@ class TaskDetailsPage extends StatelessWidget {
         ),
         title: const Text(
           'Task Details',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
       ),

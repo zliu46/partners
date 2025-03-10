@@ -31,8 +31,10 @@ class _TaskItemCardState extends State<TaskItemCard> {
             onPressed: (context) {
               _deleteTask(context, taskProvider, widget.taskId);
             },
-            backgroundColor: Colors.red,
+            backgroundColor: Colors.redAccent,
             foregroundColor: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             icon: Icons.delete,
             label: 'Delete',
           ),
