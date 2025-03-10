@@ -10,6 +10,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'calendar_page_test.mocks.dart';
 
 @GenerateMocks([TaskProvider])
+
 void main() {
   late MockTaskProvider mockTaskProvider;
 
@@ -75,4 +76,3 @@ void main() {
     expect(find.text('Mocked Task'), findsOneWidget);
   });
 }
-
