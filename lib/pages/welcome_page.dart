@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:partners/pages/login_page.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -12,6 +13,12 @@ class WelcomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Lottie.asset(
+                'lib/assets/welcome.json',
+                width: 250,
+                height: 250,
+                fit: BoxFit.contain,
+              ),
               Text(
                 'WELCOME TO PARTNERS',
                 style: TextStyle(
