@@ -115,10 +115,9 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
           },
         ),
         title: Text(
-          'CREATE NEW TASK',
+          'Create New Task',
           style: TextStyle(
             color: Colors.black,
-            fontWeight: FontWeight.bold,
           ),
         ),
         centerTitle: true,
@@ -373,6 +372,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         SizedBox(width: 10.0),
         Expanded(
           child: SwitchListTile(
+            activeTrackColor: Colors.blue[100],
             title: Text('Get Alert for This Task'),
             value: _enableNotification, // Bind to state variable
             onChanged: (bool value) {

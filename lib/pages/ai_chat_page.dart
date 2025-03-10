@@ -57,8 +57,11 @@ class _AIChatPageState extends State<AIChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('AI Chat', style: TextStyle(color: Colors.black)),
+        automaticallyImplyLeading: false,
+        title: Text('AI Chat',
+            style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.blue[100],
+        centerTitle: true,
       ),
       body: Column(
         children: [

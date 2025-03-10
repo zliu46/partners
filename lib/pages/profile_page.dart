@@ -17,7 +17,7 @@ class ProfilePage extends StatelessWidget {
         elevation: 0,
         title: Text(
           'PROFILE',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
       ),
@@ -29,13 +29,13 @@ class ProfilePage extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 50.0,
-                backgroundColor: Colors.grey[300],
+                backgroundColor: Colors.white,
                 child: Text(
                   taskProvider.firstName[0],
                   style: TextStyle(
                     fontSize: 40.0,
                     fontWeight: FontWeight.bold,
-                    color: Colors.grey,
+                    color: Colors.black,
                   ),
                 ),
               ),

@@ -13,6 +13,7 @@ class TaskHistoryPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blue[100],
         title: const Text("Task History"),
         centerTitle: true,
       ),

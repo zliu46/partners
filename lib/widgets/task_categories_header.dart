@@ -11,7 +11,7 @@ class TaskCategoriesHeader extends StatelessWidget {
     final hasMoreThanFourCategories = taskProvider.categories.length > 4;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

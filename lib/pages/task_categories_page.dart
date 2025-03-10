@@ -68,7 +68,7 @@ class TaskCategoriesPage extends StatelessWidget {
         onPressed: () {
           showAddCategoryDialog(context);
         },
-        backgroundColor: Colors.purple[100],
+        backgroundColor: Colors.blue[100],
         child: const Icon(Icons.add, color: Colors.black),
       ),
     );
