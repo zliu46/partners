@@ -106,7 +106,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     final taskProvider = Provider.of<TaskProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Colors.blue[100],
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
@@ -117,7 +117,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         title: Text(
           'Create New Task',
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.white,
           ),
         ),
         centerTitle: true,
@@ -426,7 +426,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         },
         style: ElevatedButton.styleFrom(
           padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 15.0),
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.blue[100],
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),
           ),

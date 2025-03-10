@@ -28,7 +28,7 @@ class TaskCategoryCard extends StatelessWidget {
           style: const TextStyle(
             fontSize: 16.0,
             fontWeight: FontWeight.bold,
-            color: Colors.black87, // Darker for contrast
+            color: Colors.black,
           ),
         ),
         subtitle: Text(
